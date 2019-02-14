@@ -1,7 +1,7 @@
 import java.net.ServerSocket;
 import java.net.Socket;
 /*
- * Handler.
+ * Server.
  *
  * @author  John Mercer
  * @version 1.00, February 2019.
@@ -17,6 +17,7 @@ public class Server {
                 final Socket sck = ssck.accept();               // waits for a client to connect
                 final Handler wkr = new Handler( sck );         // runs a handler for the client when it connects
                 wkr.run();
+    
             }
         } catch ( Exception exn ) {
             System.out.println( exn ); System.exit( 1 );
