@@ -181,7 +181,9 @@ public class StoreManager extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    fileZipper(titleFile, coverArtFile, musicFile);
+                    String zipFilePath = fileZipper(titleFile, coverArtFile, musicFile);
+                    sendZipToServer(zipFilePath);
+
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
