@@ -24,7 +24,7 @@ import java.util.HashMap;
  */
 public class MidiToNotes {
 
-    final static String FILE = "C:\\Users\\Kamila\\IdeaProjects\\GuitarZero\\AC_DC_-_Highway_to_Hell.mid";
+    final static String FILE = "..\\AC_DC_-_Highway_to_Hell.mid";
 
     /**
      * Returns the name of nth instrument in the current MIDI soundbank.
