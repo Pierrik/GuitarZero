@@ -6,6 +6,7 @@
 
 
 import java.io.File;
+import java.io.FileWriter;
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
@@ -17,14 +18,14 @@ import javax.sound.midi.Track;
 import java.util.Map;
 import java.util.HashMap;
 /**
- * Display MIDI file.
+ * Convert MIDI file to note file.
  *
- * @author  David Wakeling
- * @version 1.00, January 2019.
+ *
+ *
  */
 public class MidiToNotes {
 
-    final static String FILE = "..\\AC_DC_-_Highway_to_Hell.mid";
+    final static String FILE = "C:\\Users\\tomma\\Desktop\\GuitarZero\\src\\MamaDo.mid";
 
     /**
      * Returns the name of nth instrument in the current MIDI soundbank.
@@ -123,9 +124,18 @@ public class MidiToNotes {
                 }
             }
             //WRITE LINKED LIST TO FILE
+            String filename = "noteFile.txt";
+
+          try {
+            FileWriter writer = new FileWriter(filename);
             for (Map.Entry<Long, String> entry : map.entrySet()) {
                 System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+                writer.write(entry.getKey() + "," + entry.getValue() + "\n");
             }
+            writer.close();
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
         }
     }
 
