@@ -93,11 +93,10 @@ public class MidiToNotes<instrument> {
     /**
      * Display a MIDI track.
      */
-    static int newChannel = 0;
-
-    public static void displayTrack( Track trk ) {
+        public static void displayTrack( Track trk ) {
         //Table of ticks and final notes
         Map<Long, String> map = new HashMap<>();
+        int newChannel = 0;
         for ( int i = 0; i < trk.size(); i = i + 1 ) {
             MidiEvent   evt  = trk.get( i );
             MidiMessage msg = evt.getMessage();
