@@ -23,9 +23,9 @@ import java.util.HashMap;
  *
  *
  */
-public class MidiToNotes {
+public class MidiToNotes<instrument> {
 
-    final static String FILE = "C:\\Users\\tomma\\Desktop\\GuitarZero\\src\\MamaDo.mid";
+    final static String FILE = "AC_DC_-_Highway_to_Hell.mid";
 
     /**
      * Returns the name of nth instrument in the current MIDI soundbank.
@@ -93,27 +93,31 @@ public class MidiToNotes {
     /**
      * Display a MIDI track.
      */
+    static int newChannel = 0;
+
     public static void displayTrack( Track trk ) {
         //Table of ticks and final notes
         Map<Long, String> map = new HashMap<>();
         for ( int i = 0; i < trk.size(); i = i + 1 ) {
             MidiEvent   evt  = trk.get( i );
             MidiMessage msg = evt.getMessage();
+            //int                instrument = 0;
             if ( msg instanceof ShortMessage ) {
                 final long         tick = evt.getTick();
                 final ShortMessage smsg = (ShortMessage) msg;
                 final int          chan = smsg.getChannel();
                 final int          cmd  = smsg.getCommand();
                 final int          dat1 = smsg.getData1();
-                int          channel = 0;
+
                 switch( cmd ) {
                     case ShortMessage.PROGRAM_CHANGE :
-                        if(dat1 == 27){
-                            channel = chan;
+                        if (dat1 == 27) {
+                            newChannel = chan;
                         }
                         break;
                     case ShortMessage.NOTE_ON :
-                        if(chan == channel){
+                        //System.out.println(newChannel + " - " + chan);
+                        if(chan == newChannel){
                             //Pass the current tick, note and final table
                             formatNote(tick, dat1, map);
                         }
