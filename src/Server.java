@@ -1,10 +1,10 @@
 import java.net.ServerSocket;
 import java.net.Socket;
 /*
- * Handler.
+ * Server.
  *
  * @author  John Mercer
- * @version 1.00, January 2019.
+ * @version 1.00, February 2019.
  */
 public class Server {
     public final static int PORT = 8888;

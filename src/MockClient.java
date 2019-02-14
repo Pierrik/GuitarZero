@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
 /*
  * MockClient.
  *
@@ -15,17 +14,21 @@ public class MockClient {
         try {
             Socket sck = new Socket( HOST, PORT );
 
-            // InputStream  in  = sck.getInputStream();
-            OutputStream out = sck.getOutputStream();
-
-            // BufferedReader reader = new BufferedReader( new InputStreamReader( in ) );
-            // PrintWriter writer = new PrintWriter( out );
-
-            // Writing a specified zip file to output stream (sending to the server)
             String filePath = "C:\\Users\\John\\Desktop\\GuitarZero\\src\\zip.zip";      // your zip here!
             File file = new File(filePath);
-            byte[] fileContent = Files.readAllBytes(file.toPath());
-            out.write(fileContent);
+            String fileName = file.getName();
+            byte[] bytes = new byte[(int) file.length()];
+
+            DataInputStream dataIn = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+            DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
+
+            dataIn.readFully(bytes, 0, bytes.length);
+
+            dataOut.writeUTF(fileName);
+            dataOut.write(bytes, 0, bytes.length);
+            dataOut.flush();
+
+            dataOut.close();
             sck.close();
 
         } catch ( Exception exn ) {
