@@ -1,12 +1,6 @@
-// for some reason it doesn't print anything out when in this project,
-// it works when run from a different folder in terminal
-
-
-
-
-
 import java.io.File;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
@@ -131,17 +125,18 @@ public class MidiToNotes<instrument> {
             }
         }
             //WRITE LINKED LIST TO FILE
-            String filename = "noteFile.txt";
             try {
-                FileWriter writer = new FileWriter(filename);
+                File file = new File ("noteFile.txt");
+                PrintWriter out = new PrintWriter(file);
                 for (Map.Entry<Long, String> entry : map.entrySet()) {
                     System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-                    //writer.write(entry.getKey() + "," + entry.getValue() + "\n");
+                    out.println(entry.getKey() + "," + entry.getValue() + "\n");
                 }
-                writer.close();
+                out.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
     }
 
     /**
