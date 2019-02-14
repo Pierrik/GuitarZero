@@ -68,7 +68,7 @@ public class MidiToNotes<instrument> {
         if(m.containsKey(tick)){
             String b = m.get(tick).toString();
             String val = compare(format, b);
-            m.put(tick, val);
+            m.replace(tick, val);
         }
         else {
             m.put(tick,format);
@@ -93,10 +93,12 @@ public class MidiToNotes<instrument> {
     /**
      * Display a MIDI track.
      */
+
+    static int newChannel = 0;
         public static void displayTrack( Track trk ) {
         //Table of ticks and final notes
         Map<Long, String> map = new HashMap<>();
-        int newChannel = 0;
+
         for ( int i = 0; i < trk.size(); i = i + 1 ) {
             MidiEvent   evt  = trk.get( i );
             MidiMessage msg = evt.getMessage();
@@ -111,13 +113,14 @@ public class MidiToNotes<instrument> {
                 switch( cmd ) {
                     case ShortMessage.PROGRAM_CHANGE :
                         if (dat1 == 27) {
+                            System.out.println("Programe change");
                             newChannel = chan;
                         }
                         break;
                     case ShortMessage.NOTE_ON :
-                        //System.out.println(newChannel + " - " + chan);
                         if(chan == newChannel){
                             //Pass the current tick, note and final table
+                            //System.out.println(newChannel + " - " + chan);
                             formatNote(tick, dat1, map);
                         }
                         break;
@@ -126,20 +129,19 @@ public class MidiToNotes<instrument> {
                         break;
                 }
             }
+        }
             //WRITE LINKED LIST TO FILE
             String filename = "noteFile.txt";
-
-          try {
-            FileWriter writer = new FileWriter(filename);
-            for (Map.Entry<Long, String> entry : map.entrySet()) {
-                System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-                writer.write(entry.getKey() + "," + entry.getValue() + "\n");
+            try {
+                FileWriter writer = new FileWriter(filename);
+                for (Map.Entry<Long, String> entry : map.entrySet()) {
+                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+                    //writer.write(entry.getKey() + "," + entry.getValue() + "\n");
+                }
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            writer.close();
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
     }
 
     /**
