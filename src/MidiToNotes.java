@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
@@ -46,7 +44,7 @@ public class MidiToNotes<instrument> {
      * @param n the note number
      * @return  the note name
      */
-    public static void formatNote(long tick, int n, Map m) {
+    public static void formatNote(long tick, int n, Map<Long, String> m) {
         //final int octave = (n / 6) - 1;
         final int note = n % 6;
         String format = "";
@@ -89,7 +87,7 @@ public class MidiToNotes<instrument> {
      */
 
     static int newChannel = 0;
-        public static void displayTrack( Track trk ) {
+    public static void displayTrack( Track trk ) {
         //Table of ticks and final notes
         Map<Long, String> map = new HashMap<>();
 
@@ -107,14 +105,11 @@ public class MidiToNotes<instrument> {
                 switch( cmd ) {
                     case ShortMessage.PROGRAM_CHANGE :
                         if (dat1 == 27) {
-                            System.out.println("Programe change");
                             newChannel = chan;
                         }
                         break;
                     case ShortMessage.NOTE_ON :
                         if(chan == newChannel){
-                            //Pass the current tick, note and final table
-                            //System.out.println(newChannel + " - " + chan);
                             formatNote(tick, dat1, map);
                         }
                         break;
@@ -124,20 +119,24 @@ public class MidiToNotes<instrument> {
                 }
             }
         }
-            //WRITE LINKED LIST TO FILE
-            try {
-                File file = new File ("noteFile.txt");
-                PrintWriter out = new PrintWriter(file);
-                for (Map.Entry<Long, String> entry : map.entrySet()) {
-                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-                    out.println(entry.getKey() + "," + entry.getValue() + "\n");
-                }
-                out.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+        //WRITE LINKED LIST TO FILE
+        try {
+            File file = new File ("noteFile.txt");
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
+
+            for (Map.Entry<Long, String> entry : map.entrySet()) {
+                out.println(entry.getKey() + "," + entry.getValue());
             }
 
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
+
+
 
     /**
      * Display a MIDI sequence.
