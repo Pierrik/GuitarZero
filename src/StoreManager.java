@@ -1,14 +1,20 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
-import java.io.File;
+import java.io.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 public class StoreManager extends JFrame {
 
-    File tester = null;
+    static File titleFile = null;
+    static File coverArtFile = null;
+    static File musicFile = null;
 
     public StoreManager() {
         setTitle("Store Manager");
@@ -37,6 +43,52 @@ public class StoreManager extends JFrame {
         panel.add(BorderLayout.LINE_END, button);
         return panel;
     }
+
+
+
+    public static String textFileReader(File textFile) throws IOException {
+
+        FileReader in = new FileReader(textFile);
+        BufferedReader br = new BufferedReader(in);
+
+        String text = br.readLine();
+        System.out.println(text);
+
+        in.close();
+
+        return text;
+    }
+
+    public static void fileZipper (File titleFile, File coverArtFile, File musicFile) throws IOException {
+
+        List<File> srcFiles =
+                Arrays.asList(
+                        coverArtFile, musicFile);          // files to be zipped go here
+
+        String songName = textFileReader(titleFile);
+
+        songName += ".zip";
+
+        FileOutputStream fos = new FileOutputStream(songName);   // title goes here
+
+        ZipOutputStream zipOut = new ZipOutputStream(fos);
+
+        for (File srcFile : srcFiles) {
+            FileInputStream fis = new FileInputStream(srcFile);
+            ZipEntry zipEntry = new ZipEntry(srcFile.getName());
+            zipOut.putNextEntry(zipEntry);
+
+            byte[] bytes = new byte[1024];
+            int length;
+            while((length = fis.read(bytes)) >= 0) {
+                zipOut.write(bytes, 0, length);
+            }
+            fis.close();
+        }
+        zipOut.close();
+        fos.close();
+    }
+
 
 
     public static void main(String args[]) {
@@ -87,6 +139,7 @@ public class StoreManager extends JFrame {
                 File file = fileFinder();
                 String filePath = file.getPath();
                 titleField.setText(filePath);
+                titleFile = file;
             }
         });
 
@@ -96,6 +149,7 @@ public class StoreManager extends JFrame {
                 File file = fileFinder();
                 String filePath = file.getPath();
                 coverArtField.setText(filePath);
+                coverArtFile = file;
             }
         });
 
@@ -105,6 +159,7 @@ public class StoreManager extends JFrame {
                 File file = fileFinder();
                 String filePath = file.getPath();
                 musicField.setText(filePath);
+                musicFile = file;
             }
         });
 
@@ -112,10 +167,11 @@ public class StoreManager extends JFrame {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                
-
-
+                try {
+                    fileZipper(titleFile, coverArtFile, musicFile);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
 
             }
         });
