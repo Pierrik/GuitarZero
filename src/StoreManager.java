@@ -6,8 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-
 public class StoreManager extends JFrame {
+
+    File tester = null;
 
     public StoreManager() {
         setTitle("Store Manager");
@@ -16,30 +17,32 @@ public class StoreManager extends JFrame {
 
     }
 
-
     public static File fileFinder () {
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         int returnValue = jfc.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jfc.getSelectedFile();
             System.out.println(selectedFile.getAbsolutePath());
-            return fileFinder();
+            return selectedFile;
         } else {
             return null;
         }
     }
 
+
+    public static JPanel panelCreator (JLabel label, JTextField textField, JButton button) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(BorderLayout.LINE_START, label);
+        panel.add(BorderLayout.CENTER, textField);
+        panel.add(BorderLayout.LINE_END, button);
+        return panel;
+    }
+
+
     public static void main(String args[]) {
         JFrame frame = new JFrame("Store Manager");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
-
-        //Creating the top panels and adding components
-        JPanel topPanel = new JPanel(new BorderLayout()); // the panel is not visible in output
-        JPanel topFirstPanel = new JPanel(new BorderLayout()); // the panel is not visible in output
-        JPanel topSecondPanel = new JPanel(new BorderLayout()); // the panel is not visible in output
-        JPanel topThirdPanel = new JPanel(new BorderLayout()); // the panel is not visible in output
-
 
         JLabel titleLabel = new JLabel("Title:       ");
         JLabel coverArtLabel = new JLabel("Cover art:");
@@ -54,17 +57,12 @@ public class StoreManager extends JFrame {
         JButton musicBrowse = new JButton("Browse");
 
 
-        topFirstPanel.add(BorderLayout.LINE_START, titleLabel);
-        topFirstPanel.add(BorderLayout.CENTER, titleField);
-        topFirstPanel.add(BorderLayout.LINE_END, titleBrowse);
+        //Creating the top panels and adding components
+        JPanel topPanel = new JPanel(new BorderLayout()); // the panel is not visible in output
 
-        topSecondPanel.add(BorderLayout.LINE_START, coverArtLabel);
-        topSecondPanel.add(BorderLayout.CENTER, coverArtField);
-        topSecondPanel.add(BorderLayout.LINE_END, coverArtBrowse);
-
-        topThirdPanel.add(BorderLayout.LINE_START, musicLabel);
-        topThirdPanel.add(BorderLayout.CENTER, musicField);
-        topThirdPanel.add(BorderLayout.LINE_END, musicBrowse);
+        JPanel topFirstPanel = panelCreator(titleLabel, titleField, titleBrowse);
+        JPanel topSecondPanel = panelCreator(coverArtLabel, coverArtField, coverArtBrowse);
+        JPanel topThirdPanel = panelCreator(musicLabel, musicField, musicBrowse);
 
         topPanel.add(BorderLayout.NORTH, topFirstPanel);
         topPanel.add(BorderLayout.CENTER, topSecondPanel);
@@ -84,17 +82,42 @@ public class StoreManager extends JFrame {
         frame.setVisible(true);
 
         titleBrowse.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 File file = fileFinder();
-                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
                 String filePath = file.getPath();
-                titleField.setText(String.format(filePath));
-
-                System.out.println("TESTER1234567890");
+                titleField.setText(filePath);
             }
+        });
 
+        coverArtBrowse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File file = fileFinder();
+                String filePath = file.getPath();
+                coverArtField.setText(filePath);
+            }
+        });
+
+        musicBrowse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File file = fileFinder();
+                String filePath = file.getPath();
+                musicField.setText(filePath);
+            }
+        });
+
+
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                
+
+
+
+            }
         });
 
     }
