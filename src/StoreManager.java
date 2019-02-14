@@ -8,7 +8,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
+/*
+ * Store Manager.
+ *
+ * @author  Pierrik Mellab
+ * @author  John Mercer
+ * @version 1.1, February 2019.
+ */
 
 public class StoreManager extends JFrame {
 
@@ -59,13 +65,14 @@ public class StoreManager extends JFrame {
         return text;
     }
 
-    public static void fileZipper (File titleFile, File coverArtFile, File musicFile) throws IOException {
+    public static String fileZipper (File titleFile, File coverArtFile, File musicFile) throws IOException {
 
         List<File> srcFiles =
                 Arrays.asList(
                         coverArtFile, musicFile);          // files to be zipped go here
 
         String songName = textFileReader(titleFile);
+
 
         songName += ".zip";
 
@@ -87,8 +94,14 @@ public class StoreManager extends JFrame {
         }
         zipOut.close();
         fos.close();
+
+        return songName;
     }
 
+    public static void sendZipToServer(String filePath){
+        MockClient client = new MockClient("localhost", 8888, filePath);
+        client.sendFile();
+    }
 
 
     public static void main(String args[]) {
