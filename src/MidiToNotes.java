@@ -9,6 +9,7 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 /**
@@ -88,10 +89,29 @@ public class MidiToNotes<instrument> {
      * Display a MIDI track.
      */
 
+    static ArrayList<Integer> instruments = new ArrayList();
     static int newChannel = 0;
+
         public static void displayTrack( Track trk ) {
         //Table of ticks and final notes
         Map<Long, String> map = new HashMap<>();
+
+            for ( int i = 0; i < trk.size(); i = i + 1 ) {
+                MidiEvent evt = trk.get(i);
+                MidiMessage msg = evt.getMessage();
+                //int                instrument = 0;
+                if (msg instanceof ShortMessage) {
+                    final ShortMessage smsg = (ShortMessage) msg;
+                    final int cmd = smsg.getCommand();
+                    final int dat1 = smsg.getData1();
+
+                    switch (cmd) {
+                        case ShortMessage.PROGRAM_CHANGE:
+                            instruments.add(dat1);
+                    }
+                }
+            }
+            int size1 = instruments.size();
 
         for ( int i = 0; i < trk.size(); i = i + 1 ) {
             MidiEvent   evt  = trk.get( i );
@@ -107,7 +127,11 @@ public class MidiToNotes<instrument> {
                 switch( cmd ) {
                     case ShortMessage.PROGRAM_CHANGE :
                         if (dat1 == 27) {
-                            System.out.println("Programe change");
+                            newChannel = chan;
+                        }
+                        // prints out keys and values twice for some reason
+                        // how do we wanna filter the guitar? which one should we prioritise?
+                        else if (dat1 == 29) {
                             newChannel = chan;
                         }
                         break;
@@ -136,7 +160,6 @@ public class MidiToNotes<instrument> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
     }
 
     /**
