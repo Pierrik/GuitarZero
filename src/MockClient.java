@@ -7,15 +7,21 @@ import java.net.Socket;
  * @version 1.00, February 2019.
  */
 public class MockClient {
-    final static String HOST = "localhost";
-    final static int    PORT = 8888;
+    String host;
+    int    port;
+    String filePath;
 
-    public static void main( String[] argv ) {
+    MockClient(String host, int port, String filePath){
+        this.host = host;
+        this.port = port;
+        this.filePath = filePath;
+    }
+
+    public void sendFile(){
         try {
-            Socket sck = new Socket( HOST, PORT );
+            Socket sck = new Socket( this.host, this.port );
 
-            String filePath = "C:\\Users\\John\\Desktop\\GuitarZero\\src\\zip.zip";      // your zip here!
-            File file = new File(filePath);
+            File file = new File(this.filePath);
             String fileName = file.getName();
             byte[] bytes = new byte[(int) file.length()];
 
