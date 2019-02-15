@@ -1,11 +1,4 @@
-// for some reason it doesn't print anything out when in this project,
-// it works when run from a different folder in terminal
-
-
-
-
-
-import java.io.File;
+import java.io.*;
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
@@ -17,14 +10,14 @@ import javax.sound.midi.Track;
 import java.util.Map;
 import java.util.HashMap;
 /**
- * Display MIDI file.
+ * Convert MIDI file to note file.
  *
- * @author  David Wakeling
- * @version 1.00, January 2019.
+ *
+ *
  */
-public class MidiToNotes {
+public class MidiToNotes<instrument> {
 
-    final static String FILE = "C:\\Users\\Kamila\\IdeaProjects\\GuitarZero\\AC_DC_-_Highway_to_Hell.mid";
+    final static String FILE = "AC_DC_-_Highway_to_Hell.mid";
 
     /**
      * Returns the name of nth instrument in the current MIDI soundbank.
@@ -51,7 +44,7 @@ public class MidiToNotes {
      * @param n the note number
      * @return  the note name
      */
-    public static void formatNote(long tick, int n, Map m) {
+    public static void formatNote(long tick, int n, Map<Long, String> m) {
         //final int octave = (n / 6) - 1;
         final int note = n % 6;
         String format = "";
@@ -67,7 +60,7 @@ public class MidiToNotes {
         if(m.containsKey(tick)){
             String b = m.get(tick).toString();
             String val = compare(format, b);
-            m.put(tick, val);
+            m.replace(tick, val);
         }
         else {
             m.put(tick,format);
@@ -92,28 +85,31 @@ public class MidiToNotes {
     /**
      * Display a MIDI track.
      */
+
+    static int newChannel = 0;
     public static void displayTrack( Track trk ) {
         //Table of ticks and final notes
         Map<Long, String> map = new HashMap<>();
+
         for ( int i = 0; i < trk.size(); i = i + 1 ) {
             MidiEvent   evt  = trk.get( i );
             MidiMessage msg = evt.getMessage();
+            //int                instrument = 0;
             if ( msg instanceof ShortMessage ) {
                 final long         tick = evt.getTick();
                 final ShortMessage smsg = (ShortMessage) msg;
                 final int          chan = smsg.getChannel();
                 final int          cmd  = smsg.getCommand();
                 final int          dat1 = smsg.getData1();
-                int          channel = 0;
+
                 switch( cmd ) {
                     case ShortMessage.PROGRAM_CHANGE :
-                        if(dat1 == 27){
-                            channel = chan;
+                        if (dat1 == 27) {
+                            newChannel = chan;
                         }
                         break;
                     case ShortMessage.NOTE_ON :
-                        if(chan == channel){
-                            //Pass the current tick, note and final table
+                        if(chan == newChannel){
                             formatNote(tick, dat1, map);
                         }
                         break;
@@ -122,12 +118,25 @@ public class MidiToNotes {
                         break;
                 }
             }
-            //WRITE LINKED LIST TO FILE
-            for (Map.Entry<Long, String> entry : map.entrySet()) {
-                System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-            }
         }
+        //WRITE LINKED LIST TO FILE
+        try {
+            File file = new File ("noteFile.txt");
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
+
+            for (Map.Entry<Long, String> entry : map.entrySet()) {
+                out.println(entry.getKey() + "," + entry.getValue());
+            }
+
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
+
+
 
     /**
      * Display a MIDI sequence.
