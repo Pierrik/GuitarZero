@@ -21,7 +21,7 @@ public class MidiToNotes {
         this.file = file;
     }
 
-    final static String FILE = "C:\\Users\\tomma\\Desktop\\GuitarZero\\AC_DC_-_Back_In_Black.mid";
+
 
 
     public static void formatNote(long tick, int n, Map<Long, String> m) {
