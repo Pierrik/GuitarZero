@@ -11,7 +11,7 @@ public class MockClient {
     final static int    PORT = 8888;
 
     public static void main( String[] argv ) {
-        try {
+        try { //big change
             Socket sck = new Socket( HOST, PORT );
 
             String filePath = "C:\\Users\\John\\Desktop\\GuitarZero\\src\\zip.zip";      // your zip here!
