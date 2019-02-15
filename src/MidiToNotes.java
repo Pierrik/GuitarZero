@@ -22,7 +22,7 @@ public class MidiToNotes {
         String format = "";
 
         // Each note in the song is formatted to a 3 digit number
-        // Representing 3 lanes of guitar highway
+        // Representing button 1/ button 2 in 3 lanes of guitar highway
         switch ( note ) {
             case 0: format = "100"; break;
             case 1: format = "200"; break;
@@ -117,9 +117,9 @@ public class MidiToNotes {
         }
     }
 
-    public static void writeFile( String file ) {
+    public void writeFile( ) {
         try {
-            Sequence seq = MidiSystem.getSequence( new File( file ) );
+            Sequence seq = MidiSystem.getSequence( new File( this.file ) );
             displaySequence( seq );
         } catch ( Exception exn ) {
             System.out.println( exn ); System.exit( 1 );
