@@ -7,12 +7,22 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 import java.util.Map;
 import java.util.HashMap;
+
 /**
- * Convert MIDI file to note file.
- */
+ * Class that converts MIDI file to note file.
+*/
 public class MidiToNotes {
+
+    /**
+     * Coverts a MIDI note to the correct format for the game note file
+     * @param tick
+     * @param n
+     * @param m
+     */
     public static void formatNote(long tick, int n, Map<Long, String> m) {
+
         final int note = n % 6;
+
         String format = "";
 
         // Each note in the song is formatted to a 3 digit number
@@ -25,7 +35,8 @@ public class MidiToNotes {
             case 4: format = "001"; break;
             case 5: format = "002"; break;
         }
-        //Combine
+        // Combine multiple notes at the same time
+        // One note from each highway changed at a time
         if(m.containsKey(tick)){
             String b = m.get(tick).toString();
             String val = compare(format, b);
@@ -34,8 +45,8 @@ public class MidiToNotes {
         else {
             m.put(tick,format);
         }
-        //return formatted note e.i. "020"
     }
+
 
     public static String compare(String a, String b){
         String newNote = "";
@@ -111,9 +122,9 @@ public class MidiToNotes {
         }
     }
 
-    public static void writeFile( String MidiFilePath ) {
+    public static void writeFile( String midiFilePath ) {
         try {
-            Sequence seq = MidiSystem.getSequence( new File( MidiFilePath ) );
+            Sequence seq = MidiSystem.getSequence( new File( midiFilePath ) );
             displaySequence( seq );
         } catch ( Exception exn ) {
             System.out.println( exn ); System.exit( 1 );
