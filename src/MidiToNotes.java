@@ -11,12 +11,6 @@ import java.util.HashMap;
  * Convert MIDI file to note file.
  */
 public class MidiToNotes {
-    String file;
-    MidiToNotes(String file){
-        this.file = file;
-    }
-
-
     public static void formatNote(long tick, int n, Map<Long, String> m) {
         final int note = n % 6;
         String format = "";
@@ -117,9 +111,9 @@ public class MidiToNotes {
         }
     }
 
-    public void writeFile( ) {
+    public static void writeFile( String MidiFilePath ) {
         try {
-            Sequence seq = MidiSystem.getSequence( new File( this.file ) );
+            Sequence seq = MidiSystem.getSequence( new File( MidiFilePath ) );
             displaySequence( seq );
         } catch ( Exception exn ) {
             System.out.println( exn ); System.exit( 1 );
