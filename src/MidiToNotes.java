@@ -13,9 +13,13 @@ import java.util.HashMap;
  * Version 1 Harper
  * Version 2 Kamilla
  * Version 3 Tom
- * Version 4 Johm
+ * Version 4 John
  */
 public class MidiToNotes {
+    String file;
+    MidiToNotes(String file){
+        this.file = file;
+    }
 
     final static String FILE = "C:\\Users\\tomma\\Desktop\\GuitarZero\\AC_DC_-_Back_In_Black.mid";
 
@@ -117,9 +121,9 @@ public class MidiToNotes {
         }
     }
 
-    public static void main( String[] argv ) {
+    public static void writeFile( String file ) {
         try {
-            Sequence seq = MidiSystem.getSequence( new File( FILE ) );
+            Sequence seq = MidiSystem.getSequence( new File( file ) );
             displaySequence( seq );
         } catch ( Exception exn ) {
             System.out.println( exn ); System.exit( 1 );
