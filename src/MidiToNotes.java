@@ -15,16 +15,11 @@ import java.util.HashMap;
  *
  *
  */
-public class MidiToNotes<instrument> {
+public class MidiToNotes {
 
-    final static String FILE = "AC_DC_-_Highway_to_Hell.mid";
+    final static String FILE = "C:\\Users\\tomma\\Desktop\\GuitarZero\\AC_DC_-_Back_In_Black.mid";
 
-    /**
-     * Returns the name of nth instrument in the current MIDI soundbank.
-     *
-     * @param n the instrument number
-     * @return  the instrument name
-     */
+
     public static String instrumentName( int n ) {
         try {
             final Synthesizer synth = MidiSystem.getSynthesizer();
@@ -38,12 +33,7 @@ public class MidiToNotes<instrument> {
     }
 
 
-    /**
-     * Returns the name of nth note.
-     *
-     * @param n the note number
-     * @return  the note name
-     */
+
     public static void formatNote(long tick, int n, Map<Long, String> m) {
         //final int octave = (n / 6) - 1;
         final int note = n % 6;
@@ -82,9 +72,6 @@ public class MidiToNotes<instrument> {
         return newNote;
     }
 
-    /**
-     * Display a MIDI track.
-     */
 
     static int newChannel = 0;
     public static void displayTrack( Track trk ) {
