@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
 /*
  * Store Manager.
  *
@@ -25,16 +26,14 @@ public class StoreManager extends JFrame {
     public StoreManager() {
         setTitle("Store Manager");
         setContentPane(new JLabel(new ImageIcon("background.png")));
-        //setLayout( null );
-
     }
 
     public static File fileFinder () {
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
         int returnValue = jfc.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jfc.getSelectedFile();
-            System.out.println(selectedFile.getAbsolutePath());
             return selectedFile;
         } else {
             return null;
@@ -58,8 +57,6 @@ public class StoreManager extends JFrame {
         BufferedReader br = new BufferedReader(in);
 
         String text = br.readLine();
-        System.out.println(text);
-
         in.close();
 
         return text;
@@ -72,7 +69,6 @@ public class StoreManager extends JFrame {
                         coverArtFile, musicFile);          // files to be zipped go here
 
         String songName = textFileReader(titleFile);
-
 
         songName += ".zip";
 
@@ -109,20 +105,21 @@ public class StoreManager extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
 
+        //Creating components to populate the frame
         JLabel titleLabel = new JLabel("Title:       ");
         JLabel coverArtLabel = new JLabel("Cover art:");
         JLabel musicLabel = new JLabel("Music:     ");
 
-        JTextField titleField = new JTextField(10); // accepts upto 10 characters
-        JTextField coverArtField = new JTextField(10); // accepts upto 10 characters
-        JTextField musicField = new JTextField(10); // accepts upto 10 characters
+        JTextField titleField = new JTextField(10);
+        JTextField coverArtField = new JTextField(10);
+        JTextField musicField = new JTextField(10);
 
         JButton titleBrowse = new JButton("Browse");
         JButton coverArtBrowse = new JButton("Browse");
         JButton musicBrowse = new JButton("Browse");
 
 
-        //Creating the top panels and adding components
+        //Creating the top panels and adding the components
         JPanel topPanel = new JPanel(new BorderLayout()); // the panel is not visible in output
 
         JPanel topFirstPanel = panelCreator(titleLabel, titleField, titleBrowse);
@@ -134,13 +131,13 @@ public class StoreManager extends JFrame {
         topPanel.add(BorderLayout.SOUTH, topThirdPanel);
 
 
-        //Creating the bottom panel and adding "save" button
+        //Creating the bottom panel and adding the 'save' button
         JPanel bottomPanel = new JPanel(); // the panel is not visible in output
         JButton save = new JButton("Save");
         bottomPanel.add(save);
 
 
-        //Adding Components to the frame.
+        //Adding panels to the frame
         frame.getContentPane().add(BorderLayout.NORTH, topPanel);
         frame.getContentPane().add(BorderLayout.SOUTH, bottomPanel);
 
@@ -181,9 +178,10 @@ public class StoreManager extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String zipFilePath = fileZipper(titleFile, coverArtFile, musicFile);
-                    sendZipToServer(zipFilePath);
-
+                    if (titleFile != null && coverArtFile !=null && musicFile != null){
+                        String zipFilePath = fileZipper(titleFile, coverArtFile, musicFile);
+                        sendZipToServer(zipFilePath);
+                    }
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
@@ -9,7 +7,6 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 /**
@@ -47,7 +44,7 @@ public class MidiToNotes<instrument> {
      * @param n the note number
      * @return  the note name
      */
-    public static void formatNote(long tick, int n, Map m) {
+    public static void formatNote(long tick, int n, Map<Long, String> m) {
         //final int octave = (n / 6) - 1;
         final int note = n % 6;
         String format = "";
@@ -89,29 +86,10 @@ public class MidiToNotes<instrument> {
      * Display a MIDI track.
      */
 
-    static ArrayList<Integer> instruments = new ArrayList();
     static int newChannel = 0;
-
-        public static void displayTrack( Track trk ) {
+    public static void displayTrack( Track trk ) {
         //Table of ticks and final notes
         Map<Long, String> map = new HashMap<>();
-
-            for ( int i = 0; i < trk.size(); i = i + 1 ) {
-                MidiEvent evt = trk.get(i);
-                MidiMessage msg = evt.getMessage();
-                //int                instrument = 0;
-                if (msg instanceof ShortMessage) {
-                    final ShortMessage smsg = (ShortMessage) msg;
-                    final int cmd = smsg.getCommand();
-                    final int dat1 = smsg.getData1();
-
-                    switch (cmd) {
-                        case ShortMessage.PROGRAM_CHANGE:
-                            instruments.add(dat1);
-                    }
-                }
-            }
-            int size1 = instruments.size();
 
         for ( int i = 0; i < trk.size(); i = i + 1 ) {
             MidiEvent   evt  = trk.get( i );
@@ -129,16 +107,9 @@ public class MidiToNotes<instrument> {
                         if (dat1 == 27) {
                             newChannel = chan;
                         }
-                        // prints out keys and values twice for some reason
-                        // how do we wanna filter the guitar? which one should we prioritise?
-                        else if (dat1 == 29) {
-                            newChannel = chan;
-                        }
                         break;
                     case ShortMessage.NOTE_ON :
                         if(chan == newChannel){
-                            //Pass the current tick, note and final table
-                            //System.out.println(newChannel + " - " + chan);
                             formatNote(tick, dat1, map);
                         }
                         break;
@@ -148,19 +119,24 @@ public class MidiToNotes<instrument> {
                 }
             }
         }
-            //WRITE LINKED LIST TO FILE
-            try {
-                File file = new File ("noteFile.txt");
-                PrintWriter out = new PrintWriter(file);
-                for (Map.Entry<Long, String> entry : map.entrySet()) {
-                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-                    out.println(entry.getKey() + "," + entry.getValue() + "\n");
-                }
-                out.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+        //WRITE LINKED LIST TO FILE
+        try {
+            File file = new File ("noteFile.txt");
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
+
+            for (Map.Entry<Long, String> entry : map.entrySet()) {
+                out.println(entry.getKey() + "," + entry.getValue());
             }
+
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
+
+
 
     /**
      * Display a MIDI sequence.
