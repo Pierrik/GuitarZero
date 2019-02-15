@@ -1,49 +1,25 @@
 import java.io.*;
-import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
-import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
 import java.util.Map;
 import java.util.HashMap;
 /**
  * Convert MIDI file to note file.
  *
- *
- *
+ * Version 1 Harper
+ * Version 2 Kamilla
+ * Version 3 Tom
+ * Version 4 Johm
  */
-public class MidiToNotes<instrument> {
+public class MidiToNotes {
 
-    final static String FILE = "AC_DC_-_Highway_to_Hell.mid";
-
-    /**
-     * Returns the name of nth instrument in the current MIDI soundbank.
-     *
-     * @param n the instrument number
-     * @return  the instrument name
-     */
-    public static String instrumentName( int n ) {
-        try {
-            final Synthesizer synth = MidiSystem.getSynthesizer();
-            synth.open();
-            final Instrument[] instrs = synth.getAvailableInstruments();
-            synth.close();
-            return instrs[ n ].getName();
-        } catch ( Exception exn ) {
-            System.out.println( exn ); System.exit( 1 ); return "";
-        }
-    }
+    final static String FILE = "C:\\Users\\tomma\\Desktop\\GuitarZero\\AC_DC_-_Back_In_Black.mid";
 
 
-    /**
-     * Returns the name of nth note.
-     *
-     * @param n the note number
-     * @return  the note name
-     */
     public static void formatNote(long tick, int n, Map<Long, String> m) {
         //final int octave = (n / 6) - 1;
         final int note = n % 6;
@@ -82,9 +58,6 @@ public class MidiToNotes<instrument> {
         return newNote;
     }
 
-    /**
-     * Display a MIDI track.
-     */
 
     static int newChannel = 0;
     public static void displayTrack( Track trk ) {
@@ -94,7 +67,6 @@ public class MidiToNotes<instrument> {
         for ( int i = 0; i < trk.size(); i = i + 1 ) {
             MidiEvent   evt  = trk.get( i );
             MidiMessage msg = evt.getMessage();
-            //int                instrument = 0;
             if ( msg instanceof ShortMessage ) {
                 final long         tick = evt.getTick();
                 final ShortMessage smsg = (ShortMessage) msg;
@@ -135,9 +107,6 @@ public class MidiToNotes<instrument> {
 
     }
 
-
-
-
     /**
      * Display a MIDI sequence.
      */
@@ -149,11 +118,6 @@ public class MidiToNotes<instrument> {
         }
     }
 
-    /*
-     * Main.
-     *
-     * @param argv the command line arguments
-     */
     public static void main( String[] argv ) {
         try {
             Sequence seq = MidiSystem.getSequence( new File( FILE ) );
