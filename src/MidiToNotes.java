@@ -21,7 +21,6 @@ public class MidiToNotes {
 
 
     public static void formatNote(long tick, int n, Map<Long, String> m) {
-        //final int octave = (n / 6) - 1;
         final int note = n % 6;
         String format = "";
         switch ( note ) {
