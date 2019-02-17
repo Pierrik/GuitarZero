@@ -28,7 +28,8 @@ public class MidiToNotes {
     String format = "";
 
     // Each note in the song is formatted to a 3 digit number
-    // Representing button 1 / button 2 in 3 lanes of guitar highway
+    // Representing button 1 or button 2 in 3 lanes of guitar highway
+
     switch ( note ) {
       case 0: format = "100"; break;
       case 1: format = "200"; break;
@@ -45,7 +46,7 @@ public class MidiToNotes {
       m.replace( tick, val );
     }
     else {
-      m.put( tick,format );
+      m.put( tick, format );
     }
   }
 
@@ -58,14 +59,22 @@ public class MidiToNotes {
    */
   public static String compare( String a, String b ){
     String newNote = "";
-    for ( int i = 0; i < 3; i ++ ) {
-      if ( Character.getNumericValue( a.charAt( i ) ) > Character.getNumericValue( b.charAt( i ) ) ){
-        newNote = newNote + a.charAt(i);
+    try {
+      for ( int i = 0; i < 3; i ++ ) {
+        if ( Character.isDigit ( a.charAt( i ) ) && Character.isDigit( b.charAt( i ) ) ) {
+          if ( Character.getNumericValue( a.charAt( i ) ) > Character.getNumericValue( b.charAt( i ) ) ){
+            newNote = newNote + a.charAt(i);
+          }
+          else
+          {
+            newNote = newNote + b.charAt(i);
+          }
+        } else {
+          throw new InvalidNoteException( "Note not composed of integers" );
+        }
       }
-      else
-      {
-        newNote = newNote + b.charAt(i);
-      }
+    } catch (InvalidNoteException e) {
+      e.printStackTrace();
     }
     return newNote;
   }
@@ -127,8 +136,12 @@ public class MidiToNotes {
   public static void getTracks(Sequence seq ) {
     Track[] trks = seq.getTracks();
 
-    for ( int i = 0; i < trks.length; i++ ) {
-      writeTrack( trks[ i ] );
+    try {
+      for ( int i = 0; i < trks.length; i++ ) {
+        writeTrack( trks[ i ] );
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
