@@ -9,125 +9,140 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Class that converts MIDI file to note file.
-*/
+ * Class that converts a MIDI file to a note file.
+ */
 public class MidiToNotes {
 
-    /**
-     * Coverts a MIDI note to the correct format for the game note file
-     * @param tick
-     * @param n
-     * @param m
-     */
-    public static void formatNote(long tick, int n, Map<Long, String> m) {
+  static int newChannel = 0;
 
-        final int note = n % 6;
+  /**
+   * Coverts a MIDI note to the correct format for the game note file
+   * @param tick
+   * @param n
+   * @param m
+   */
+  public static void formatNote( long tick, int n, Map<Long, String> m ) {
 
-        String format = "";
+    final int note = n % 6;
 
-        // Each note in the song is formatted to a 3 digit number
-        // Representing button 1/ button 2 in 3 lanes of guitar highway
-        switch ( note ) {
-            case 0: format = "100"; break;
-            case 1: format = "200"; break;
-            case 2: format = "010"; break;
-            case 3: format = "020"; break;
-            case 4: format = "001"; break;
-            case 5: format = "002"; break;
-        }
-        // Combine multiple notes at the same time
-        // One note from each highway changed at a time
-        if(m.containsKey(tick)){
-            String b = m.get(tick).toString();
-            String val = compare(format, b);
-            m.replace(tick, val);
-        }
-        else {
-            m.put(tick,format);
-        }
+    String format = "";
+
+    // Each note in the song is formatted to a 3 digit number
+    // Representing button 1 / button 2 in 3 lanes of guitar highway
+    switch ( note ) {
+      case 0: format = "100"; break;
+      case 1: format = "200"; break;
+      case 2: format = "010"; break;
+      case 3: format = "020"; break;
+      case 4: format = "001"; break;
+      case 5: format = "002"; break;
     }
+    // Combine notes where multiple notes occur at the same time
+    // One note from each highway changed at a time
+    if( m.containsKey( tick ) ){
+      String b = m.get( tick ).toString();
+      String val = compare( format, b );
+      m.replace( tick, val );
+    }
+    else {
+      m.put( tick,format );
+    }
+  }
 
+  /**
+   * Compares each digit in two 3-digit notes
+   * Largest value for each digit is used for the new combined note
+   * @param a
+   * @param b
+   * @return newNote
+   */
+  public static String compare( String a, String b ){
+    String newNote = "";
+    for ( int i = 0; i < 3; i ++ ) {
+      if ( Character.getNumericValue( a.charAt( i ) ) > Character.getNumericValue( b.charAt( i ) ) ){
+        newNote = newNote + a.charAt(i);
+      }
+      else
+      {
+        newNote = newNote + b.charAt(i);
+      }
+    }
+    return newNote;
+  }
 
-    public static String compare(String a, String b){
-        String newNote = "";
-        for (int i = 0; i < 3; i ++) {
-            if (Character.getNumericValue(a.charAt(i)) > Character.getNumericValue(b.charAt(i))) {
-                newNote = newNote + a.charAt(i);
+  /**
+   * Formats each note in a track and writes to a text file
+   * @param trk
+   */
+  public static void writeTrack( Track trk ) {
+    //Table of ticks and formatted notes
+    Map<Long, String> map = new HashMap<>();
+
+    for ( int i = 0; i < trk.size(); i = i + 1 ) {
+      MidiEvent evt = trk.get( i );
+      MidiMessage msg = evt.getMessage();
+      if ( msg instanceof ShortMessage ) {
+        final long tick = evt.getTick();
+        final ShortMessage smsg = (ShortMessage) msg;
+        final int chan = smsg.getChannel();
+        final int cmd = smsg.getCommand();
+        final int dat1 = smsg.getData1();
+
+        switch( cmd ) {
+          case ShortMessage.PROGRAM_CHANGE :
+            // if instrument is electric guitar
+            if ( dat1 == 27 ) {
+              newChannel = chan;
             }
-            else
-            {
-                newNote = newNote + b.charAt(i);
+            break;
+          case ShortMessage.NOTE_ON :
+            if( chan == newChannel ){
+              formatNote(tick, dat1, map);
             }
+            break;
+          default :
+            break;
         }
-        return newNote;
+      }
     }
+    // write the table of notes to the text file
+    try {
+      File file = new File ("noteFile.txt");
+      PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
 
+      for (Map.Entry<Long, String> entry : map.entrySet()) {
+        out.println(entry.getKey() + "," + entry.getValue());
+      }
 
-    static int newChannel = 0;
-    public static void displayTrack( Track trk ) {
-        //Table of ticks and final notes
-        Map<Long, String> map = new HashMap<>();
-
-        for ( int i = 0; i < trk.size(); i = i + 1 ) {
-            MidiEvent   evt  = trk.get( i );
-            MidiMessage msg = evt.getMessage();
-            if ( msg instanceof ShortMessage ) {
-                final long         tick = evt.getTick();
-                final ShortMessage smsg = (ShortMessage) msg;
-                final int          chan = smsg.getChannel();
-                final int          cmd  = smsg.getCommand();
-                final int          dat1 = smsg.getData1();
-
-                switch( cmd ) {
-                    case ShortMessage.PROGRAM_CHANGE :
-                        if (dat1 == 27) {
-                            newChannel = chan;
-                        }
-                        break;
-                    case ShortMessage.NOTE_ON :
-                        if(chan == newChannel){
-                            formatNote(tick, dat1, map);
-                        }
-                        break;
-                    default :
-                        /* ignore other commands */
-                        break;
-                }
-            }
-        }
-        //WRITE LINKED LIST TO FILE
-        try {
-            File file = new File ("noteFile.txt");
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
-
-            for (Map.Entry<Long, String> entry : map.entrySet()) {
-                out.println(entry.getKey() + "," + entry.getValue());
-            }
-
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+      out.close();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    /**
-     * Display a MIDI sequence.
-     */
-    public static void displaySequence( Sequence seq ) {
-        Track[] trks = seq.getTracks();
+  /**
+   * Gets the tracks in the MIDI sequence and calls writeTrack on each one
+   * @param seq
+   */
+  public static void getTracks(Sequence seq ) {
+    Track[] trks = seq.getTracks();
 
-        for ( int i = 0; i < trks.length; i++ ) {
-            displayTrack( trks[ i ] );
-        }
+    for ( int i = 0; i < trks.length; i++ ) {
+      writeTrack( trks[ i ] );
     }
+  }
 
-    public static void writeFile( String midiFilePath ) {
-        try {
-            Sequence seq = MidiSystem.getSequence( new File( midiFilePath ) );
-            displaySequence( seq );
-        } catch ( Exception exn ) {
-            System.out.println( exn ); System.exit( 1 );
-        }
+  /**
+   * Calls function to convert MIDI file to note file and gives error if unsuccessful
+   * @param midiFilePath
+   */
+  public static void writeFile( String midiFilePath ) {
+    try {
+      Sequence seq = MidiSystem.getSequence( new File( midiFilePath ) );
+      getTracks( seq );
+    } catch ( Exception exn ) {
+      System.out.println( exn ); System.exit( 1 );
     }
+  }
 }
+
