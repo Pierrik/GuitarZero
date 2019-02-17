@@ -13,20 +13,26 @@ import java.awt.event.*;
 import java.awt.Dimension;
 import java.lang.Thread;
 
-public class Main extends JPanel {
-  static BufferedImage bg;
-  static Note n1;
+public class Highway extends JPanel {
+  static int backgroundFrameCount = 4;
+  static int backgroundFrameDelay = 10;
+  static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
+  static Note[] notes = new Note[2];
+  static int frame = 0;
 
   public static void main(String[] args) {
     try{
-      bg = ImageIO.read(new File("../assets/NoteHighway.bmp"));
+      for(int i = 0; i<backgroundFrameCount; i++){
+        bg[i] = ImageIO.read(new File("../assets/bg"+i+".bmp"));
+      }
     }
     catch(Exception e){
       e.printStackTrace();
     }
-    n1 = new Note(false,2);
+    notes[0] = new Note(false,1);
+    notes[1] = new Note(false,2);
     JFrame window = new JFrame("Guitar Zero");
-    window.setPreferredSize(new Dimension(bg.getWidth(null), bg.getHeight(null)));
+    window.setPreferredSize(new Dimension(bg[0].getWidth(null), bg[0].getHeight(null)));
     window.setContentPane(new GamePanel());
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
@@ -58,8 +64,11 @@ public class Main extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-      g.drawImage(bg, 0, 0, null);
-      n1.paintComponent(g);
+      frame++;
+      g.drawImage(bg[((frame/backgroundFrameDelay)%backgroundFrameCount)], 0, 0, null);
+      for(Note n : notes){
+        n.paintComponent(g);
+      }
     }
   }
 }
