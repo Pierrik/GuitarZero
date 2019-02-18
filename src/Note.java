@@ -4,36 +4,46 @@ import javax.swing.ImageIcon;
 import javax.swing.*;
 import java.awt.*;
 
+/*
+
+*/
 public class Note extends Highway {
+  //Load note sprites
   Image blackNote = new ImageIcon("../assets/BlackNote.png").getImage();
   Image whiteNote = new ImageIcon("../assets/WhiteNote.png").getImage();
   Image sprite;
+  //Setup position/speed variables
   int x;
   int y = 0;
-  int xInc;
-  int yInc;
+  int velocity = 3;
+
+  /*
+
+  */
   public Note(boolean white, int lane){
+    //Set object sprite to correct color
     if(white){ this.sprite = whiteNote; }
     else{ this.sprite = blackNote; }
+    //Assign intial x value depending on given lane
     switch(lane){
       case 1:
       x = (bg[0].getWidth(null)/4);
-      xInc = 0;
-      yInc = 2;
       break;
       case 2:
         x = (bg[0].getWidth(null)/2) - blackNote.getWidth(null)/2;
-        xInc = 0;
-        yInc = 2;
         break;
-      case 3: x = 250;
+      case 3: x = (bg[0].getWidth(null)/4) + (bg[0].getWidth(null)/2) - blackNote.getWidth(null)/2;
       break;
     }
   }
+
+  /*
+  Override function to draw sprite at position x,y
+  */
   public void paintComponent(Graphics g){
     g.drawImage(sprite,x, y, null);
-    y += yInc;
-    x += xInc;
+    y += velocity;
+    //Reset note --!!REMOVE LATER!!--
     if(y>bg[0].getHeight(null)){y=0;}
   }
 }

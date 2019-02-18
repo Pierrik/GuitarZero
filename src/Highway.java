@@ -1,11 +1,9 @@
-import java.awt.Graphics2D;
 import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.Image.*;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -13,14 +11,21 @@ import java.awt.event.*;
 import java.awt.Dimension;
 import java.lang.Thread;
 
+/*
+Basic background class to draw the note highway and calls other GUI drawings
+*/
 public class Highway extends JPanel {
-  static int backgroundFrameCount = 4;
+  //Setup background animation values
+  static int backgroundFrameCount = 1;
   static int backgroundFrameDelay = 10;
+  //Create BufferedImage array to store the background frames
   static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
-  static Note[] notes = new Note[2];
+  //Current frame counter
   static int frame = 0;
+  static Note[] notes = new Note[2];
 
   public static void main(String[] args) {
+    //Try to set the background frames to the corresponding .bmp images from ../assets
     try{
       for(int i = 0; i<backgroundFrameCount; i++){
         bg[i] = ImageIO.read(new File("../assets/bg"+i+".bmp"));
@@ -29,22 +34,33 @@ public class Highway extends JPanel {
     catch(Exception e){
       e.printStackTrace();
     }
-    notes[0] = new Note(false,1);
-    notes[1] = new Note(false,2);
+    //Asign notes
+    notes[0] = new Note(true, 2);
+    notes[1] = new Note(false, 1);
+    //Create JFrame
     JFrame window = new JFrame("Guitar Zero");
+    //Set size to background image dimensions
     window.setPreferredSize(new Dimension(bg[0].getWidth(null), bg[0].getHeight(null)));
+    //Set the content to the drawings from the GamePanel object
     window.setContentPane(new GamePanel());
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
     window.setVisible(true);
   }
 
+  /*
+  Object to draw on JFrame
+  */
   static class GamePanel extends JPanel implements ActionListener, Runnable {
 
+    //Create a Thread
     private Thread thread;
+    private int fps = 60;
 
-    Timer timer=new Timer(14, this);
+    //Create a timer to trigger an action listner every 1000ms/fps
+    Timer timer=new Timer((1000/fps), this);
 
+    //Constructor to instantiate and start Thread
     public GamePanel(){
       if(thread == null){
         thread = new Thread(this);
@@ -52,10 +68,12 @@ public class Highway extends JPanel {
       }
     }
 
+    //When the Thread starts start the Timer
     public void run(){
       timer.start();
     }
 
+    //When an action is triggered if its from the timer repaint the JPanel
     public void actionPerformed(ActionEvent ev){
       if(ev.getSource()==timer){
         repaint();
@@ -63,9 +81,15 @@ public class Highway extends JPanel {
     }
 
     @Override
+    /*
+    Draws all neccesary GUI elements on the JPanel
+    */
     public void paint(Graphics g) {
+      //Increment frame count
       frame++;
+      //Draw the background animation frame depending on the current frame/10%(number of frames in the animation)
       g.drawImage(bg[((frame/backgroundFrameDelay)%backgroundFrameCount)], 0, 0, null);
+      //For each note object draw it
       for(Note n : notes){
         n.paintComponent(g);
       }
