@@ -64,9 +64,10 @@ public class StoreManager extends JFrame {
 
     public static String fileZipper (File titleFile, File coverArtFile, File musicFile) throws IOException {
 
-        List<File> srcFiles =
-                Arrays.asList(
-                        coverArtFile, musicFile);          // files to be zipped go here
+        MidiToNotes.writeFile(musicFile.getPath());         // creates noteFile.txt in current directory
+        File noteFile = new File("noteFile.txt");
+
+        List<File> srcFiles = Arrays.asList(coverArtFile, musicFile, noteFile);          // files to be zipped go here
 
         String songName = textFileReader(titleFile);
 
