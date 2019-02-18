@@ -133,7 +133,7 @@ public class MidiToNotes {
    * Gets the tracks in the MIDI sequence and calls writeTrack on each one
    * @param seq
    */
-  public static void getTracks(Sequence seq ) {
+  public static void findTracks(Sequence seq ) {
     Track[] trks = seq.getTracks();
 
     try {
@@ -152,9 +152,10 @@ public class MidiToNotes {
   public static void writeFile( String midiFilePath ) {
     try {
       Sequence seq = MidiSystem.getSequence( new File( midiFilePath ) );
-      getTracks( seq );
-    } catch ( Exception exn ) {
-      System.out.println( exn ); System.exit( 1 );
+      findTracks( seq );
+    } catch ( Exception e ) {
+      e.printStackTrace();
+
     }
   }
 }

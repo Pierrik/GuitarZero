@@ -1,11 +1,10 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import org.junit.Test;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class MidiToNotesTest {
@@ -156,7 +155,7 @@ public class MidiToNotesTest {
   public void testGetTracks() {
     // Exception should not be thrown
     try {
-      MidiToNotes.getTracks(
+      MidiToNotes.findTracks(
           MidiSystem.getSequence(
               new File("C:\\Users\\tomma\\Desktop\\GuitarZero\\AC_DC_-_Back_In_Black.mid")
           )
@@ -168,10 +167,52 @@ public class MidiToNotesTest {
   }
 
   @Test
-  public void displaySequence() {
+  public void testGetTracksInvalid(){
+    try {
+      MidiToNotes.findTracks(MidiSystem.getSequence(new File("invalid file")));
+      fail();
+    } catch (InvalidMidiDataException e) {
+      e.printStackTrace();
+      assertTrue(true);
+    } catch (IOException e) {
+      e.printStackTrace();
+      assertTrue(true);
+    }
   }
 
   @Test
-  public void main() {
+  public void testWriteTrackInvalid() {
+    // Should throw exception
+    try {
+      MidiToNotes.writeTrack(MidiSystem.getSequence(new File("invalid file")).getTracks()[0]);
+      fail();
+    } catch (InvalidMidiDataException e) {
+      assertTrue(true);
+    } catch (IOException e) {
+      assertTrue(true);
+    }
   }
+
+  @Test
+  public void testWriteTrack(){
+    // Should run successfully
+    try {
+      MidiToNotes.writeTrack(MidiSystem.getSequence(new File("C:\\Users\\tomma\\Desktop\\GuitarZero\\AC_DC_-_Back_In_Black.mid")).getTracks()[0]);
+    } catch (InvalidMidiDataException e) {
+      fail();
+    } catch (IOException e) {
+      fail();
+    }
+  }
+
+  @Test
+  public void testWriteFileInvalid(){
+    // Exception should be handled
+    try {
+      MidiToNotes.writeFile("invalid file");
+    } catch (Exception e) {
+      fail();
+    }
+  }
+
 }
