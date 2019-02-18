@@ -96,8 +96,8 @@ public class StoreManager extends JFrame {
     }
 
     public static void sendZipToServer(String filePath){
-        MockClient client = new MockClient("localhost", 8888, filePath);
-        client.sendFile();
+        MockClient client = new MockClient("localhost", 8888);
+        client.uploadFile(filePath);
     }
 
 
@@ -181,6 +181,7 @@ public class StoreManager extends JFrame {
                 try {
                     if (titleFile != null && coverArtFile !=null && musicFile != null){
                         String zipFilePath = fileZipper(titleFile, coverArtFile, musicFile);
+                        System.out.println(zipFilePath);
                         sendZipToServer(zipFilePath);
                     }
                 } catch (IOException e1) {

@@ -18,7 +18,7 @@ public class Server {
       if (verbose) {
         System.out.println("Server started.\nListening for connections on port : " +
             PORT + " ...\n");
-        }
+      }
 
       // listening until user halts execution of server
       while (true) {
@@ -30,10 +30,10 @@ public class Server {
         Handler handler = new Handler(sck);
         Thread thread = new Thread(handler);
         thread.start();
-        }
+      }
 
     } catch (Exception exn) {
       System.out.println(exn); System.exit( 1 );
     }
-    }
+  }
 }
