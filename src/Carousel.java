@@ -23,29 +23,24 @@ public class Carousel extends JFrame implements KeyListener {
     };
 
 
-    public Carousel(String title, ArrayList<ImageIcon> imageIcons) {
+    public Carousel(String title, ArrayList<JLabel> allOptions) {
         //Set up frame
         super(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(820, 280);
-        //GridBagConstraints gbc = new GridBagConstraints();
         setLayout(null);
         setContentPane(new JLabel(new ImageIcon("/Users/pierrikmellab/Desktop/carousel.PNG")));
 
 
-        //Create 5 JLabels, with first 5 image icons
+        for (JLabel label : allOptions) {
+            menuOptions.add(label);
+        }
 
         for (int i = 0; i < 5; i++) {
-            //JLabel;
+            menuOptions.get(i).setBounds(bounds[i]);
+            add(menuOptions.get(i));
         }
 
-
-
-        //Add menuOptions to the panel
-        for (JLabel option : menuOptions) {
-            this.menuOptions.add(option);
-            add(option);
-        }
 
         addKeyListener(this);
         setVisible(true);
@@ -56,15 +51,59 @@ public class Carousel extends JFrame implements KeyListener {
 
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_RIGHT) {
-            System.out.println("switch image");
 
-            JLabel lastLabel = menuOptions.get(5);
+            for (JLabel label : menuOptions) {
 
-            for (JLabel options : menuOptions) {
-                System.out.println("Image has switched");
+                if (label.getX() == bounds[0].x) {
+                    label.setBounds(bounds[1]);
+
+                } else if (label.getX() == bounds[1].x) {
+                    label.setBounds(bounds[2]);
+
+                } else if (label.getX() == bounds[2].x) {
+                    label.setBounds(bounds[3]);
+
+                } else if (label.getX() == bounds[3].x) {
+                    label.setBounds(bounds[4]);
+
+                } else if (label.getX() == bounds[4].x) {
+                    label.setBounds(bounds[0]);
+
+                }
+
+            }
+       } else if (key == KeyEvent.VK_LEFT) {
+
+            for (JLabel label : menuOptions) {
+
+                if (label.getX() == bounds[0].x) {
+                    label.setBounds(bounds[4]);
+
+                } else if (label.getX() == bounds[1].x) {
+                    label.setBounds(bounds[0]);
+
+                } else if (label.getX() == bounds[2].x) {
+                    label.setBounds(bounds[1]);
+
+                } else if (label.getX() == bounds[3].x) {
+                    label.setBounds(bounds[2]);
+
+                } else if (label.getX() == bounds[4].x) {
+                    label.setBounds(bounds[3]);
+
+                }
+
+            }
+        } else if (key == KeyEvent.VK_ENTER) {
+
+        for (JLabel label : menuOptions) {
+
+            if (label.getX() == bounds[3].x) {
+                System.out.println("You have chosen : ...");
             }
 
-       }
+        }
+        }
     }
 
     @Override
@@ -87,33 +126,16 @@ public class Carousel extends JFrame implements KeyListener {
         icons.add(new ImageIcon("/Users/pierrikmellab/Desktop/StoreLogo2.png"));
 
 
-        // METHOD #1
 
-        //pass in array list of strings containing URL
+         ArrayList<JLabel> allOptions = new ArrayList<>();
 
-        //method to create an array list of image icons, one for each string in original the array list
-
-        //create an array list of labels for the image icons, setting the bounds for the first 5
-
-        //when key pressed, change the bounds of the labels, setting some to invisible
+        for (ImageIcon image: icons) {
+            JLabel label = new JLabel(image);
+            allOptions.add(label);
+        }
 
 
-
-
-
-        // METHOD #2
-
-        // pass in array list of strings containing URL -- LEAVE TILL END
-
-        // method to create an array list of image icons, one for each string in original the array list
-
-        // create 5 labels, with set bounds, setting them equal to the first 5 image icons
-
-        // when key is pressed, set new image icons for the 5 labels, rotating through the array list of image icons
-
-
-
-        Carousel carousel = new Carousel("SlashMode", icons);
+        Carousel carousel = new Carousel("SlashMode", allOptions);
     }
 
 }
