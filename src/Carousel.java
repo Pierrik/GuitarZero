@@ -28,24 +28,34 @@ public class Carousel extends JFrame implements KeyListener {
         super(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(820, 280);
-        //GridBagConstraints gbc = new GridBagConstraints();
         setLayout(null);
         setContentPane(new JLabel(new ImageIcon("/Users/pierrikmellab/Desktop/carousel.PNG")));
 
+        /*
 
         //Create 5 JLabels, with first 5 image icons
+        for (int i = 0; i < 5; i++) {
+            JLabel label1  = new JLabel(imageIcons.get(i));
+            label1.setBounds(bounds[i]);
+            menuOptions.add(label1);
+            add(menuOptions.get(i));
+        }
+        
+        
+        */
+
+
+        for (ImageIcon image: imageIcons) {
+            JLabel label = new JLabel(image);
+            menuOptions.add(label);
+        }
+
 
         for (int i = 0; i < 5; i++) {
-            JLabel;
+            menuOptions.get(i).setBounds(bounds[i]);
+            add(menuOptions.get(i));
         }
 
-
-
-        //Add menuOptions to the panel
-        for (JLabel option : menuOptions) {
-            this.menuOptions.add(option);
-            add(option);
-        }
 
         addKeyListener(this);
         setVisible(true);
@@ -58,11 +68,25 @@ public class Carousel extends JFrame implements KeyListener {
         if (key == KeyEvent.VK_RIGHT) {
             System.out.println("switch image");
 
-            JLabel lastLabel = menuOptions.get(5);
 
-            for (JLabel options : menuOptions) {
-                System.out.println("Image has switched");
+            //JLabel lastItemHolder = menuOptions.get(4);
+            //JLabel tempLabel;
+
+            for (int i = 0; i < 3; i++) {
+                //tempLabel = menuOptions.get(i+1);
+                
+                //menuOptions.get(i+1).setBounds(menuOptions.get(i).getBounds());
+                
+                //ImageIcon image = new ImageIcon();
+                
+                //image = menuOptions.get(i).get;
+                        
+                //menuOptions.set(i+1, menuOptions.get(i));
             }
+
+            //menuOptions.set(1, lastItemHolder);
+
+
 
        }
     }
@@ -89,9 +113,9 @@ public class Carousel extends JFrame implements KeyListener {
 
         // METHOD #1
 
-        //pass in array list of strings containing URL
+        //pass in array list of strings containing URL -- LATER
 
-        //method to create an array list of image icons, one for each string in original the array list
+        //method to create an array list of image icons, one for each string in original the array list -- LATER
 
         //create an array list of labels for the image icons, setting the bounds for the first 5
 
@@ -101,16 +125,17 @@ public class Carousel extends JFrame implements KeyListener {
 
 
 
-        // METHOD #2
+        // METHOD #2 --- TRIED WILL NOT WORK SINCE I CAN"T GET THE IMAGE ICON FROM A LABEL
 
         // pass in array list of strings containing URL -- LEAVE TILL END
 
-        // method to create an array list of image icons, one for each string in original the array list
+        // method to create an array list of image icons, one for each string in original the array list -- LEAVE TILL END
 
-        // create 5 labels, with set bounds, setting them equal to the first 5 image icons
+        // create 5 labels, with set bounds, setting them equal to the first 5 image icons -- DONE
+
+        // add the 5 labels to the JFrame -- DONE
 
         // when key is pressed, set new image icons for the 5 labels, rotating through the array list of image icons
-
 
 
         Carousel carousel = new Carousel("SlashMode", icons);
