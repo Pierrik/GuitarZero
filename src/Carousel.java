@@ -29,7 +29,7 @@ public class Carousel extends JFrame implements KeyListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(820, 280);
         setLayout(null);
-        setContentPane(new JLabel(new ImageIcon("/Users/pierrikmellab/Desktop/carousel.PNG")));
+        setContentPane(new JLabel(new ImageIcon("../assets/carousel.PNG")));
 
 
         for (JLabel label : allOptions) {
@@ -119,11 +119,11 @@ public class Carousel extends JFrame implements KeyListener {
     public static void main(String args[]) {
 
         ArrayList<ImageIcon> icons = new ArrayList<>();
-        icons.add(new ImageIcon("/Users/pierrikmellab/Desktop/TutorialLogo2.png"));
-        icons.add(new ImageIcon("/Users/pierrikmellab/Desktop/PlayLogo2.png"));
-        icons.add(new ImageIcon("/Users/pierrikmellab/Desktop/SelectLogo2.png"));
-        icons.add(new ImageIcon("/Users/pierrikmellab/Desktop/ExitLogo2.png"));
-        icons.add(new ImageIcon("/Users/pierrikmellab/Desktop/StoreLogo2.png"));
+        icons.add(new ImageIcon("../assets/TutorialLogo2.png"));
+        icons.add(new ImageIcon("../assets/PlayLogo2.png"));
+        icons.add(new ImageIcon("../assets/SelectLogo2.png"));
+        icons.add(new ImageIcon("../assets/ExitLogo2.png"));
+        icons.add(new ImageIcon("../assets/StoreLogo2.png"));
 
 
 
