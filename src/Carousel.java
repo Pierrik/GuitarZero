@@ -36,7 +36,7 @@ public class Carousel extends JFrame implements KeyListener {
         //Create 5 JLabels, with first 5 image icons
 
         for (int i = 0; i < 5; i++) {
-            JLabel;
+            //JLabel;
         }
 
 
