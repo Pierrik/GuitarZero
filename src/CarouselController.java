@@ -26,57 +26,26 @@ import net.java.games.input.ControllerEnvironment;
 public class CarouselController {
   final static String GUITAR_HERO = "Guitar Hero"; /* Identifier       */
   final static int    DELAY       = 50;            /* 20th of a second */
+  private CarouselModel model;
 
-  private static JButton[] buttons;
-
-  /*
-   * Make a frame of buttons for controller components.
-   */
-  private static JFrame makeFrame( Controller ctrl ) {
-    JFrame frm = new JFrame();
-    JPanel pan = new JPanel( new GridLayout( 0, 2 ) );
-
-    Component[] cmps = ctrl.getComponents();
-    buttons = new JButton[ cmps.length ];
-
-    for ( int i = 0; i < buttons.length; i = i + 1 ) {
-      JButton button = new JButton();
-      button.setPreferredSize( new Dimension( 100, 40 ) );
-      buttons[ i ] = button;
-      pan.add( button );
-    }
-
-    frm.add( pan );
-    frm.pack();
-
-    return frm;
-  }
 
   /*
    * Poll forever, and storing and displaying values of components lal
    */
   private static void pollForever( Controller ctrl ) {
-    Component[] cmps = ctrl.getComponents();
-    float[]     vals = new float[3];
-    Component[] activeCmps = {cmps[10], cmps[12], cmps[16]};
+    Component[] allCmps    = ctrl.getComponents();
+    float[]     vals       = new float[3];
+    Component[] activeCmps = {allCmps[10], allCmps[12], allCmps[16]};
 
     while (true) {
       if (ctrl.poll()) {
-        for ( int i = 0; i < activeCmps.length; i++ ) { /* store */
+        for ( int i = 0; i < 3; i++ ) {
           vals[i] = activeCmps[i].getPollData();
         }
 
-        for ( int i = 0; i < activeCmps.length; i++ ) { /* display */
+        for ( int i = 0; i < 3; i++ ) {
           float val = vals[i];
 
-          //strum
-          if (i == 2) {
-            if (val == 1.0) {
-              // action go right
-            } else if (val == -1.0 ) {
-              // action go left
-            }
-          }
           //escape
           if (i == 0) {
             if (val == 1){
@@ -89,14 +58,18 @@ public class CarouselController {
               // bender button action here
             }
           }
-
-          buttons[ i ].setText( "" + val );
-          buttons[ i ].setOpaque( true );
-          buttons[ i ].repaint();
+          //strum
+          if (i == 2) {
+            if (val == 1.0) {
+              // action go right
+            } else if (val == -1.0 ) {
+              // action go left
+            }
+          }
         }
       }
 
-      try { /* delay */
+      try {
         Thread.sleep( DELAY );
       } catch ( Exception exn ) {
         System.out.println( exn ); System.exit( 1 );
@@ -113,8 +86,6 @@ public class CarouselController {
 
     for ( Controller ctrl : ctrls ) {
       if ( ctrl.getName().contains( GUITAR_HERO ) ) {
-        JFrame frm = makeFrame( ctrl );
-        frm.setVisible( true );
         pollForever( ctrl );
       }
     }
