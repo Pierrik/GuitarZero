@@ -4,9 +4,10 @@ import javax.swing.ImageIcon;
 import javax.swing.*;
 import java.awt.*;
 
-/*
-
-*/
+/**
+ * Note object
+ * @author Harper Ford
+ */
 public class Note extends Highway {
   //Load note sprites
   Image blackNote = new ImageIcon("../assets/BlackNote.png").getImage();
@@ -17,9 +18,11 @@ public class Note extends Highway {
   int y = 0;
   int velocity = 3;
 
-  /*
-
-  */
+  /**
+   * Sets object variables
+   * @param white: Whether the sprite should be white or black
+   * @param lane: The lane the note will appear in on screen
+   */
   public Note(boolean white, int lane){
     //Set object sprite to correct color
     if(white){ this.sprite = whiteNote; }
@@ -37,9 +40,10 @@ public class Note extends Highway {
     }
   }
 
-  /*
-  Override function to draw sprite at position x,y
-  */
+  /**
+   * Override function to draw sprite at position x,y
+   * @param g: The graphics to draw with
+   */
   public void paintComponent(Graphics g){
     g.drawImage(sprite,x, y, null);
     y += velocity;
