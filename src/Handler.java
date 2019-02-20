@@ -16,6 +16,9 @@ public class Handler implements Runnable {
     this.sck = sck;
   }
 
+  /**
+   * Downloads and uploads files to clients
+   */
   public void run() {
     try {
       final DataInputStream dataIn = new DataInputStream(sck.getInputStream());
