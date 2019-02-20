@@ -1,9 +1,10 @@
 import java.io.*;
 import java.net.Socket;
-/*
+/**
  * MockClient.
  *
  * @author  John Mercer
+ * @author  Harper Ford (Javadoc)
  * @version 1.00, February 2019.
  */
 public class MockClient {
@@ -15,6 +16,10 @@ public class MockClient {
     this.port = port;
   }
 
+  /**
+   * Uploads the given file to the server
+   * @param fileName: The filepath of the file to upload
+   */
   public void uploadFile(String fileName){
     try {
       Socket sck = new Socket( this.host, this.port );
@@ -39,6 +44,10 @@ public class MockClient {
     }
   }
 
+  /**
+   * Downloads the given file to the server
+   * @param fileName: The filepath of the file to download
+   */
   public void downloadFile(String fileName){
     try {
       Socket sck = new Socket( this.host, this.port );
