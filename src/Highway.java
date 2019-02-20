@@ -11,9 +11,13 @@ import java.awt.event.*;
 import java.awt.Dimension;
 import java.lang.Thread;
 
-/*
-Basic background class to draw the note highway and calls other GUI drawings
-*/
+/**
+ * Main JFrame with background.
+ *
+ * @author  Harper Ford
+ * @version 1.1, February 2019.
+ *
+ */
 public class Highway extends JPanel {
   //Setup background animation values
   static int backgroundFrameCount = 1;
@@ -22,8 +26,13 @@ public class Highway extends JPanel {
   static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
   //Current frame counter
   static int frame = 0;
+  //TEST NOTES --!!REMOVE!!--
   static Note[] notes = new Note[2];
 
+  /**
+   * Setsup background animation frames and JFrame
+   * @param args[]: Any arguements that need passing
+   */
   public static void main(String[] args) {
     //Try to set the background frames to the corresponding .bmp images from ../assets
     try{
@@ -34,7 +43,7 @@ public class Highway extends JPanel {
     catch(Exception e){
       e.printStackTrace();
     }
-    //Asign notes
+    //Assign notes --!!REMOVE!!--
     notes[0] = new Note(true, 2);
     notes[1] = new Note(false, 1);
     //Create JFrame
@@ -48,9 +57,9 @@ public class Highway extends JPanel {
     window.setVisible(true);
   }
 
-  /*
-  Object to draw on JFrame
-  */
+  /**
+   * JPanel class that draws Note objects and a background image
+   */
   static class GamePanel extends JPanel implements ActionListener, Runnable {
 
     //Create a Thread
@@ -60,7 +69,7 @@ public class Highway extends JPanel {
     //Create a timer to trigger an action listner every 1000ms/fps
     Timer timer=new Timer((1000/fps), this);
 
-    //Constructor to instantiate and start Thread
+
     public GamePanel(){
       if(thread == null){
         thread = new Thread(this);
@@ -68,12 +77,17 @@ public class Highway extends JPanel {
       }
     }
 
-    //When the Thread starts start the Timer
+    /**
+     * When the Thread starts start the Timer
+     */
     public void run(){
       timer.start();
     }
 
-    //When an action is triggered if its from the timer repaint the JPanel
+    /**
+     * When an action is triggered if its from the timer repaint the JPanel
+     * @param e: The event that triggered the function
+     */
     public void actionPerformed(ActionEvent ev){
       if(ev.getSource()==timer){
         repaint();
@@ -81,9 +95,10 @@ public class Highway extends JPanel {
     }
 
     @Override
-    /*
-    Draws all neccesary GUI elements on the JPanel
-    */
+    /**
+     * Draws all neccesary GUI elements on the JPanel
+     * @param g: The the graphics object associated with the JPanel
+     */
     public void paint(Graphics g) {
       //Increment frame count
       frame++;
