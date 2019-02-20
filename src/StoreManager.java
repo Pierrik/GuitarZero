@@ -9,25 +9,33 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-/*
+/**
  * Store Manager.
  *
  * @author  Pierrik Mellab
  * @author  John Mercer
+ * @author  Harper Ford (Javadoc)
  * @version 1.1, February 2019.
+ *
  */
-
 public class StoreManager extends JFrame {
 
     static File titleFile = null;
     static File coverArtFile = null;
     static File musicFile = null;
 
+    /**
+     * Setups up the JFrame
+     */
     public StoreManager() {
         setTitle("Store Manager");
         setContentPane(new JLabel(new ImageIcon("background.png")));
     }
 
+    /**
+     * Lets a user browse for a file on their computer
+     * @return The selected file or null if file not approved
+     */
     public static File fileFinder () {
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 
@@ -40,7 +48,13 @@ public class StoreManager extends JFrame {
         }
     }
 
-
+    /**
+     * Creates a JPanel
+     * @param label:     A JLabel to add to the JPanel
+     * @param textField: A JTextField to add to the JPanel
+     * @param button:    A JButton to add to the JPanel
+     * @return           The JPanel containing all the passed parameters
+     */
     public static JPanel panelCreator (JLabel label, JTextField textField, JButton button) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(BorderLayout.LINE_START, label);
@@ -49,8 +63,12 @@ public class StoreManager extends JFrame {
         return panel;
     }
 
-
-
+    /**
+     * Reads a text File
+     * @param textFile:    The file to read
+     * @return             The text from the given file
+     * @throws IOException If the file is not found or corrupt
+     */
     public static String textFileReader(File textFile) throws IOException {
 
         FileReader in = new FileReader(textFile);
@@ -62,6 +80,14 @@ public class StoreManager extends JFrame {
         return text;
     }
 
+    /**
+     * Zips files together
+     * @param titleFile:    .TXT file containing a song title
+     * @param coverArtFile: .PNG file containing a songs cover art
+     * @param musicFile:    .MIDI file containg the songs
+     * @return              The contents of titleFile
+     * @throws IOException  Incase any of the files are corrupt or can't be found
+     */
     public static String fileZipper (File titleFile, File coverArtFile, File musicFile) throws IOException {
 
         MidiToNotes.writeFile(musicFile.getPath());         // creates noteFile.txt in current directory
@@ -95,12 +121,19 @@ public class StoreManager extends JFrame {
         return songName;
     }
 
+    /**
+     * Uploads a file to the server
+     * @param filePath: Location of the file to upload
+     */
     public static void sendZipToServer(String filePath){
         MockClient client = new MockClient("localhost", 8888);
         client.uploadFile(filePath);
     }
 
-
+    /**
+     * Creates a JFrame then populates it with JPanels
+     * @param args[]: Any arguements that need passing
+     */
     public static void main(String args[]) {
         JFrame frame = new JFrame("Store Manager");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -146,6 +179,10 @@ public class StoreManager extends JFrame {
 
         titleBrowse.addActionListener(new ActionListener() {
             @Override
+            /**
+             * Listens for button press, sets titleFile
+             * @param e: The event that triggered the function
+             */
             public void actionPerformed(ActionEvent e) {
                 File file = fileFinder();
                 String filePath = file.getPath();
@@ -156,6 +193,10 @@ public class StoreManager extends JFrame {
 
         coverArtBrowse.addActionListener(new ActionListener() {
             @Override
+            /**
+             * Listens for button press, sets coverArtFile
+             * @param e: The event that triggered the function
+             */
             public void actionPerformed(ActionEvent e) {
                 File file = fileFinder();
                 String filePath = file.getPath();
@@ -165,7 +206,12 @@ public class StoreManager extends JFrame {
         });
 
         musicBrowse.addActionListener(new ActionListener() {
+
             @Override
+            /**
+             * Listens for button press, sets musicFile
+             * @param e: The event that triggered the function
+             */
             public void actionPerformed(ActionEvent e) {
                 File file = fileFinder();
                 String filePath = file.getPath();
@@ -177,6 +223,10 @@ public class StoreManager extends JFrame {
 
         save.addActionListener(new ActionListener() {
             @Override
+            /**
+             * Listens for button press, zips then sends titleFile, coverArtFile, musicFile to server
+             * @param e: The event that triggered the function
+             */
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (titleFile != null && coverArtFile !=null && musicFile != null){
