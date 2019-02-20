@@ -9,16 +9,19 @@ import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 /*
- * Plastic guitar test (Sony PS3).
+ * CarouselController.
  *
- * @author  David Wakeling
- * @version 1.00, January 2019.
+ * @author  John Mercer
+ * @author  Kamila Hoffman-Derlacka
+ * @version 1.00, February 2019.
  *
+ *   Linux:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
  *   $ export CLASSPATH
  *   $ javac PlasticGuitar.java
  *   $ java -Djava.library.path=. PlasticGuitar
  *
+ *   Windows:
  *   set CLASSPATH=jinput-2.0.9.jar;.
  *   javac PlasticGuitar.java
  *   java -Djava.library.path=. PlasticGuitar
@@ -26,16 +29,20 @@ import net.java.games.input.ControllerEnvironment;
 public class CarouselController {
   final static String GUITAR_HERO = "Guitar Hero"; /* Identifier       */
   final static int    DELAY       = 50;            /* 20th of a second */
+
   private CarouselModel model;
 
+  public CarouselController(CarouselModel model){
+    this.model = model;
+  }
 
   /*
-   * Poll forever, and storing and displaying values of components lal
+   * Poll forever, and altering model depending on buttons pressed
    */
   private static void pollForever( Controller ctrl ) {
     Component[] allCmps    = ctrl.getComponents();
     float[]     vals       = new float[3];
-    Component[] activeCmps = {allCmps[10], allCmps[12], allCmps[16]};
+    Component[] activeCmps = {allCmps[8], allCmps[10], allCmps[16]};
 
     while (true) {
       if (ctrl.poll()) {
@@ -46,26 +53,12 @@ public class CarouselController {
         for ( int i = 0; i < 3; i++ ) {
           float val = vals[i];
 
-          //escape
-          if (i == 0) {
-            if (val == 1){
-              // escape button action here
-            }
+          switch(i){
+            case 0 : if (val == 1.0){model.select;}                          // zero-power button
+            case 1 : if (val == 1.0){model.select;}                          // escape button
+            case 2 : if (val == 1.0){model.right;} else if (val == -1.0){model.left;}  // strum
           }
-          //bender
-          if (i == 1){
-            if (val == 1){
-              // bender button action here
-            }
-          }
-          //strum
-          if (i == 2) {
-            if (val == 1.0) {
-              // action go right
-            } else if (val == -1.0 ) {
-              // action go left
-            }
-          }
+
         }
       }
 
@@ -77,20 +70,22 @@ public class CarouselController {
     }
   }
 
-  /**
-   * @param args the command line arguments
+  /*
+   * Finds GH controller and polls it forever. If none found, error is printed and program
+   * terminates.
    */
-  public static void main( String[] args ) {
+  public static void pollGuitarForever(){
     ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
     Controller[]          ctrls = cenv.getControllers();
 
-    for ( Controller ctrl : ctrls ) {
-      if ( ctrl.getName().contains( GUITAR_HERO ) ) {
-        pollForever( ctrl );
+    for (Controller ctrl : ctrls) {
+      if (ctrl.getName().contains(GUITAR_HERO)) {
+        pollForever(ctrl);
       }
     }
 
     System.out.println( GUITAR_HERO + " controller not found" );
     System.exit( 1 );
   }
+
 }
