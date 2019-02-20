@@ -35,9 +35,12 @@ public class CarouselView extends JFrame {
     public CarouselView (CarouselController controller, CarouselModel model, ArrayList<JLabel> allOptions) {
         this.model = model;
 
+        setContentPane(new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\carousel.PNG")));
+
         // Creates panel and sets to correct size/ layout
         panel = new JPanel();
-        panel.setSize(820, 280);
+        panel.setSize(750, 220);
+        panel.setBackground(Color.WHITE);
         panel.setLayout(null);
 
 
@@ -54,12 +57,12 @@ public class CarouselView extends JFrame {
         }
 
 
-        this.add(panel);
+
+        this.add(panel, BorderLayout.CENTER);
         this.pack();
-        this.setSize( 200, 70 );
+        this.setSize( 900, 300 );
+        //this.setResizable(false);
 
-
-        System.out.println("test");
     }
 
 
@@ -69,8 +72,9 @@ public class CarouselView extends JFrame {
 
         for (JLabel label : menuOptions) {
 
-            if (label.getX() == bounds[3].x) {
+            if (label.getX() == bounds[2].x) {
                 optionTitle = label.getText();
+              System.out.println(optionTitle);
             }
 
         }

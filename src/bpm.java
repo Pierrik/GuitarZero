@@ -10,9 +10,9 @@ public class bpm {
       sequencer.open();
 
       //Get sequence from file
-      Sequence seq =  MidiSystem.getSequence( new File( FILE ) );
-      System.out.println(60000000/getMicrosecondsPerQuarterNote(seq));
-    catch (Exception e) {}
+      Sequence seq = MidiSystem.getSequence(new File(FILE));
+      System.out.println(60000000 / getMicrosecondsPerQuarterNote(seq));
+    }catch (Exception e) {}
   }
 
   private static int getMicrosecondsPerQuarterNote(Sequence sequence) {

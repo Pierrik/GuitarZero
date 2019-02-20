@@ -28,9 +28,9 @@ import net.java.games.input.ControllerEnvironment;
  */
 public class CarouselController {
   final static String GUITAR_HERO = "Guitar Hero"; /* Identifier       */
-  final static int    DELAY       = 50;            /* 20th of a second */
+  final static int    DELAY       = 150;            /* 20th of a second */
 
-  private static CarouselModel model;
+  private  CarouselModel model;
 
   public CarouselController(CarouselModel model){
     this.model = model;
@@ -39,7 +39,7 @@ public class CarouselController {
   /*
    * Poll forever, and altering model depending on buttons pressed
    */
-  private static void pollForever( Controller ctrl ) {
+  private void pollForever( Controller ctrl ) {
     Component[] allCmps    = ctrl.getComponents();
     float[]     vals       = new float[3];
     Component[] activeCmps = {allCmps[8], allCmps[10], allCmps[16]};
@@ -54,11 +54,13 @@ public class CarouselController {
           float val = vals[i];
 
           switch(i){
-            case 0 : if (val == 1.0){model.select();}                          // zero-power button
-            case 1 : if (val == 1.0){model.select();}                          // escape button
-            case 2 : if (val == 1.0){model.right();} else if (val == -1.0){model.left();}  // strum
-          }
-
+            case 0 : if (val == 1.0){model.select();
+              System.out.println("Zero power pressed");break;}                    // zero-power button
+            case 1 : if (val == 1.0){model.select();
+              System.out.println("Escape button pressed");break;}                          // escape button
+            case 2 : if (val == 1.0){model.right();
+              System.out.println("Strum right");} else if (val == -1.0){model.left();
+              System.out.println("Strum left");}break;}  // strum
         }
       }
 
@@ -74,7 +76,7 @@ public class CarouselController {
    * Finds GH controller and polls it forever. If none found, error is printed and program
    * terminates.
    */
-  public static void pollGuitarForever(){
+  public void pollGuitarForever(){
     ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
     Controller[]          ctrls = cenv.getControllers();
 

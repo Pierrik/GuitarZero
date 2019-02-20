@@ -64,7 +64,8 @@ public class PlasticGuitar {
           float val = vals[ i ];
           Color col;
           if ( val == 0.0 ) {
-	    col = Color.WHITE; 
+	    col = Color.WHITE;
+            val = i;
           } else if ( val == 1.0 || val == -1.0 ) {
 	    col = Color.BLUE;
           } else {

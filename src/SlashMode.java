@@ -7,8 +7,14 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+/*
+ *   Windows:
+ *   set CLASSPATH=jinput-2.0.9.jar;.
+ *   javac PlasticGuitar.java
+ *   java -Djava.library.path=. PlasticGuitar
+*/
 public class SlashMode {
+
 
 
     public static void main(String args[]) {
@@ -26,11 +32,11 @@ public class SlashMode {
         ArrayList<JLabel> menuOptions = new ArrayList<>();
 
 
-        JLabel label1 = new JLabel(new ImageIcon("/Users/pierrikmellab/Desktop/ExitLogo2.png"));
-        JLabel label2 = new JLabel(new ImageIcon("/Users/pierrikmellab/Desktop/StoreLogo2.png"));
-        JLabel label3 = new JLabel(new ImageIcon("/Users/pierrikmellab/Desktop/SelectLogo2.png"));
-        JLabel label4 = new JLabel(new ImageIcon("/Users/pierrikmellab/Desktop/PlayLogo2.png"));
-        JLabel label5 = new JLabel(new ImageIcon("/Users/pierrikmellab/Desktop/TutorialLogo2.png"));
+        JLabel label1 = new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\ExitLogo2.png"));
+        JLabel label2 = new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\StoreLogo2.png"));
+        JLabel label3 = new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\SelectLogo2.png"));
+        JLabel label4 = new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\PlayLogo2.png"));
+        JLabel label5 = new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\TutorialLogo2.png"));
 
         label1.setText("Exit");
         label2.setText("Store");
@@ -49,6 +55,7 @@ public class SlashMode {
         CarouselController controller = new CarouselController( model );
         CarouselView       view       = new CarouselView( controller, model, menuOptions);
         view.setVisible( true );
+        controller.pollGuitarForever();
 
     }
 
