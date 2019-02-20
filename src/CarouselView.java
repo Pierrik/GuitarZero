@@ -61,7 +61,7 @@ public class CarouselView extends JFrame {
         this.add(panel, BorderLayout.CENTER);
         this.pack();
         this.setSize( 900, 300 );
-        //this.setResizable(false);
+        this.setResizable(false);
 
     }
 
