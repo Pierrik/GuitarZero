@@ -32,7 +32,7 @@ public class CarouselView extends JFrame {
     };
 
 
-    public CarouselView (ArrayList<JLabel> allOptions) {
+    public CarouselView (CarouselController controller, CarouselModel model, ArrayList<JLabel> allOptions) {
         this.model = model;
 
         // Creates panel and sets to correct size/ layout
