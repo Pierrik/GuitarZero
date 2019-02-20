@@ -12,7 +12,7 @@ import net.java.games.input.ControllerEnvironment;
  * CarouselController.
  *
  * @author  John Mercer
- * @author  Kamila Hoffman-Derlacka
+ * @author  Kamila Hoffmann-Derlacka
  * @version 1.00, February 2019.
  *
  *   Linux:
@@ -30,7 +30,7 @@ public class CarouselController {
   final static String GUITAR_HERO = "Guitar Hero"; /* Identifier       */
   final static int    DELAY       = 50;            /* 20th of a second */
 
-  private CarouselModel model;
+  private static CarouselModel model;
 
   public CarouselController(CarouselModel model){
     this.model = model;
@@ -54,9 +54,9 @@ public class CarouselController {
           float val = vals[i];
 
           switch(i){
-            case 0 : if (val == 1.0){model.select;}                          // zero-power button
-            case 1 : if (val == 1.0){model.select;}                          // escape button
-            case 2 : if (val == 1.0){model.right;} else if (val == -1.0){model.left;}  // strum
+            case 0 : if (val == 1.0){model.select();}                          // zero-power button
+            case 1 : if (val == 1.0){model.select();}                          // escape button
+            case 2 : if (val == 1.0){model.right();} else if (val == -1.0){model.left();}  // strum
           }
 
         }

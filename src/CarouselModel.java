@@ -17,21 +17,20 @@ public class CarouselModel {
 
     }
 
-    public void right () {
+    public void right() {
 
         CarouselView.rightMovement();
     }
 
-    public void left () {
+    public void left() {
 
         CarouselView.leftMovement();
     }
 
-    public String select () {
+    public String select() {
 
         return CarouselView.chosenOption();
     }
-
 
 
 }
