@@ -99,6 +99,7 @@ public class MidiToNotes2 {
 
   /**
    * Coverts a MIDI note to the correct format for the game note file
+   * Edited by Tom, Kamila and Harper
    * @param tick
    * @param n
    * @param m
@@ -135,8 +136,9 @@ public class MidiToNotes2 {
   /**
    * Compares each digit in two 3-digit notes
    * Largest value for each digit is used for the new combined note
-   * @param a
-   * @param b
+   * Edited by Tom, Kamila and Harper
+   * @param a A digit digit of the formatted note
+   * @param b A digit of the formatted note
    * @return newNote
    */
   private static String compare( String a, String b ){
@@ -167,7 +169,7 @@ public class MidiToNotes2 {
    * @param programNumber the program number of the instrument used on the track
    * @return a map of ticks and formatted notes
    */
-  private static Map<Long, String> createMap (Sequence seq, int programNumber ) {
+  private static Map<Long, String> createMap ( Sequence seq, int programNumber ) {
     // TreeMap stores the notes in order of ticks
     Map<Long, String> m = new TreeMap<>();
 
@@ -210,30 +212,10 @@ public class MidiToNotes2 {
     return m;
   }
 
-  private static int getBPM(Sequence seq) {
-    // Check all MIDI tracks for MIDI_SET_TEMPO message
-    int microseconds;
-    for (Track track : seq.getTracks()) {
-      for (int i = 0; i < track.size(); i++) {
-        MidiEvent event = track.get(i);
-        MidiMessage message = event.getMessage();
-        if (message instanceof MetaMessage) {
-          MetaMessage m = (MetaMessage) message;
-          byte[] data = m.getData();
-          int type = m.getType();
-          if (type == 0x51) { // [0x51]MIDI_SET_TEMPO
-            microseconds = ((data[0] & 0xff) << 16) | ((data[1] & 0xff) << 8) | (data[2] & 0xff);
-            return 60000000 / microseconds;
-          }
-        }
-      }
-    }
-    return 0;
-  }
-
   /**
    * Writes the converted notes from the MIDI file to a text file
-   * @param midiFilePath
+   * Adds notes that occur on a beat to the file
+   * @param midiFilePath the file path of the MIDI file to be converted
    */
   private static void writeFile( String midiFilePath ) {
     try {
@@ -263,7 +245,4 @@ public class MidiToNotes2 {
     }
   }
 
-  public static void main ( String args[] ) {
-    writeFile("AC_DC_-_Back_In_Black.mid");
-  }
 }
