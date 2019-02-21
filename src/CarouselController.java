@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
-/*
+/**
  * CarouselController.
  *
  * @author  John Mercer
@@ -28,7 +28,7 @@ import net.java.games.input.ControllerEnvironment;
  */
 public class CarouselController {
   final static String GUITAR_HERO = "Guitar Hero"; /* Identifier       */
-  final static int    DELAY       = 150;            /* 20th of a second */
+  final static int    DELAY       = 150;
 
   private  CarouselModel model;
 

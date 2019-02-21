@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+/**
+ * CarouselModel.
+ *
+ * @author  Pierrik Mellab
+ * @version 1.00, February 2019.
+ */
+
 public class Carousel extends JFrame implements KeyListener {
 
   //Image Icons

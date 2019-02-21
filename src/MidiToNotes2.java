@@ -264,6 +264,6 @@ public class MidiToNotes2 {
   }
 
   public static void main ( String args[] ) {
-    writeFile("C:\\Users\\tomma\\Documents\\GuitarZero\\AC_DC_-_Back_In_Black.mid");
+    writeFile("AC_DC_-_Back_In_Black.mid");
   }
 }

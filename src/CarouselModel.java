@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-/*
- * CarouselModel.
+/**
+ * CarouselView.
  *
  * @author  Pierrik Mellab
  * @version 1.00, February 2019.
