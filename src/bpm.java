@@ -2,7 +2,7 @@ import javax.sound.midi.*;
 import java.io.File;
 
 /**
- * CarouselView.
+ * BPM.
  *
  * @author  Harper Ford
  * @version 1.00, February 2019.

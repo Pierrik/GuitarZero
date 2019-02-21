@@ -32,6 +32,9 @@ public class CarouselController {
 
   private  CarouselModel model;
 
+  private ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
+  private Controller[]          ctrls = cenv.getControllers();
+
   public CarouselController(CarouselModel model){
     this.model = model;
   }
@@ -65,7 +68,7 @@ public class CarouselController {
 
             // escape button
             case 1 :
-              if (val == 1.0){
+              if (val >= 1.0){
                 model.select();
                 System.out.println("Escape button pressed");
               }
@@ -73,10 +76,10 @@ public class CarouselController {
 
             // strum
             case 2 :
-              if (val == 1.0){
+              if (val >= 0.75){
                 model.right();
                 System.out.println("Strum right");
-              } else if (val == -1.0){
+              } else if (val <= -0.75){
                 model.left();
                 System.out.println("Strum left");
               }
@@ -104,9 +107,6 @@ public class CarouselController {
    * terminates.
    */
   public void pollGuitarForever(){
-    ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
-    Controller[]          ctrls = cenv.getControllers();
-
     for (Controller ctrl : ctrls) {
       if (ctrl.getName().contains(GUITAR_HERO)) {
         pollForever(ctrl);
