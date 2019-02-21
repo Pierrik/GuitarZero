@@ -76,7 +76,7 @@ public class MidiToNotes {
    * @param seq The sequence of the MIDI file
    * @return The program number of the instrument playing the most notes
    */
-  public static int mostNotes ( Sequence seq) {
+  public static int mostNotes ( Sequence seq) throws InvalidMIDIFileException {
     int instrumentNumber = 0;
     int highestNotesPlayed = 0;
 
@@ -104,9 +104,9 @@ public class MidiToNotes {
   /**
    * Coverts a MIDI note to the correct format for the game note file
    * Edited by Tom, Kamila and Harper
-   * @param tick
-   * @param n
-   * @param m
+   * @param tick the tick of the note
+   * @param n the number of the note
+   * @param m the map to store the note
    */
   public static void formatNote( long tick, int n, Map<Long, String> m ) {
 

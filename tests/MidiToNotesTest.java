@@ -9,6 +9,11 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import org.junit.Test;
 
+/**
+ * MidiToNotesTest
+ * Junit 4.12
+ * @author Tom Mansfield
+ */
 public class MidiToNotesTest {
 
   @Test
@@ -66,8 +71,13 @@ public class MidiToNotesTest {
       assertEquals(27, MidiToNotes.mostNotes(seq));
     } catch (InvalidMidiDataException e) {
       e.printStackTrace();
+      fail();
     } catch (IOException e) {
       e.printStackTrace();
+      fail();
+    } catch (InvalidMIDIFileException e) {
+      e.printStackTrace();
+      fail();
     }
   }
 
@@ -79,8 +89,13 @@ public class MidiToNotesTest {
       assertFalse(MidiToNotes.mostNotes(seq) != 27);
     } catch (InvalidMidiDataException e) {
       e.printStackTrace();
+      fail();
     } catch (IOException e) {
       e.printStackTrace();
+      fail();
+    } catch (InvalidMIDIFileException e) {
+      e.printStackTrace();
+      fail();
     }
   }
 
@@ -88,12 +103,28 @@ public class MidiToNotesTest {
   public void testMostNotesInvalid () {
     try {
       Sequence seq = MidiSystem.getSequence( new File("invalid file"));
+      MidiToNotes.mostNotes(seq);
     } catch (InvalidMidiDataException e) {
       e.printStackTrace();
       assertTrue(true);
     } catch (IOException e) {
       e.printStackTrace();
       assertTrue(true);
+    } catch (InvalidMIDIFileException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testMostNotesNotGuitar () {
+    try {
+      Sequence seq = MidiSystem.getSequence(new File("C:\\Users\\tomma\\Documents\\GuitarZero\\beethoven_opus10_1_format0.mid"));
+      MidiToNotes.mostNotes(seq);
+    } catch (InvalidMIDIFileException e) {
+      e.printStackTrace();
+      assertTrue(true);
+    }
+      catch (Exception e) {
     }
   }
 
@@ -236,6 +267,23 @@ public class MidiToNotesTest {
       MidiToNotes.compare("", "");
     } catch (Exception e) {
       assertTrue(true);
+    }
+  }
+
+  @Test
+  public void testCreateMap() {
+    try {
+      Sequence seq = MidiSystem.getSequence( new File("C:\\Users\\tomma\\Documents\\GuitarZero\\AC_DC_-_Highway_to_Hell.mid"));
+      // Create a map of notes played by electric clean guitar
+      Map<Long, String>m = MidiToNotes.createMap(seq, 27);
+      // Check that the map contains values
+      assertTrue(m.size()>0);
+    } catch (InvalidMidiDataException e) {
+      e.printStackTrace();
+      fail();
+    } catch (IOException e) {
+      e.printStackTrace();
+      fail();
     }
   }
 
