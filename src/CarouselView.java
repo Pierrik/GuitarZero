@@ -10,10 +10,11 @@ import javax.swing.JLabel;
 // Manages the display model
 
 
-/*
+/**
  * CarouselView.
  *
  * @author  Pierrik Mellab
+ * @author  Harper Ford (Javadoc)
  * @version 1.00, February 2019.
  */
 public class CarouselView extends JFrame {
@@ -31,7 +32,12 @@ public class CarouselView extends JFrame {
             new Rectangle(650, 50, 140, 140)
     };
 
-
+    /**
+     * Alters the GUI by taking commands from a model class
+     * @param controller: The object that reads the guitar/keyboard inputs
+     * @param model:      The object that takes the controller inputs then calls the corresponding CarouselView function
+     * @param allOptions: A list of options to display graphically
+     */
     public CarouselView (CarouselController controller, CarouselModel model, ArrayList<JLabel> allOptions) {
         this.model = model;
 
@@ -65,7 +71,10 @@ public class CarouselView extends JFrame {
 
     }
 
-
+    /**
+     * Selects the center option of the Carousel
+     * @return The title of the selected song
+     */
     public static String chosenOption () {
 
         String optionTitle = null;
@@ -82,7 +91,9 @@ public class CarouselView extends JFrame {
         return optionTitle;
     }
 
-
+    /**
+     * Shifts the JLabels left, called from the CarouselModel object
+     */
     public static void leftMovement () {
 
         for (JLabel label : menuOptions) {
@@ -107,7 +118,9 @@ public class CarouselView extends JFrame {
         }
     }
 
-
+    /**
+     * Shifts the JLabels right, called from the CarouselModel object
+     */
     public static void rightMovement () {
 
         for (JLabel label : menuOptions) {
