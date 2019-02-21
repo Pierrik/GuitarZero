@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
-/**
+/*
  * CarouselController.
  *
  * @author  John Mercer
@@ -27,7 +27,7 @@ import net.java.games.input.ControllerEnvironment;
  *   java -Djava.library.path=. PlasticGuitar
  */
 public class CarouselController {
-  final static String GUITAR_HERO = "Guitar Hero"; /* Identifier       */
+  final static String GUITAR_HERO = "Guitar Hero";
   final static int    DELAY       = 150;
 
   private  CarouselModel model;
@@ -54,20 +54,50 @@ public class CarouselController {
           float val = vals[i];
 
           switch(i){
-            case 0 : if (val == 1.0){model.select();
-              System.out.println("Zero power pressed");break;}                    // zero-power button
-            case 1 : if (val == 1.0){model.select();
-              System.out.println("Escape button pressed");break;}                          // escape button
-            case 2 : if (val == 1.0){model.right();
-              System.out.println("Strum right");} else if (val == -1.0){model.left();
-              System.out.println("Strum left");}break;}  // strum
+            // zero-power button
+            case 0 :
+              if (val == 1.0){
+                model.select();
+                System.out.println("Zero power pressed");
+              }
+              try {
+                Thread.sleep(DELAY);
+              } catch(Exception exn) {System.out.println(exn); System.exit(1);}
+              break;
+
+            // escape button
+            case 1 :
+              if (val == 1.0){
+                model.select();
+                System.out.println("Escape button pressed");
+              }
+              try {
+                Thread.sleep(DELAY);
+              } catch(Exception exn) {System.out.println(exn); System.exit(1);}
+              break;
+
+            // strum
+            case 2 :
+              if (val == 1.0){
+                model.right();
+                System.out.println("Strum right");
+              } else if (val == -1.0){
+                model.left();
+                System.out.println("Strum left");
+              }
+              try {
+                Thread.sleep(DELAY);
+              } catch(Exception exn) {System.out.println(exn); System.exit(1);}
+              break;
+
+          }
         }
       }
 
       try {
-        Thread.sleep( DELAY );
-      } catch ( Exception exn ) {
-        System.out.println( exn ); System.exit( 1 );
+        Thread.sleep(DELAY);
+      } catch (Exception exn) {
+        System.out.println(exn); System.exit(1);
       }
     }
   }
@@ -86,8 +116,8 @@ public class CarouselController {
       }
     }
 
-    System.out.println( GUITAR_HERO + " controller not found" );
-    System.exit( 1 );
+    System.out.println(GUITAR_HERO + " controller not found");
+    System.exit(1);
   }
 
 }
