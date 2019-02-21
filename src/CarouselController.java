@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
-/*
+/**
  * CarouselController.
  *
  * @author  John Mercer
@@ -60,10 +60,8 @@ public class CarouselController {
                 model.select();
                 System.out.println("Zero power pressed");
               }
-              try {
-                Thread.sleep(DELAY);
-              } catch(Exception exn) {System.out.println(exn); System.exit(1);}
               break;
+
 
             // escape button
             case 1 :
@@ -71,9 +69,6 @@ public class CarouselController {
                 model.select();
                 System.out.println("Escape button pressed");
               }
-              try {
-                Thread.sleep(DELAY);
-              } catch(Exception exn) {System.out.println(exn); System.exit(1);}
               break;
 
             // strum
@@ -85,9 +80,11 @@ public class CarouselController {
                 model.left();
                 System.out.println("Strum left");
               }
+              /*
               try {
-                Thread.sleep(DELAY);
+                Thread.sleep(DELAY);       // sleeping so strum is less sensitive
               } catch(Exception exn) {System.out.println(exn); System.exit(1);}
+              */
               break;
 
           }
