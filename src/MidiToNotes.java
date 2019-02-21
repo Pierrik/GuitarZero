@@ -13,6 +13,8 @@ import java.util.Map;
  * Revisited class
  * Converts a MIDI file into a notes file
  * @author Tom Mansfield
+ * @author Kamila Hoffmann-Derlacka
+ * @author Harper Ford
  * @version 2.2, February 2019
  */
 public class MidiToNotes {
