@@ -8,12 +8,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * MidiToNotes Test
+ * MidiToNotesOld Test
  * Junit 4.12
  * @author Tom Mansfield
  */
 
-public class MidiToNotesTest {
+public class MidiToNotesOldTest {
 
   @Test
   public void testFormatNote0() {
