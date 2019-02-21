@@ -41,7 +41,7 @@ public class Highway extends JPanel {
       }
     }
     catch(Exception e){
-      e.printStackTrace();
+      System.out.println("File not found: please check your filepath syntax");
     }
     //Assign notes --!!REMOVE!!--
     notes[0] = new Note(true, 2);
