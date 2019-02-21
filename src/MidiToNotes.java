@@ -47,12 +47,14 @@ public class MidiToNotes {
           switch ( cmd ) {
 
             case ShortMessage.PROGRAM_CHANGE :
+              // Checks if the channel is set to the instrument looking for
               if ( dat1 == instrumentNumber ) {
                 currentChannel = chan;
               }
               break;
 
             case ShortMessage.NOTE_ON :
+              // If a note is played by the instrument being searched for, increment the total
               if( chan == currentChannel ) {
                 totalNotes++;
               }
