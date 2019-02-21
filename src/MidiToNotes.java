@@ -9,6 +9,15 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
+ * CarouselView.
+ *
+ * @author  Tom Mansfield
+ * @author Kamila Hoffmann-Derlacka
+ * @author  Harper Ford
+ * @version 1.00, February 2019.
+ */
+
+/**
  * Class that converts a MIDI file to a note file.
  */
 public class MidiToNotes {

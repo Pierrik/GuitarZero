@@ -2,6 +2,13 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.*;
 
+/**
+ * CarouselView.
+ *
+ * @author  John Mercer
+ * @version 1.00, February 2019.
+ */
+
 public class MockZip {
     public static void main(String[] args) throws IOException {
     List<String> srcFiles =
