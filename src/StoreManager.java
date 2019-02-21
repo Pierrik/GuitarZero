@@ -15,7 +15,7 @@ import java.util.zip.ZipOutputStream;
  * @author  Pierrik Mellab
  * @author  John Mercer
  * @author  Harper Ford (Javadoc)
- * @version 1.1, February 2019.
+ * @version 1.2, February 2019.
  *
  */
 public class StoreManager extends JFrame {
