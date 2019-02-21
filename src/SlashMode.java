@@ -7,7 +7,13 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-/*
+/**
+ * Slash Mode.
+ *
+ * @author John Mercer
+ * @author Pierrik Mellab
+ * @version 1.00, February 2019.
+ *
  *   Windows:
  *   set CLASSPATH=jinput-2.0.9.jar;.
  *   javac PlasticGuitar.java

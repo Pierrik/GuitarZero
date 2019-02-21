@@ -1,6 +1,13 @@
 import javax.sound.midi.*;
 import java.io.File;
 
+/**
+ * CarouselView.
+ *
+ * @author  Harper Ford
+ * @version 1.00, February 2019.
+ */
+
 public class bpm {
   final static String FILE = "AC.mid";
   static public void main(String[] args){
