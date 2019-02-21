@@ -1,8 +1,6 @@
 import java.io.*;
-import java.util.SortedSet;
 import java.util.TreeMap;
-import java.util.TreeSet;
-import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
@@ -10,9 +8,16 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 import java.util.Map;
-import java.util.HashMap;
 
+/**
+ * MidiToNotes
+ * Revisited class
+ * Converts a MIDI file into a notes file
+ * @author Tom Mansfield
+ * @version 2.2, February 2019
+ */
 public class MidiToNotes2 {
+
 
   /**
    * Gets the amount of notes played by an instrument
@@ -20,7 +25,7 @@ public class MidiToNotes2 {
    * @param instrumentNumber    The instrument number to search for total of notes played by
    * @return    The number of notes played by the instrument in the song
    */
-  public static int getNotes ( Sequence seq , int instrumentNumber){
+  private static int getNotes ( Sequence seq , int instrumentNumber ){
     // Total notes played by the instrument
     int totalNotes = 0;
 
@@ -67,21 +72,28 @@ public class MidiToNotes2 {
    * @param seq The sequence of the MIDI file
    * @return The program number of the instrument playing the most notes
    */
-  public static int mostNotes ( Sequence seq) {
+  private static int mostNotes ( Sequence seq) {
     int instrumentNumber = 0;
     int highestNotesPlayed = 0;
-    instrumentNumber = 0;
 
-    // Guitar numbers range from 24 to 39
-    for(int i = 24; i < 40; i++) {
-      // Get the amount of notes the instrument plays in the song
-      int notes = getNotes( seq, i );
-      if ( notes > highestNotesPlayed ) {
-        highestNotesPlayed = notes;
-        instrumentNumber = i;
+    /* Guitar program numbers range from 24 to 39
+     * Could filter through all instruments but would take longer to compute
+     */
+    try {
+      for(int i = 24; i < 39; i++) {
+        // Get the amount of notes the instrument plays in the song
+        int notes = getNotes( seq, i );
+        if ( notes > highestNotesPlayed ) {
+          highestNotesPlayed = notes;
+          instrumentNumber = i;
+        }
       }
+      if( instrumentNumber == 0){
+        throw new InvalidMIDIFileException("Main instrument not a guitar");
+      }
+    } catch ( Exception e ) {
+      e.printStackTrace();
     }
-
     return instrumentNumber;
   }
 
@@ -91,7 +103,7 @@ public class MidiToNotes2 {
    * @param n
    * @param m
    */
-  public static void formatNote( long tick, int n, Map<Long, String> m ) {
+  private static void formatNote( long tick, int n, Map<Long, String> m ) {
 
     final int note = n % 6;
 
@@ -127,7 +139,7 @@ public class MidiToNotes2 {
    * @param b
    * @return newNote
    */
-  public static String compare( String a, String b ){
+  private static String compare( String a, String b ){
     String newNote = "";
     try {
       for ( int i = 0; i < 3; i ++ ) {
@@ -149,11 +161,19 @@ public class MidiToNotes2 {
     return newNote;
   }
 
-  public static Map<Long, String> createMap (Sequence seq, int programNumber ) {
+  /**
+   * Creates a sorted map of formatted notes and their ticks
+   * @param seq the sequence of the MIDI file
+   * @param programNumber the program number of the instrument used on the track
+   * @return a map of ticks and formatted notes
+   */
+  private static Map<Long, String> createMap (Sequence seq, int programNumber ) {
+    // TreeMap stores the notes in order of ticks
     Map<Long, String> m = new TreeMap<>();
-    Track trks[] = seq.getTracks();
-    int currentChannel = 0;
 
+    Track trks[] = seq.getTracks();
+
+    int currentChannel = 0;
 
     // Loops through all tracks in the song
     for( int i = 0; i < trks.length; i++) {
@@ -170,7 +190,7 @@ public class MidiToNotes2 {
 
           switch( cmd ) {
             case ShortMessage.PROGRAM_CHANGE :
-              // if instrument is electric guitar
+              // if the note played is by the correct instrument
               if ( dat1 == programNumber ) {
                 currentChannel = chan;
               }
@@ -187,26 +207,63 @@ public class MidiToNotes2 {
         }
       }
     }
-
     return m;
   }
 
-  public static void writeFile( String midiFilePath ) {
+  private static int getBPM(Sequence seq) {
+    // Check all MIDI tracks for MIDI_SET_TEMPO message
+    int microseconds;
+    for (Track track : seq.getTracks()) {
+      for (int i = 0; i < track.size(); i++) {
+        MidiEvent event = track.get(i);
+        MidiMessage message = event.getMessage();
+        if (message instanceof MetaMessage) {
+          MetaMessage m = (MetaMessage) message;
+          byte[] data = m.getData();
+          int type = m.getType();
+          if (type == 0x51) { // [0x51]MIDI_SET_TEMPO
+            microseconds = ((data[0] & 0xff) << 16) | ((data[1] & 0xff) << 8) | (data[2] & 0xff);
+            return 60000000 / microseconds;
+          }
+        }
+      }
+    }
+    return 0;
+  }
+
+  /**
+   * Writes the converted notes from the MIDI file to a text file
+   * @param midiFilePath
+   */
+  private static void writeFile( String midiFilePath ) {
     try {
       Sequence seq = MidiSystem.getSequence( new File ( midiFilePath ) );
       Map<Long, String> map = createMap( seq, mostNotes(seq));
-      //Map<Long, String> sortedMap = new TreeMap<Long, String>(map);
-      for (Map.Entry<Long, String> entry : map.entrySet()) {
-        System.out.println(entry.getKey() + "," + entry.getValue());
-      }
 
-    } catch (Exception e) {
+      // Amount of ticks that occur for each beat of the song (Pulse Per Quarter note)
+      int ticksPerBeat = seq.getResolution();
+
+      File file = new File( "noteFile.txt");
+      // Clear the contents of the file if exists
+      PrintWriter clear = new PrintWriter(file);
+      clear.close();
+      PrintWriter out = new PrintWriter( new BufferedWriter( new FileWriter( file, true ) ) );
+      for (Map.Entry<Long, String> entry : map.entrySet()) {
+        /* Only add note to file if it occurs on a beat
+         * Filters notes out and makes the game easier to play
+         */
+        if (entry.getKey() % ticksPerBeat == 0) {
+          // Add note to the note file
+          out.println(entry.getKey() + "," + entry.getValue());
+        }
+      }
+      out.close();
+    } catch ( Exception e ) {
       e.printStackTrace();
     }
   }
 
   public static void main ( String args[] ) {
-    writeFile("C:\\Users\\tomma\\Desktop\\GuitarZero\\AC_DC_-_Highway_to_Hell.mid");
+    writeFile("C:\\Users\\tomma\\Documents\\GuitarZero\\AC_DC_-_Back_In_Black.mid");
   }
-
 }
