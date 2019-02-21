@@ -17,14 +17,13 @@ import java.util.Map;
  */
 public class MidiToNotes {
 
-
   /**
    * Gets the amount of notes played by an instrument
    * @param seq   The sequence to be analysed
    * @param instrumentNumber    The instrument number to search for total of notes played by
    * @return    The number of notes played by the instrument in the song
    */
-  private static int getNotes ( Sequence seq , int instrumentNumber ){
+  public static int getNotes ( Sequence seq , int instrumentNumber ){
     // Total notes played by the instrument
     int totalNotes = 0;
 
@@ -71,7 +70,7 @@ public class MidiToNotes {
    * @param seq The sequence of the MIDI file
    * @return The program number of the instrument playing the most notes
    */
-  private static int mostNotes ( Sequence seq) {
+  public static int mostNotes ( Sequence seq) {
     int instrumentNumber = 0;
     int highestNotesPlayed = 0;
 
@@ -103,7 +102,7 @@ public class MidiToNotes {
    * @param n
    * @param m
    */
-  private static void formatNote( long tick, int n, Map<Long, String> m ) {
+  public static void formatNote( long tick, int n, Map<Long, String> m ) {
 
     final int note = n % 6;
 
@@ -140,7 +139,7 @@ public class MidiToNotes {
    * @param b A digit of the formatted note
    * @return newNote
    */
-  private static String compare( String a, String b ){
+  public static String compare( String a, String b ){
     String newNote = "";
     try {
       for ( int i = 0; i < 3; i ++ ) {
@@ -168,7 +167,7 @@ public class MidiToNotes {
    * @param programNumber the program number of the instrument used on the track
    * @return a map of ticks and formatted notes
    */
-  private static Map<Long, String> createMap ( Sequence seq, int programNumber ) {
+  public static Map<Long, String> createMap ( Sequence seq, int programNumber ) {
     // TreeMap stores the notes in order of ticks
     Map<Long, String> m = new TreeMap<>();
 
@@ -216,7 +215,7 @@ public class MidiToNotes {
    * Adds notes that occur on a beat to the file
    * @param midiFilePath the file path of the MIDI file to be converted
    */
-  private static void writeFile( String midiFilePath ) {
+  public static void writeFile( String midiFilePath ) {
     try {
       Sequence seq = MidiSystem.getSequence( new File ( midiFilePath ) );
       Map<Long, String> map = createMap( seq, mostNotes(seq));
