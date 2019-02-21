@@ -21,6 +21,7 @@ public class MidiToNotes {
 
   /**
    * Gets the amount of notes played by an instrument
+   * @author Tom Mansfield
    * @param seq   The sequence to be analysed
    * @param instrumentNumber    The instrument number to search for total of notes played by
    * @return    The number of notes played by the instrument in the song
@@ -49,12 +50,14 @@ public class MidiToNotes {
           switch ( cmd ) {
 
             case ShortMessage.PROGRAM_CHANGE :
+              // Checks if the channel is set to the instrument looking for
               if ( dat1 == instrumentNumber ) {
                 currentChannel = chan;
               }
               break;
 
             case ShortMessage.NOTE_ON :
+              // If a note is played by the instrument being searched for, increment the total
               if( chan == currentChannel ) {
                 totalNotes++;
               }
@@ -69,6 +72,7 @@ public class MidiToNotes {
 
   /**
    * Finds the instrument that plays the most notes in the song
+   * @author Tom Mansfield
    * @param seq The sequence of the MIDI file
    * @return The program number of the instrument playing the most notes
    */
@@ -216,6 +220,7 @@ public class MidiToNotes {
    * Writes the converted notes from the MIDI file to a text file
    * Adds notes that occur on a beat to the file
    * @param midiFilePath the file path of the MIDI file to be converted
+   * @author Tom Mansfield
    */
   public static void writeFile( String midiFilePath ) {
     try {
