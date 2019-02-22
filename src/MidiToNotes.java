@@ -24,7 +24,6 @@ public class MidiToNotes {
    * @param seq   The sequence to be analysed
    * @param instrumentNumber    The instrument number to search for total of notes played by
    * @return    The number of notes played by the instrument in the song
-   * Tom
    */
   public static int getNotes ( Sequence seq , int instrumentNumber ){
     // Total notes played by the instrument
@@ -74,7 +73,6 @@ public class MidiToNotes {
    * Finds the instrument that plays the most notes in the song
    * @param seq The sequence of the MIDI file
    * @return The program number of the instrument playing the most notes
-   * Tom
    */
   public static int mostNotes ( Sequence seq) throws InvalidMIDIFileException {
     int instrumentNumber = 0;
@@ -106,7 +104,6 @@ public class MidiToNotes {
    * @param tick the tick of the note
    * @param n the number of the note
    * @param m the map to store the note
-   * Tom, Kamila, Harper
    */
   public static void formatNote( long tick, int n, Map<Long, String> m ) {
 
@@ -143,7 +140,6 @@ public class MidiToNotes {
    * @param a A digit digit of the formatted note
    * @param b A digit of the formatted note
    * @return newNote
-   * Tom, Kamila, Harper
    */
   public static String compare( String a, String b ){
     String newNote = "";
@@ -172,7 +168,6 @@ public class MidiToNotes {
    * @param seq the sequence of the MIDI file
    * @param programNumber the program number of the instrument used on the track
    * @return a map of ticks and formatted notes
-   * Tom, Kamila, Harper
    */
   public static Map<Long, String> createMap ( Sequence seq, int programNumber ) {
     // TreeMap stores the notes in order of ticks
@@ -221,7 +216,6 @@ public class MidiToNotes {
    * Writes the converted notes from the MIDI file to a text file
    * Adds notes that occur on a beat to the file
    * @param midiFilePath the file path of the MIDI file to be converted
-   * Tom
    */
   public static void writeFile( String midiFilePath ) {
     try {
