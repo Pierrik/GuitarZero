@@ -163,7 +163,7 @@ public class MidiToNotesOldTest {
     try {
       MidiToNotesOld.findTracks(
           MidiSystem.getSequence(
-              new File("C:\\Users\\tomma\\Desktop\\GuitarZero\\AC_DC_-_Back_In_Black.mid")
+              new File("assets\\AC_DC_-_Back_In_Black.mid")
           )
       );
       assertTrue(true);
@@ -203,7 +203,7 @@ public class MidiToNotesOldTest {
   public void testWriteTrack(){
     // Should run successfully
     try {
-      MidiToNotesOld.writeTrack(MidiSystem.getSequence(new File("C:\\Users\\tomma\\Desktop\\GuitarZero\\AC_DC_-_Back_In_Black.mid")).getTracks()[0]);
+      MidiToNotesOld.writeTrack(MidiSystem.getSequence(new File("assets\\AC_DC_-_Back_In_Black.mid")).getTracks()[0]);
     } catch (InvalidMidiDataException e) {
       fail();
     } catch (IOException e) {
