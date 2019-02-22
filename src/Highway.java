@@ -37,14 +37,14 @@ public class Highway extends JPanel {
     //Try to set the background frames to the corresponding .bmp images from ../assets
     try{
       for(int i = 0; i<backgroundFrameCount; i++){
-        bg[i] = ImageIO.read(new File("../assets/bg"+i+".bmp"));
+        bg[i] = ImageIO.read(new File("assets\\bg"+i+".bmp"));
       }
     }
     catch(Exception e){
       System.out.println("File not found: please check your filepath syntax");
     }
     //Assign notes --!!REMOVE!!--
-    notes[0] = new Note(true, 2);
+    notes[0] = new Note(false, 2);
     //notes[1] = new Note(false, 1);
     //Create JFrame
     JFrame window = new JFrame("Guitar Zero");

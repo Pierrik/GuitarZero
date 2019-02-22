@@ -8,7 +8,7 @@ import java.io.File;
  * @version 1.00, February 2019.
  */
 
-public class bpm {
+public class Bpm {
   final static String FILE = "AC.mid";
   static public void main(String[] args){
     try {
