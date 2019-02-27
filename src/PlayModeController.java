@@ -9,7 +9,7 @@ import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 /**
- * CarouselController.
+ * PlayModeController.
  *
  * @author  John Mercer
  * @author  Kamila Hoffmann-Derlacka
@@ -18,24 +18,24 @@ import net.java.games.input.ControllerEnvironment;
  *   Linux:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
  *   $ export CLASSPATH
- *   $ javac CarouselController.java
- *   $ java -Djava.library.path=. CarouselController
+ *   $ javac PlayModeController.java
+ *   $ java -Djava.library.path=. PlayModeController
  *
  *   Windows:
  *   set CLASSPATH=jinput-2.0.9.jar;.
- *   javac CarouselController.java
- *   java -Djava.library.path=. CarouselController
+ *   javac PlayModeController.java
+ *   java -Djava.library.path=. PlayModeController
  */
-public class CarouselController {
+public class PlayModeController {
   final static String GUITAR_HERO = "Guitar Hero";
   final static int    DELAY       = 150;
 
-  private  CarouselModel model;
+  private  PlayModeModel model;
 
   private ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
   private Controller[]          ctrls = cenv.getControllers();
 
-  public CarouselController(CarouselModel model){
+  public PlayModeController(PlayModeModel model){
     this.model = model;
   }
 
@@ -45,7 +45,7 @@ public class CarouselController {
   private void pollForever( Controller ctrl ) {
     Component[] allCmps    = ctrl.getComponents();
     float[]     vals       = new float[3];
-    Component[] activeCmps = {allCmps[8], allCmps[10], allCmps[16]};
+    /*Component[] activeCmps = {allCmps[8], allCmps[10], allCmps[16]};
 
     while (true) {
       if (ctrl.poll()) {
@@ -87,7 +87,7 @@ public class CarouselController {
               try {
                 Thread.sleep(DELAY);       // sleeping so strum is less sensitive
               } catch(Exception exn) {System.out.println(exn); System.exit(1);}
-              */
+              *
               break;
 
           }
@@ -99,7 +99,7 @@ public class CarouselController {
       } catch (Exception exn) {
         System.out.println(exn); System.exit(1);
       }
-    }
+    }*/
   }
 
   /*
