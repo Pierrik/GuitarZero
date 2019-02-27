@@ -16,7 +16,7 @@ import net.java.games.input.ControllerEnvironment;
  *   $ CLASSPATH=jinput-2.0.9.jar:.
  *   $ export CLASSPATH
  *   $ javac PlasicGuitar.java
- *   $ java -Djava.library.path=. PlasicGuitar
+ *   $ java -Djava.library.path=. PlasticGuitar
  */
 public class PlasticGuitar {
   final static String GUITAR_HERO = "Guitar Hero"; /* Identifier       */
