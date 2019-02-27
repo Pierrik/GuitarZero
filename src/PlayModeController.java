@@ -42,52 +42,112 @@ public class PlayModeController {
   /*
    * Poll forever, and altering model depending on buttons pressed
    */
-  private void pollForever( Controller ctrl ) {
+  private static void pollForever( Controller ctrl ) {
     Component[] allCmps    = ctrl.getComponents();
-    float[]     vals       = new float[3];
-    /*Component[] activeCmps = {allCmps[8], allCmps[10], allCmps[16]};
+    float[]     vals       = new float[allCmps.length];
+    int         previous;
 
     while (true) {
       if (ctrl.poll()) {
-        for ( int i = 0; i < 3; i++ ) {
-          vals[i] = activeCmps[i].getPollData();
+        for ( int i = 0; i < allCmps.length; i++ ) {
+          vals[i] = allCmps[i].getPollData();
         }
-
-        for ( int i = 0; i < 3; i++ ) {
+        previous = -1;
+        for ( int i = 0; i < allCmps.length; i++ ) {
           float val = vals[i];
 
           switch(i){
-            // zero-power button
+            // white one
             case 0 :
               if (val == 1.0){
-                model.select();
-                System.out.println("Zero power pressed");
+                previous = i;
               }
               break;
 
+            // black one
+            case 1 :
+              if (val == 1.0){
+                previous = i;
+              }
+              break;
+
+            // black two
+            case 2 :
+              if (val == 1.0){
+                previous = i;
+              }
+              break;
+
+            // black three
+            case 3 :
+              if (val == 1.0){
+                previous = i;
+              }
+              break;
+
+            // white two
+            case 4 :
+              if (val == 1.0){
+                previous = i;
+              }
+              break;
+
+            // white three
+            case 5 :
+              if (val == 1.0){
+                previous = i;
+              }
+              break;
+
+            // zero power button
+            case 8 :
+              if (val == 1.0){
+                //model.select();
+              }
+              break;
 
             // escape button
-            case 1 :
-              if (val >= 1.0){
-                model.select();
-                System.out.println("Escape button pressed");
+            case 10 :
+              if (val == 1.0){
+                // action
               }
               break;
 
-            // strum
-            case 2 :
-              if (val >= 0.75){
-                model.right();
-                System.out.println("Strum right");
-              } else if (val <= -0.75){
-                model.left();
-                System.out.println("Strum left");
+            // bender button click
+            case 12 :
+              if (val == 1.0){
+                // action
+              }
+              break;
+
+            // bender button playing around (values 1/8, 2/8, 3/8...)
+            case 13 :
+              if (val > 0){
+                // action
+              }
+              break;
+
+            // whammy bar (responsible for strumming)
+            case 14 :
+              if (val >= 0){
+                if (previous == 0)
+                  System.out.println("white one + strum");
+                else if (previous == 1)
+                  System.out.println("black one + strum");
+                else if (previous == 2)
+                  System.out.println("black two + strum");
+                else if (previous == 3)
+                  System.out.println("black three + strum");
+                else if (previous == 4)
+                  System.out.println("white two + strum");
+                else if (previous == 5)
+                  System.out.println("white three + strum");
               }
               /*
               try {
                 Thread.sleep(DELAY);       // sleeping so strum is less sensitive
               } catch(Exception exn) {System.out.println(exn); System.exit(1);}
-              *
+              */
               break;
 
           }
@@ -99,22 +159,25 @@ public class PlayModeController {
       } catch (Exception exn) {
         System.out.println(exn); System.exit(1);
       }
-    }*/
+    }
   }
 
   /*
    * Finds GH controller and polls it forever. If none found, error is printed and program
    * terminates.
    */
-  public void pollGuitarForever(){
-    for (Controller ctrl : ctrls) {
-      if (ctrl.getName().contains(GUITAR_HERO)) {
-        pollForever(ctrl);
+  public static void main( String[] argv ) {
+    ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
+    Controller[]          ctrls = cenv.getControllers();
+
+    for ( Controller ctrl : ctrls ) {
+      if ( ctrl.getName().contains( GUITAR_HERO ) ) {
+        pollForever( ctrl );
       }
     }
 
-    System.out.println(GUITAR_HERO + " controller not found");
-    System.exit(1);
+    System.out.println( GUITAR_HERO + " controller not found" );
+    System.exit( 1 );
   }
 
 }
