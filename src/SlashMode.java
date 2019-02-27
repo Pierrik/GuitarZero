@@ -16,8 +16,8 @@ import javax.swing.JLabel;
  *
  *   Windows:
  *   set CLASSPATH=jinput-2.0.9.jar;.
- *   javac PlasticGuitar.java
- *   java -Djava.library.path=. PlasticGuitar
+ *   javac SlashMode.java
+ *   java -Djava.library.path=. SlashMode
 */
 public class SlashMode {
 
@@ -31,11 +31,11 @@ public class SlashMode {
 
 
         // Create all menu option labels with their image icon and title
-        JLabel label1 = new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\ExitLogo2.png"));
-        JLabel label2 = new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\StoreLogo2.png"));
-        JLabel label3 = new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\SelectLogo2.png"));
-        JLabel label4 = new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\PlayLogo2.png"));
-        JLabel label5 = new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\TutorialLogo2.png"));
+        JLabel label1 = new JLabel(new ImageIcon("..\\assets\\ExitLogo2.png"));
+        JLabel label2 = new JLabel(new ImageIcon("..\\assets\\StoreLogo2.png"));
+        JLabel label3 = new JLabel(new ImageIcon("..\\assets\\SelectLogo2.png"));
+        JLabel label4 = new JLabel(new ImageIcon("..\\assets\\PlayLogo2.png"));
+        JLabel label5 = new JLabel(new ImageIcon("..\\assets\\TutorialLogo2.png"));
 
         label1.setText("Exit");
         label2.setText("Store");

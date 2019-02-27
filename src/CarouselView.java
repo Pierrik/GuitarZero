@@ -25,11 +25,11 @@ public class CarouselView extends JFrame {
     private static ArrayList<JLabel> menuOptions = new ArrayList<>();
 
     private static Rectangle [] bounds = {
-            new Rectangle(30, 50, 140, 140),
-            new Rectangle(185, 50, 140, 140),
-            new Rectangle(340, 50, 140, 140),
-            new Rectangle(495, 50, 140, 140),
-            new Rectangle(650, 50, 140, 140)
+            new Rectangle(0, 0, 140, 140),
+            new Rectangle(150, 0, 140, 140),
+            new Rectangle(300, 0, 140, 140),
+            new Rectangle(450, 0, 140, 140),
+            new Rectangle(600, 0, 140, 140)
     };
 
     /**
@@ -41,11 +41,11 @@ public class CarouselView extends JFrame {
     public CarouselView (CarouselController controller, CarouselModel model, ArrayList<JLabel> allOptions) {
         this.model = model;
 
-        setContentPane(new JLabel(new ImageIcon("C:\\Users\\John\\Desktop\\GuitarZero\\assets\\carousel.PNG")));
+        setContentPane(new JLabel(new ImageIcon("..\\assets\\carousel.PNG")));
 
         // Creates panel and sets to correct size/ layout
         panel = new JPanel();
-        panel.setSize(750, 220);
+        //panel.setSize(610, 150);
         panel.setBackground(Color.WHITE);
         panel.setLayout(null);
 
@@ -59,12 +59,12 @@ public class CarouselView extends JFrame {
         // sets the initial menuOption bounds
         for (int i = 0; i < 5; i++) {
             menuOptions.get(i).setBounds(bounds[i]);
-            add(menuOptions.get(i));
+            panel.add(menuOptions.get(i));
         }
 
-
-
-        this.add(panel, BorderLayout.CENTER);
+        setLayout(null);
+        panel.setBounds(80,65,740,150);
+        this.add(panel);
         this.pack();
         this.setSize( 900, 300 );
         this.setResizable(false);

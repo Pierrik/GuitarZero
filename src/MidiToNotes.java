@@ -21,7 +21,6 @@ public class MidiToNotes {
 
   /**
    * Gets the amount of notes played by an instrument
-   * @author Tom Mansfield
    * @param seq   The sequence to be analysed
    * @param instrumentNumber    The instrument number to search for total of notes played by
    * @return    The number of notes played by the instrument in the song
@@ -72,7 +71,6 @@ public class MidiToNotes {
 
   /**
    * Finds the instrument that plays the most notes in the song
-   * @author Tom Mansfield
    * @param seq The sequence of the MIDI file
    * @return The program number of the instrument playing the most notes
    */
@@ -93,7 +91,7 @@ public class MidiToNotes {
         }
       }
       if( instrumentNumber == 0){
-        throw new InvalidMIDIFileException("Main instrument not a guitar");
+        throw new InvalidMIDIFileException("Lead instrument not a guitar");
       }
     } catch ( Exception e ) {
       e.printStackTrace();
@@ -140,7 +138,6 @@ public class MidiToNotes {
   /**
    * Compares each digit in two 3-digit notes
    * Largest value for each digit is used for the new combined note
-   * Edited by Tom, Kamila and Harper
    * @param a A digit digit of the formatted note
    * @param b A digit of the formatted note
    * @return newNote
@@ -220,7 +217,6 @@ public class MidiToNotes {
    * Writes the converted notes from the MIDI file to a text file
    * Adds notes that occur on a beat to the file
    * @param midiFilePath the file path of the MIDI file to be converted
-   * @author Tom Mansfield
    */
   public static void writeFile( String midiFilePath ) {
     try {

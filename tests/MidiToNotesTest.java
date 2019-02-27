@@ -19,7 +19,7 @@ public class MidiToNotesTest {
   @Test
   public void testGetNotesValidInstrument() {
     try {
-      Sequence seq = MidiSystem.getSequence( new File("C:\\Users\\tomma\\Documents\\GuitarZero\\AC_DC_-_Highway_to_Hell.mid"));
+      Sequence seq = MidiSystem.getSequence( new File("assets\\AC_DC_-_Highway_to_Hell.mid"));
       // Program number 27 = electric guitar clean
       // This instrument is played in the song, get notes should return a value greater than zero
       assertTrue(MidiToNotes.getNotes(seq, 27)>0);
@@ -35,7 +35,7 @@ public class MidiToNotesTest {
   @Test
   public void testGetNotesInvalidInstrument() {
     try {
-      Sequence seq = MidiSystem.getSequence( new File("C:\\Users\\tomma\\Documents\\GuitarZero\\AC_DC_-_Highway_to_Hell.mid"));
+      Sequence seq = MidiSystem.getSequence( new File("assets\\AC_DC_-_Highway_to_Hell.mid"));
       // Program number 6 = Harpsichord
       // This instrument is not played in the song, get notes should return zero
       assertTrue(MidiToNotes.getNotes(seq, 6)==0);
@@ -66,7 +66,7 @@ public class MidiToNotesTest {
   @Test
   public void testMostNotes () {
     try {
-      Sequence seq = MidiSystem.getSequence( new File("C:\\Users\\tomma\\Documents\\GuitarZero\\AC_DC_-_Highway_to_Hell.mid"));
+      Sequence seq = MidiSystem.getSequence( new File("assets\\AC_DC_-_Highway_to_Hell.mid"));
       // Instrument 27 (clean guitar) is the lead in this song and should play the most notes
       assertEquals(27, MidiToNotes.mostNotes(seq));
     } catch (InvalidMidiDataException e) {
@@ -84,7 +84,7 @@ public class MidiToNotesTest {
   @Test
   public void testMostNotesIncorrect () {
     try {
-      Sequence seq = MidiSystem.getSequence( new File("C:\\Users\\tomma\\Documents\\GuitarZero\\AC_DC_-_Highway_to_Hell.mid"));
+      Sequence seq = MidiSystem.getSequence( new File("assets\\AC_DC_-_Highway_to_Hell.mid"));
       // Check that no other instrument numbers are returned
       assertFalse(MidiToNotes.mostNotes(seq) != 27);
     } catch (InvalidMidiDataException e) {
@@ -118,7 +118,7 @@ public class MidiToNotesTest {
   @Test
   public void testMostNotesNotGuitar () {
     try {
-      Sequence seq = MidiSystem.getSequence(new File("C:\\Users\\tomma\\Documents\\GuitarZero\\beethoven_opus10_1_format0.mid"));
+      Sequence seq = MidiSystem.getSequence(new File("assets\\beethoven_opus10_1_format0.mid"));
       MidiToNotes.mostNotes(seq);
     } catch (InvalidMIDIFileException e) {
       e.printStackTrace();
@@ -273,7 +273,7 @@ public class MidiToNotesTest {
   @Test
   public void testCreateMap() {
     try {
-      Sequence seq = MidiSystem.getSequence( new File("C:\\Users\\tomma\\Documents\\GuitarZero\\AC_DC_-_Highway_to_Hell.mid"));
+      Sequence seq = MidiSystem.getSequence( new File("assets\\AC_DC_-_Highway_to_Hell.mid"));
       // Create a map of notes played by electric clean guitar
       Map<Long, String>m = MidiToNotes.createMap(seq, 27);
       // Check that the map contains values
