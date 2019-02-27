@@ -18,13 +18,13 @@ import net.java.games.input.ControllerEnvironment;
  *   Linux:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
  *   $ export CLASSPATH
- *   $ javac PlasticGuitar.java
- *   $ java -Djava.library.path=. PlasticGuitar
+ *   $ javac CarouselController.java
+ *   $ java -Djava.library.path=. CarouselController
  *
  *   Windows:
  *   set CLASSPATH=jinput-2.0.9.jar;.
- *   javac PlasticGuitar.java
- *   java -Djava.library.path=. PlasticGuitar
+ *   javac CarouselController.java
+ *   java -Djava.library.path=. CarouselController
  */
 public class CarouselController {
   final static String GUITAR_HERO = "Guitar Hero";
