@@ -47,12 +47,12 @@ public class Highway extends JPanel {
     window.pack();
     window.setVisible(true);
   }
-  @Override
+  //@Override
   /**
     * Draws all neccesary GUI elements on the JPanel
     * @param g: The the graphics object associated with the JPanel
     */
-  public void paint(Graphics g, Int frame) {
+  public void paint(Graphics g, int frame) {
     //Draw the background animation frame depending on the current frame/10%(number of frames in the animation)
     g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0, null);
   }
