@@ -81,14 +81,14 @@ public class StoreManager extends JFrame {
     }
 
     /**
-     * Zips files together
+     * Creates a 'bundle' (zip file) from three specified files.
      * @param titleFile:    .TXT file containing a song title
      * @param coverArtFile: .PNG file containing a songs cover art
      * @param musicFile:    .MIDI file containg the songs
      * @return              The contents of titleFile
-     * @throws IOException  Incase any of the files are corrupt or can't be found
+     * @throws IOException  In case any of the files are corrupt or can't be found
      */
-    public static String fileZipper (File titleFile, File coverArtFile, File musicFile) throws IOException {
+    public static String bundleZipper (File titleFile, File coverArtFile, File musicFile) throws IOException {
 
         MidiToNotes.writeFile(musicFile.getPath());         // creates noteFile.txt in current directory
         File noteFile = new File("noteFile.txt");
@@ -121,16 +121,51 @@ public class StoreManager extends JFrame {
         return songName;
     }
 
+  /**
+   * Creates a preview (title and cover image) zip file from two specified files.
+   * @param titleFile:    .TXT file containing a song title
+   * @param coverArtFile: .PNG file containing a songs cover art
+   * @return              The contents of titleFile
+   * @throws IOException  In case any of the files are corrupt or can't be found
+   */
+  public static String previewZipper (File titleFile, File coverArtFile) throws IOException {
+
+    String songName = textFileReader(titleFile);
+
+    songName += ".zip";
+
+    FileOutputStream fos = new FileOutputStream(songName);
+    ZipOutputStream zipOut = new ZipOutputStream(fos);
+    FileInputStream fis = new FileInputStream(coverArtFile);
+
+    ZipEntry zipEntry = new ZipEntry(coverArtFile.getName());
+    zipOut.putNextEntry(zipEntry);
+
+    byte[] bytes = new byte[1024];
+    int length;
+    while((length = fis.read(bytes)) >= 0) {
+      zipOut.write(bytes, 0, length);
+    }
+
+    fis.close();
+    zipOut.close();
+    fos.close();
+
+    return songName;
+  }
+
     /**
      * Uploads a file to the server
      * @param filePath: Location of the file to upload
+     * @param method: Upload method (UPLOAD_BUNDLE or UPLOAD_PREVIEW)
      */
-    public static void sendZipToServer(String filePath){
+    public static void sendFileToServer(String filePath, String method){
         MockClient client = new MockClient("localhost", 8888);
-        client.uploadFile(filePath);
+        client.uploadFile(filePath, method);
     }
 
-    /**
+
+  /**
      * Creates a JFrame then populates it with JPanels
      * @param args[]: Any arguements that need passing
      */
@@ -230,9 +265,10 @@ public class StoreManager extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (titleFile != null && coverArtFile !=null && musicFile != null){
-                        String zipFilePath = fileZipper(titleFile, coverArtFile, musicFile);
-                        System.out.println(zipFilePath);
-                        sendZipToServer(zipFilePath);
+                        String bundlePath = bundleZipper(titleFile, coverArtFile, musicFile);
+                        String previewPath = previewZipper(titleFile, coverArtFile);
+                        sendFileToServer(bundlePath, "UPLOAD_BUNDLE");
+                        sendFileToServer(previewPath, "UPLOAD_PREVIEW");
                     }
                 } catch (IOException e1) {
                     e1.printStackTrace();

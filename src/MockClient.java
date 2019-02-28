@@ -17,10 +17,10 @@ public class MockClient {
   }
 
   /**
-   * Uploads the given file to the server
+   * Uploads the given bundle to the server
    * @param fileName: The filepath of the file to upload
    */
-  public void uploadFile(String fileName){
+  public void uploadFile(String fileName, String method){
     try {
       Socket sck = new Socket( this.host, this.port );
 
@@ -32,7 +32,7 @@ public class MockClient {
 
       dataIn.readFully(bytes, 0, bytes.length);
 
-      dataOut.writeUTF("UPLOAD/" + fileName);
+      dataOut.writeUTF(method + fileName);
       dataOut.write(bytes, 0, bytes.length);
       dataOut.flush();
 
@@ -43,6 +43,8 @@ public class MockClient {
       System.out.println( exn ); System.exit( 1 );
     }
   }
+
+
 
   /**
    * Downloads the given file to the server

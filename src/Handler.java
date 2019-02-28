@@ -3,6 +3,7 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 /**
  * Handler.
  *
@@ -15,7 +16,6 @@ public class Handler implements Runnable {
   Handler( Socket sck ) {
     this.sck = sck;
   }
-
   /**
    * Downloads and uploads files to clients
    */
@@ -31,43 +31,72 @@ public class Handler implements Runnable {
       String fileName = headers[1];
 
       String cd = System.getProperty("user.dir");
-      String dir = cd + "\\server_files\\";
-      String fileDir = dir + fileName;
 
-      if (method.equals("UPLOAD")) {
-        if (Files.notExists(Paths.get(dir))) {
-          Files.createDirectories(Paths.get(dir));
-        }
+      switch (method) {
+        case "UPLOAD_BUNDLE":
+          String bundlePath = cd + "\\bundle_files\\" + fileName;
+          BufferedOutputStream bundleOut = new BufferedOutputStream(new FileOutputStream(bundlePath));
 
-        BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(fileDir));
+          byte[] bundleBytes = dataIn.readAllBytes();
+          bundleOut.write(bundleBytes);
 
-        byte[] bytes = dataIn.readAllBytes();
-        fileOut.write(bytes);
+          bundleOut.close();
+          sck.close();
+          break;
 
-        fileOut.close();
-        sck.close();
+        case "UPLOAD_PREVIEW":
+          String previewPath = cd + "\\preview_files\\" + fileName;
+          BufferedOutputStream previewOut = new BufferedOutputStream(new FileOutputStream(previewPath));
+
+          byte[] previewBytes = dataIn.readAllBytes();
+          previewOut.write(previewBytes);
+
+          previewOut.close();
+          sck.close();
+          break;
+
+        case "DOWNLOAD_BUNDLE":
+          String newBundle = cd + "\\bundle_files\\" + fileName;
+
+          File bundle = new File(newBundle);
+          byte[] bundleDownloadBytes = new byte[(int) bundle.length()];
+
+          DataInputStream bundleIn = new DataInputStream(new FileInputStream(bundle));
+
+          bundleIn.readFully(bundleDownloadBytes, 0, bundleDownloadBytes.length);
+
+          dataOut.write(bundleDownloadBytes, 0, bundleDownloadBytes.length);
+          dataOut.flush();
+
+          bundleIn.close();
+          dataOut.close();
+          sck.close();
+          break;
+
+        case "DOWNLOAD_PREVIEW":
+          String newPreview = cd + "\\preview_files\\" + fileName;
+
+          File preview = new File(newPreview);
+          byte[] previewDownloadBytes = new byte[(int) preview.length()];
+
+          DataInputStream previewIn = new DataInputStream(new FileInputStream(preview));
+
+          previewIn.readFully(previewDownloadBytes, 0, previewDownloadBytes.length);
+
+          dataOut.write(previewDownloadBytes, 0, previewDownloadBytes.length);
+          dataOut.flush();
+
+          previewIn.close();
+          dataOut.close();
+          sck.close();
+          break;
+
+        default:
+          System.out.println("Invalid request");
+          break;
       }
-
-      else if (method.equals("DOWNLOAD")) {
-        File file = new File(fileDir);
-        byte[] bytes = new byte[(int) file.length()];
-
-        DataInputStream fileIn = new DataInputStream(new FileInputStream(file));
-
-        fileIn.readFully(bytes, 0, bytes.length);
-
-        dataOut.write(bytes, 0, bytes.length);
-        dataOut.flush();
-
-        dataOut.close();
-        sck.close();
-      }
-
-      else{
-        System.out.println("Invalid request");
-      }
-
-    } catch (Exception exn) {
+    }
+    catch (Exception exn) {
       System.out.println(exn); System.exit(1);
     }
   }
