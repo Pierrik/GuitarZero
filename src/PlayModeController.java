@@ -42,7 +42,7 @@ public class PlayModeController {
   /*
    * Poll forever, and altering model depending on buttons pressed
    */
-  private static void pollForever( Controller ctrl ) {
+  public void pollForever( Controller ctrl ) {
     Component[] allCmps    = ctrl.getComponents();
     float[]     vals       = new float[allCmps.length];
     int         previous;
@@ -130,18 +130,30 @@ public class PlayModeController {
             // whammy bar (responsible for strumming)
             case 14 :
               if (val >= 0){
-                if (previous == 0)
+                if (previous == 0) {
                   System.out.println("white one + strum");
-                else if (previous == 1)
+                  model.checkNote("w1");
+                }
+                else if (previous == 1) {
                   System.out.println("black one + strum");
-                else if (previous == 2)
+                  model.checkNote("b1");
+                }
+                else if (previous == 2) {
                   System.out.println("black two + strum");
-                else if (previous == 3)
+                  model.checkNote("b2");
+                }
+                else if (previous == 3) {
                   System.out.println("black three + strum");
-                else if (previous == 4)
+                  model.checkNote("b3");
+                }
+                else if (previous == 4) {
                   System.out.println("white two + strum");
-                else if (previous == 5)
+                  model.checkNote("w2");
+                }
+                else if (previous == 5) {
                   System.out.println("white three + strum");
+                  model.checkNote("w3");
+                }
               }
               /*
               try {
@@ -166,7 +178,8 @@ public class PlayModeController {
    * Finds GH controller and polls it forever. If none found, error is printed and program
    * terminates.
    */
-  public static void main( String[] argv ) {
+
+  /*public static void main( String[] argv ) {
     ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
     Controller[]          ctrls = cenv.getControllers();
 
@@ -178,6 +191,6 @@ public class PlayModeController {
 
     System.out.println( GUITAR_HERO + " controller not found" );
     System.exit( 1 );
-  }
+  }*/
 
 }
