@@ -165,7 +165,7 @@ public class StoreManager extends JFrame {
     }
 
 
-  /**
+    /**
      * Creates a JFrame then populates it with JPanels
      * @param args[]: Any arguements that need passing
      */
