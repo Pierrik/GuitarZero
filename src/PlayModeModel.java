@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.Math;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.sound.midi.MetaEventListener;
@@ -14,9 +15,10 @@ import java.io.FilenameFilter;
 
 /**
  * PlayModeModel
- * Version 1.1
+ * Version 2.1, February 2019
  * @author Tom Mansfield
  */
+
 public class PlayModeModel {
   private String bundlePath;
   private File midiFile;
@@ -27,7 +29,9 @@ public class PlayModeModel {
   private int totalCurrency;
   private int currencyEarned;
   private int score;
-  private String currentNote;
+  private String currentNote = "";
+  private long currentTick;
+  private HashMap<Long, String> notes;
 
   public PlayModeModel( String bundlePath ) {
     this.bundlePath = bundlePath;
@@ -36,6 +40,7 @@ public class PlayModeModel {
     this.totalCurrency = loadTotalCurrency();
     this.currencyEarned = 0;
     this.score = 0;
+    this.currentTick = 0;
     try {
       this.notesFile = findNotesFile();
     } catch (NotesFileNotFoundException e) {
@@ -54,6 +59,8 @@ public class PlayModeModel {
       e.printStackTrace();
       // Exit and go back to slash mode
     }
+    this.notes = new HashMap<>();
+    loadNotesFile();
   }
 
   /**
@@ -134,26 +141,31 @@ public class PlayModeModel {
     return 0;
   }
 
-  public Map<Long, String> loadNotesFile() {
-    Map<Long, String> m = null;
+  /**
+   * loadNotesFile
+   * Reads the notes file in the bundle and adds notes to a map
+   */
+  public void loadNotesFile() {
     try {
       BufferedReader br = new BufferedReader( new FileReader(this.notesFile));
       String line = null;
-      m = new TreeMap<>();
 
       while((line = br.readLine())!=null) {
         String str[] = line.split(",");
-        m.put(Long.parseLong(str[0]), str[1]);
+        this.notes.put(Long.parseLong(str[0]), str[1]);
       }
 
       br.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
-
-    return m;
   }
 
+  /**
+   * collectNote
+   * Occurs when the user plays a correct note
+   * Updates the streakCount, Multiplier and currencyEarned if necessary
+   */
   public void collectNote() {
     this.streakCount ++;
     setMultiplier();
@@ -161,11 +173,20 @@ public class PlayModeModel {
     updateCurrency();
   }
 
+  /**
+   * dropNote
+   * Occurs when the user does not play a correct note or plays a note when no note should be played
+   * Resets the streakCount and multiplier
+   */
   public void dropNote() {
     this.streakCount = 0;
     this.multiplier = 1;
   }
 
+  /**
+   * setMultiplier
+   * changes the value of the multiplier if streakCount is multiple of 10 or 0
+   */
   public void setMultiplier() {
     if( streakCount % 10 == 0 ) {
       this.multiplier = (int) Math.pow( 2, streakCount/10 );
@@ -175,6 +196,10 @@ public class PlayModeModel {
     }
   }
 
+  /**
+   * updateCurrency
+   * updates the current currency earned during the song
+   */
   public void updateCurrency() {
     if( currencyEarned < 5 ) {
       if( score % 500 == 0) {
@@ -185,12 +210,13 @@ public class PlayModeModel {
 
   /**
    * Play the MIDI song
-   * Code from workshop
+   * Sets current tick and current note values as the song is played
    */
   public void playSong() {
     try {
       final Sequencer seq = MidiSystem.getSequencer();
       final Transmitter trans  = seq.getTransmitter();
+      long currentTick;
 
       seq.open();
 
@@ -205,23 +231,115 @@ public class PlayModeModel {
       });
 
       seq.start();
+
+      // Set the current tick pointer to the current tick of the song
+      while(seq.isRunning()){
+        currentTick = seq.getTickPosition();
+        this.currentTick = currentTick;
+        changeCurrentNote(currentTick);
+      }
+
     } catch ( Exception exn ) {
       System.out.println( exn ); System.exit( 1 );
     }
   }
 
+  /**
+   * changeCurrentNote
+   * changes the current note to the note that should be played
+   * @param tick the current tick
+   */
+  public void changeCurrentNote(long tick) {
+    if(this.notes.get(Long.valueOf(tick))!=null){
+      this.currentNote = this.notes.get(Long.valueOf(tick));
+    }
+    else{
+      this.currentNote = "000";
+    }
+  }
+
+  /**
+   * checkNote
+   * checks whether a note played on the guitar is correct
+   * collect note if correct, otherwise drop the note
+   * @param guitarNote the note played on the guitar
+   */
+  public void checkNote(String guitarNote) {
+    if (this.currentNote != "000") {
+      switch(guitarNote) {
+        case "w1":
+          if(Character.getNumericValue(this.currentNote.charAt(0)) == 2){
+            collectNote();
+          }
+          else{
+            dropNote();
+          }
+          break;
+        case "w2":
+          if(Character.getNumericValue(this.currentNote.charAt(1)) == 2){
+            collectNote();
+          }
+          else{
+            dropNote();
+          }
+          break;
+        case "w3":
+          if(Character.getNumericValue(this.currentNote.charAt(2)) == 2){
+            collectNote();
+          }
+          else{
+            dropNote();
+          }
+          break;
+        case "b1":
+          if(Character.getNumericValue(this.currentNote.charAt(0)) == 1){
+            collectNote();
+          }
+          else{
+            dropNote();
+          }
+          break;
+        case "b2":
+          if(Character.getNumericValue(this.currentNote.charAt(1)) == 1){
+            collectNote();
+          }
+          else{
+            dropNote();
+          }
+          break;
+        case "b3":
+          if(Character.getNumericValue(this.currentNote.charAt(2)) == 1){
+            collectNote();
+          }
+          else{
+            dropNote();
+          }
+          break;
+      }
+    }
+    else {
+      // No note should have been played, end streak and reset multiplier
+      dropNote();
+    }
+
+  }
+
 
   // Temporary main to test methods
   public static void main(String args[]) {
-    PlayModeModel playMode = new PlayModeModel("C:\\Users\\tomma\\Documents\\GuitarZero");
+    PlayModeModel playMode = new PlayModeModel("C:\\Users\\tomma\\Documents\\GuitarZero\\testBundle");
     //System.out.println(playMode.findNotesFile().getPath());
     //playMode.playSong();
-    Map<Long, String> m = playMode.loadNotesFile();
-    for (Map.Entry<Long, String> entry : m.entrySet()) {
 
-      System.out.println(entry.getKey() + "," + entry.getValue());
+    //for (Map.Entry<Long, String> entry : playMode.notes.entrySet()) {
 
-    }
+      //System.out.println(entry.getKey() + "," + entry.getValue());
+
+    //}
+
+    playMode.playSong();
+
+    //System.out.println(playMode.notesFile.getName());
   }
 
 
