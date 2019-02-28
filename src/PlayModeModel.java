@@ -4,8 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.Math;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
 import javax.sound.midi.MetaEventListener;
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiSystem;
@@ -32,6 +30,7 @@ public class PlayModeModel {
   private String currentNote = "";
   private long currentTick;
   private HashMap<Long, String> notes;
+  private HashMap<Long, String> notesCollected;
 
   public PlayModeModel( String bundlePath ) {
     this.bundlePath = bundlePath;
@@ -167,6 +166,7 @@ public class PlayModeModel {
    * Updates the streakCount, Multiplier and currencyEarned if necessary
    */
   public void collectNote() {
+    this.notesCollected.put(Long.valueOf(currentTick), "collected");
     this.streakCount ++;
     setMultiplier();
     this.score += this.multiplier;
@@ -237,6 +237,7 @@ public class PlayModeModel {
         currentTick = seq.getTickPosition();
         this.currentTick = currentTick;
         changeCurrentNote(currentTick);
+        checkCollected();
       }
 
     } catch ( Exception exn ) {
@@ -255,6 +256,19 @@ public class PlayModeModel {
     }
     else{
       this.currentNote = "000";
+    }
+  }
+
+  /**
+   * checkCollected
+   * Checks that a note that should've been played was collected
+   * Otherwise, drop the note
+   */
+  public void checkCollected(){
+    if(this.notes.get(Long.valueOf(currentTick))!=null){
+      if(this.notesCollected.get(Long.valueOf(currentTick))!= "collected") {
+        dropNote();
+      }
     }
   }
 
