@@ -1,9 +1,6 @@
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Date;
-
 /**
  * Server.
  *
@@ -16,19 +13,6 @@ public class Server {
 
   public static void main(String[] argv) {
     try {
-      // checking if directories exist on server-side before starting
-      String cd = System.getProperty("user.dir");
-      String bundleDir = cd + "\\bundle_files\\";
-      String previewDir = cd + "\\preview_files\\";
-
-      if (Files.notExists(Paths.get(bundleDir))) {
-        Files.createDirectories(Paths.get(bundleDir));
-      }
-      if (Files.notExists(Paths.get(previewDir))) {
-        Files.createDirectories(Paths.get(previewDir));
-      }
-
-
       // starting the server
       final ServerSocket ssck = new ServerSocket(PORT);
       if (verbose) {
