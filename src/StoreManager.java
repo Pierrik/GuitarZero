@@ -15,7 +15,8 @@ import java.util.zip.ZipOutputStream;
  * @author  Pierrik Mellab
  * @author  John Mercer
  * @author  Harper Ford (Javadoc)
- * @version 1.2, February 2019.
+ * @author  John Merer (Added bundle/preview functionality)
+ * @version 1.4, February 2019.
  *
  */
 public class StoreManager extends JFrame {
@@ -25,7 +26,7 @@ public class StoreManager extends JFrame {
     static File musicFile = null;
 
     /**
-     * Setups up the JFrame
+     * Sets up the JFrame
      */
     public StoreManager() {
         setTitle("Store Manager");
@@ -84,7 +85,7 @@ public class StoreManager extends JFrame {
      * Creates a 'bundle' (zip file) from three specified files.
      * @param titleFile:    .TXT file containing a song title
      * @param coverArtFile: .PNG file containing a songs cover art
-     * @param musicFile:    .MIDI file containg the songs
+     * @param musicFile:    .MIDI file containing the songs
      * @return              The contents of titleFile
      * @throws IOException  In case any of the files are corrupt or can't be found
      */
@@ -96,11 +97,9 @@ public class StoreManager extends JFrame {
         List<File> srcFiles = Arrays.asList(coverArtFile, musicFile, noteFile);          // files to be zipped go here
 
         String songName = textFileReader(titleFile);
-
-        songName += ".zip";
+        songName += "(bundle).zip";
 
         FileOutputStream fos = new FileOutputStream(songName);   // title goes here
-
         ZipOutputStream zipOut = new ZipOutputStream(fos);
 
         for (File srcFile : srcFiles) {
@@ -131,8 +130,7 @@ public class StoreManager extends JFrame {
   public static String previewZipper (File titleFile, File coverArtFile) throws IOException {
 
     String songName = textFileReader(titleFile);
-
-    songName += ".zip";
+    songName += "(preview).zip";
 
     FileOutputStream fos = new FileOutputStream(songName);
     ZipOutputStream zipOut = new ZipOutputStream(fos);
@@ -164,10 +162,19 @@ public class StoreManager extends JFrame {
         client.uploadFile(filePath, method);
     }
 
+  /**
+   * Deletes specified file
+   * @param filePath: File to delete
+   */
+    public static void deleteFile(String filePath){
+      File file = new File(filePath);
+      file.delete();
+  }
+
 
   /**
      * Creates a JFrame then populates it with JPanels
-     * @param args[]: Any arguements that need passing
+     * @param args: Any arguments that need passing
      */
     public static void main(String args[]) {
         JFrame frame = new JFrame("Store Manager");
@@ -265,10 +272,17 @@ public class StoreManager extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (titleFile != null && coverArtFile !=null && musicFile != null){
-                        String bundlePath = bundleZipper(titleFile, coverArtFile, musicFile);
-                        String previewPath = previewZipper(titleFile, coverArtFile);
-                        sendFileToServer(bundlePath, "UPLOAD_BUNDLE");
-                        sendFileToServer(previewPath, "UPLOAD_PREVIEW");
+                      // zipping files and sending to server
+                      String bundlePath = bundleZipper(titleFile, coverArtFile, musicFile);
+                      String previewPath = previewZipper(titleFile, coverArtFile);
+                      sendFileToServer(bundlePath, "UPLOAD_BUNDLE");
+                      sendFileToServer(previewPath, "UPLOAD_PREVIEW");
+
+                      // cleaning up (deleting zips and noteFile on client-side)
+                      deleteFile(bundlePath);
+                      deleteFile(previewPath);
+                      deleteFile("noteFile.txt");
+
                     }
                 } catch (IOException e1) {
                     e1.printStackTrace();

@@ -5,7 +5,7 @@ import java.net.Socket;
  *
  * @author  John Mercer
  * @author  Harper Ford (Javadoc)
- * @version 1.00, February 2019.
+ * @version 1.02, February 2019.
  */
 public class MockClient {
   String host;
@@ -17,10 +17,11 @@ public class MockClient {
   }
 
   /**
-   * Uploads the given file to the server
+   * Uploads the given bundle to the server
    * @param fileName: The filepath of the file to upload
+   * @param method: Upload method (UPLOAD_BUNDLE or UPLOAD_PREVIEW)
    */
-  public void uploadFile(String fileName){
+  public void uploadFile(String fileName, String method){
     try {
       Socket sck = new Socket( this.host, this.port );
 
@@ -32,7 +33,8 @@ public class MockClient {
 
       dataIn.readFully(bytes, 0, bytes.length);
 
-      dataOut.writeUTF("UPLOAD/" + fileName);
+      dataOut.writeUTF(method + "/" + fileName);
+      dataOut.writeLong(file.length());
       dataOut.write(bytes, 0, bytes.length);
       dataOut.flush();
 
@@ -44,18 +46,21 @@ public class MockClient {
     }
   }
 
+
+
   /**
    * Downloads the given file to the server
    * @param fileName: The filepath of the file to download
+   * @param method: Download method (DOWNLOAD_BUNDLE or DOWNLOAD_PREVIEW)
    */
-  public void downloadFile(String fileName){
+  public void downloadFile(String fileName, String method){
     try {
       Socket sck = new Socket( this.host, this.port );
 
       // Requesting to download the file
       DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
 
-      dataOut.writeUTF("DOWNLOAD/" + fileName);
+      dataOut.writeUTF(method + "/" + fileName);
       dataOut.flush();
 
       // Attempting to receive the file

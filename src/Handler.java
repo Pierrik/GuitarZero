@@ -8,7 +8,7 @@ import java.nio.file.Paths;
  * Handler.
  *
  * @author  John Mercer
- * @version 1.00, February 2019.
+ * @version 1.05, February 2019.
  */
 public class Handler implements Runnable {
   private Socket sck;
@@ -24,77 +24,82 @@ public class Handler implements Runnable {
       final DataInputStream dataIn = new DataInputStream(sck.getInputStream());
       final DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
 
+      String cd = System.getProperty("user.dir");
+
       String header = dataIn.readUTF();
       String[] headers = header.split("/");
 
       String method = headers[0].toUpperCase();
+      char methodType = method.charAt(0);
+
       String fileName = headers[1];
+      long fileSize = dataIn.readLong();
 
-      String cd = System.getProperty("user.dir");
-
-      switch (method) {
-        case "UPLOAD_BUNDLE":
-          String bundlePath = cd + "\\bundle_files\\" + fileName;
-          BufferedOutputStream bundleOut = new BufferedOutputStream(new FileOutputStream(bundlePath));
-
-          byte[] bundleBytes = dataIn.readAllBytes();
-          bundleOut.write(bundleBytes);
-
-          bundleOut.close();
-          sck.close();
-          break;
-
-        case "UPLOAD_PREVIEW":
-          String previewPath = cd + "\\preview_files\\" + fileName;
-          BufferedOutputStream previewOut = new BufferedOutputStream(new FileOutputStream(previewPath));
-
-          byte[] previewBytes = dataIn.readAllBytes();
-          previewOut.write(previewBytes);
-
-          previewOut.close();
-          sck.close();
-          break;
-
-        case "DOWNLOAD_BUNDLE":
-          String newBundle = cd + "\\bundle_files\\" + fileName;
-
-          File bundle = new File(newBundle);
-          byte[] bundleDownloadBytes = new byte[(int) bundle.length()];
-
-          DataInputStream bundleIn = new DataInputStream(new FileInputStream(bundle));
-
-          bundleIn.readFully(bundleDownloadBytes, 0, bundleDownloadBytes.length);
-
-          dataOut.write(bundleDownloadBytes, 0, bundleDownloadBytes.length);
-          dataOut.flush();
-
-          bundleIn.close();
-          dataOut.close();
-          sck.close();
-          break;
-
-        case "DOWNLOAD_PREVIEW":
-          String newPreview = cd + "\\preview_files\\" + fileName;
-
-          File preview = new File(newPreview);
-          byte[] previewDownloadBytes = new byte[(int) preview.length()];
-
-          DataInputStream previewIn = new DataInputStream(new FileInputStream(preview));
-
-          previewIn.readFully(previewDownloadBytes, 0, previewDownloadBytes.length);
-
-          dataOut.write(previewDownloadBytes, 0, previewDownloadBytes.length);
-          dataOut.flush();
-
-          previewIn.close();
-          dataOut.close();
-          sck.close();
-          break;
-
-        default:
-          System.out.println("Invalid request");
-          break;
+      if (methodType == 'U'){
+        processUpload(method, dataIn, cd, fileName, fileSize);
       }
+      else if (methodType == 'D'){
+        processDownload(method, dataOut, cd, fileName);
+      }
+    }
+    catch (Exception exn) {
+      System.out.println(exn); System.exit(1);
+    }
+  }
+
+  public void processUpload(String method, DataInputStream dataIn, String cd, String fileName,
+                            long fileSize){
+
+    String filePath = "";
+
+    if (method.equals("UPLOAD_BUNDLE")){
+      filePath = cd + "\\bundle_files\\" + fileName;
+    }
+    else if (method.equals("UPLOAD_PREVIEW")){
+      filePath = cd + "\\preview_files\\" + fileName;
+    }
+
+    try{
+      BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(filePath));
+
+      int n;
+      byte[] buf = new byte[4092];
+
+      while (fileSize > 0 && (n = dataIn.read(buf, 0, (int)Math.min(buf.length, fileSize))) != -1){
+        fileOut.write(buf, 0, n);
+        fileSize -= 1;
+      }
+
+      fileOut.close();
+      sck.close();
+    }
+    catch (Exception exn) {
+      System.out.println(exn); System.exit(1);
+    }
+  }
+
+  public void processDownload(String method, DataOutputStream dataOut, String cd, String fileName){
+    String filePath = "";
+
+    if (method.equals("DOWNLOAD_BUNDLE")){
+      filePath = cd + "\\bundle_files\\" + fileName;
+    }
+    else if (method.equals("DOWNLOAD_PREVIEW")){
+      filePath = cd + "\\preview_files\\" + fileName;
+    }
+
+    try{
+      File file = new File(filePath);
+      byte[] bytes = new byte[(int) file.length()];
+
+      DataInputStream fileIn = new DataInputStream(new FileInputStream(file));
+      fileIn.readFully(bytes, 0, bytes.length);
+
+      dataOut.write(bytes, 0, bytes.length);
+      dataOut.flush();
+
+      fileIn.close();
+      sck.close();
     }
     catch (Exception exn) {
       System.out.println(exn); System.exit(1);
