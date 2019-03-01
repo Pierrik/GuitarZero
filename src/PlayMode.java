@@ -21,7 +21,7 @@ public class PlayMode extends JPanel{
         // Initialise the model, controller, view GUI classes
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         PlayModeView view = new PlayModeView();
-        this.add(view);
+        //this.add(view);
         //PlayModeModel      model      = new PlayModeModel(view);
         //PlayModeController controller = new PlayModeController(model);
         //controller.pollGuitarForever();

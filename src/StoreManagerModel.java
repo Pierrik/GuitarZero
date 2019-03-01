@@ -13,6 +13,12 @@ import javax.swing.filechooser.FileSystemView;
 
 public class StoreManagerModel {
 
+  private File titleFile = null;
+  private File coverArtFile = null;
+  private File musicFile = null;
+
+
+
   public StoreManagerModel () {
 
   }
@@ -133,6 +139,25 @@ public class StoreManagerModel {
   public static void sendFileToServer(String filePath, String method){
     MockClient client = new MockClient("localhost", 8888);
     client.uploadFile(filePath, method);
+  }
+
+  public void setMusicFile (File file) { musicFile = file; }
+
+  public void setCoverArtFile (File file) { coverArtFile = file; }
+
+  public void setTitleFile (File file) { titleFile = file; }
+
+  public void saveAction () {
+      try {
+        if (titleFile != null && coverArtFile !=null && musicFile != null){
+          String bundlePath = StoreManagerModel.bundleZipper(titleFile, coverArtFile, musicFile);
+          String previewPath = StoreManagerModel.previewZipper(titleFile, coverArtFile);
+          StoreManagerModel.sendFileToServer(bundlePath, "UPLOAD_BUNDLE");
+          StoreManagerModel.sendFileToServer(previewPath, "UPLOAD_PREVIEW");
+        }
+      } catch (IOException e1) {
+        e1.printStackTrace();
+      }
   }
 
 }
