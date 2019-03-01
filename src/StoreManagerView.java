@@ -29,7 +29,11 @@ public class StoreManagerView extends JFrame {
    * @param storeManagerModel
    * @param storeManagercontroller
    */
-  public StoreManagerView ( StoreManagerController storeManagercontroller) {
+  public StoreManagerView ( StoreManagerController1 storeManagercontroller1,
+      StoreManagerController2 storeManagerController2,
+      StoreManagerController3 storeManagerController3,
+      StoreManagerController4 storeManagerController4) {
+
     setTitle("Store Manager");
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,7 +76,10 @@ public class StoreManagerView extends JFrame {
     getContentPane().add(BorderLayout.SOUTH, bottomPanel);
 
 
-    titleBrowse.addActionListener(storeManagercontroller);
+    titleBrowse.addActionListener(storeManagercontroller1);
+    coverArtBrowse.addActionListener(storeManagerController2);
+    musicBrowse.addActionListener(storeManagerController3);
+    save.addActionListener(storeManagerController4);
 
     /*
     titleBrowse.addActionListener(new ActionListener() {

@@ -8,11 +8,11 @@ import java.io.File;
  * @author  Pierrik Mellab
  * @version 2.00, January 2019.
  */
-class StoreManagerController implements ActionListener {
+class StoreManagerController2 implements ActionListener {
   private StoreManagerModel storeManagerModel;
   private StoreManagerView storeManagerView;
 
-  public StoreManagerController( StoreManagerModel storeManagerModel ) {
+  public StoreManagerController2 ( StoreManagerModel storeManagerModel ) {
     this.storeManagerModel = storeManagerModel;
     this.storeManagerView = storeManagerView;
   }
@@ -21,16 +21,7 @@ class StoreManagerController implements ActionListener {
     File file = StoreManagerModel.fileFinder();
     String filePath = file.getPath();
 
-
-
-    //musicField.setText(filePath);
-    //musicFile = file;
-
-    //System.out.println(ev.getSource());
-
-    //System.out.println(ev.getSource().toString());
-
-    System.out.println("tester");
+    storeManagerModel.setCoverArtFile(file);
 
   }
 }
