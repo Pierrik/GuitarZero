@@ -37,7 +37,7 @@ public class PlayModeView{
   }
 
   /**
-    * Draws all neccesary GUI elements on the JPanel
+    * Draws all necessary GUI elements on the JPanel
     * @param g: The the graphics object associated with the JPanel
     */
   public void paint(Graphics g) {

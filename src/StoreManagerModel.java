@@ -57,11 +57,17 @@ public class StoreManagerModel {
   }
 
 
+  public void setMusicFile (File file) { musicFile = file; }
+
+  public void setCoverArtFile (File file) { coverArtFile = file; }
+
+  public void setTitleFile (File file) { titleFile = file; }
+
   /**
    * Creates a 'bundle' (zip file) from three specified files.
    * @param titleFile:    .TXT file containing a song title
    * @param coverArtFile: .PNG file containing a songs cover art
-   * @param musicFile:    .MIDI file containg the songs
+   * @param musicFile:    .MIDI file containing the songs
    * @return              The contents of titleFile
    * @throws IOException  In case any of the files are corrupt or can't be found
    */
@@ -73,11 +79,9 @@ public class StoreManagerModel {
     List<File> srcFiles = Arrays.asList(coverArtFile, musicFile, noteFile);          // files to be zipped go here
 
     String songName = textFileReader(titleFile);
-
-    songName += ".zip";
+    songName += "(bundle).zip";
 
     FileOutputStream fos = new FileOutputStream(songName);   // title goes here
-
     ZipOutputStream zipOut = new ZipOutputStream(fos);
 
     for (File srcFile : srcFiles) {
@@ -108,8 +112,7 @@ public class StoreManagerModel {
   public static String previewZipper (File titleFile, File coverArtFile) throws IOException {
 
     String songName = textFileReader(titleFile);
-
-    songName += ".zip";
+    songName += "(preview).zip";
 
     FileOutputStream fos = new FileOutputStream(songName);
     ZipOutputStream zipOut = new ZipOutputStream(fos);
@@ -141,19 +144,28 @@ public class StoreManagerModel {
     client.uploadFile(filePath, method);
   }
 
-  public void setMusicFile (File file) { musicFile = file; }
-
-  public void setCoverArtFile (File file) { coverArtFile = file; }
-
-  public void setTitleFile (File file) { titleFile = file; }
+  /**
+   * Deletes specified file
+   * @param filePath: File to delete
+   */
+  public static void deleteFile(String filePath){
+    File file = new File(filePath);
+    file.delete();
+  }
 
   public void saveAction () {
       try {
         if (titleFile != null && coverArtFile !=null && musicFile != null){
-          String bundlePath = StoreManagerModel.bundleZipper(titleFile, coverArtFile, musicFile);
-          String previewPath = StoreManagerModel.previewZipper(titleFile, coverArtFile);
-          StoreManagerModel.sendFileToServer(bundlePath, "UPLOAD_BUNDLE");
-          StoreManagerModel.sendFileToServer(previewPath, "UPLOAD_PREVIEW");
+          // zipping files and sending to server
+          String bundlePath = bundleZipper(titleFile, coverArtFile, musicFile);
+          String previewPath = previewZipper(titleFile, coverArtFile);
+          sendFileToServer(bundlePath, "UPLOAD_BUNDLE");
+          sendFileToServer(previewPath, "UPLOAD_PREVIEW");
+
+          // cleaning up (deleting zips and noteFile on client-side)
+          deleteFile(bundlePath);
+          deleteFile(previewPath);
+          deleteFile("noteFile.txt");
         }
       } catch (IOException e1) {
         e1.printStackTrace();
