@@ -26,21 +26,26 @@ public class MockClient {
    */
   public void uploadFile(String fileName, String method){
     try {
-      Socket sck = new Socket( this.host, this.port );
+      Socket sck = new Socket(this.host, this.port);
 
+      // instantiating byte array of correct size to store file
       File file = new File(fileName);
       byte[] bytes = new byte[(int) file.length()];
 
+      // streams for reading/writing the file
       DataInputStream dataIn = new DataInputStream(new FileInputStream(file));
       DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
 
+      // reading the file into the byte array
       dataIn.readFully(bytes, 0, bytes.length);
 
+      // writing the file to the socket output stream (from the byte array)
       dataOut.writeUTF(method + "/" + fileName);
       dataOut.writeLong(file.length());
       dataOut.write(bytes, 0, bytes.length);
       dataOut.flush();
 
+      // cleaning up
       dataOut.close();
       sck.close();
 
@@ -58,7 +63,7 @@ public class MockClient {
    */
   public void downloadFile(String fileName, String method){
     try {
-      // Checking if local_store directory exists, and creates it if it doesn't yet
+      // checking if local_store directory exists, and creates it if it doesn't yet
       String cd = System.getProperty("user.dir");
       String bundleDir = cd + "local_store\\bundle_files\\";
       String previewDir = cd + "local_store\\preview_files\\";
@@ -70,14 +75,14 @@ public class MockClient {
         Files.createDirectories(Paths.get(previewDir));
       }
 
-      // Requesting to download the file
+      // requesting to download the file
       Socket sck = new Socket(this.host, this.port);
       DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
 
       dataOut.writeUTF(method + "/" + fileName);
       dataOut.flush();
 
-      // Attempting to receive the file
+      // attempting to receive the file
       DataInputStream  dataIn  = new DataInputStream(sck.getInputStream());
       BufferedOutputStream fileOut;
 
@@ -94,6 +99,7 @@ public class MockClient {
       byte[] bytes = dataIn.readAllBytes();
       fileOut.write(bytes);
 
+      // cleaning up
       fileOut.close();
       sck.close();
 
