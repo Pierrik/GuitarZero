@@ -42,7 +42,7 @@ public class PlayModeController {
   /*
    * Poll forever, and altering model depending on buttons pressed
    */
-  public static void pollForever(Controller ctrl) {
+  public void pollForever(Controller ctrl) {
     Component[] allCmps    = ctrl.getComponents();
     float[]     vals       = new float[allCmps.length];
     int         previous1;
@@ -138,30 +138,39 @@ public class PlayModeController {
                   if (previous2 == 4) {
                     if (previous3 == 5) {
                       System.out.println("white one + white two + white three + strum");
+                      model.checkNote("222");
                     } else if (previous3 == 3) {
                       System.out.println("white one + white two + black three + strum");
+                      model.checkNote("221");
                     } else {
                       System.out.println("white one + white two + strum");
+                      model.checkNote("220");
                     }
                   }
                   else if (previous2 == 2) {
                     if (previous3 == 5) {
                       System.out.println("white one + black two + white three + strum");
+                      model.checkNote("");
                     } else if (previous3 == 3) {
                       System.out.println("white one + black two + black three + strum");
+                      model.checkNote("211");
                     } else {
                       System.out.println("white one + black two + strum");
+                      model.checkNote("210");
                     }
                   }
                   else {
                     if (previous3 == 5) {
                       System.out.println("white one + white three + strum");
+                      model.checkNote("202");
                     }
                     else if (previous3 == 3) {
                       System.out.println("white one + black three + strum");
+                      model.checkNote("201");
                     }
                     else {
                       System.out.println("white one + strum");
+                      model.checkNote("200");
                     }
                   }
                 }
@@ -169,26 +178,35 @@ public class PlayModeController {
                   if (previous2 == 4) {
                     if (previous3 == 5) {
                       System.out.println("black one + white two + white three + strum");
+                      model.checkNote("122");
                     } else if (previous3 == 3) {
                       System.out.println("black one + white two + black three + strum");
+                      model.checkNote("121");
                     } else {
                       System.out.println("black one + white two + strum");
+                      model.checkNote("120");
                     }
                   } else if (previous2 == 2) {
                     if (previous3 == 5) {
                       System.out.println("black one + black two + white three + strum");
+                      model.checkNote("112");
                     } else if (previous3 == 3) {
                       System.out.println("black one + black two + black three + strum");
+                      model.checkNote("111");
                     } else {
                       System.out.println("black one + black two + strum");
+                      model.checkNote("110");
                     }
                   } else {
                     if (previous3 == 5) {
                       System.out.println("black one + white three + strum");
+                      model.checkNote("120");
                     } else if (previous3 == 3) {
                       System.out.println("black one + black three + strum");
+                      model.checkNote("101");
                     } else {
                       System.out.println("black one + strum");
+                      model.checkNote("100");
                     }
                   }
                 }
@@ -196,30 +214,39 @@ public class PlayModeController {
                   if (previous2 == 4) {
                     if (previous3 == 5) {
                       System.out.println("white two + white three + strum");
+                      model.checkNote("022");
                     } else if (previous3 == 3) {
                       System.out.println("white two + black three + strum");
+                      model.checkNote("021");
                     } else {
                       System.out.println("white two + strum");
+                      model.checkNote("020");
                     }
                   }
                   else if (previous2 == 2) {
                     if (previous3 == 5) {
                       System.out.println("black two + white three + strum");
+                      model.checkNote("012");
                     } else if (previous3 == 3) {
                       System.out.println("black two + black three + strum");
+                      model.checkNote("011");
                     } else {
                       System.out.println("black two + strum");
+                      model.checkNote("010");
                     }
                   }
                   else {
                     if (previous3 == 5) {
                       System.out.println("white three + strum");
+                      model.checkNote("002");
                     }
                     else if (previous3 == 3) {
                       System.out.println("black three + strum");
+                      model.checkNote("001");
                     }
                     else {
                       System.out.println("nothing lol + strum");
+                      model.checkNote("000");
                     }
                   }
                 }
@@ -248,7 +275,9 @@ public class PlayModeController {
    * terminates.
    */
 
-  public static void main(String[] argv) {
+  // Main commented out as pollForever can't be referenced from static
+
+  /*public static void main(String[] argv) {
     ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
     Controller[]          ctrls = cenv.getControllers();
 
@@ -260,6 +289,6 @@ public class PlayModeController {
 
     System.out.println( GUITAR_HERO + " controller not found" );
     System.exit( 1 );
-  }
+  }*/
 
 }

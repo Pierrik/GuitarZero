@@ -279,56 +279,12 @@ public class PlayModeModel {
    * @param guitarNote the note played on the guitar
    */
   public void checkNote(String guitarNote) {
-    if (this.currentNote != "000") {
-      switch(guitarNote) {
-        case "w1":
-          if(Character.getNumericValue(this.currentNote.charAt(0)) == 2){
-            collectNote();
-          }
-          else{
-            dropNote();
-          }
-          break;
-        case "w2":
-          if(Character.getNumericValue(this.currentNote.charAt(1)) == 2){
-            collectNote();
-          }
-          else{
-            dropNote();
-          }
-          break;
-        case "w3":
-          if(Character.getNumericValue(this.currentNote.charAt(2)) == 2){
-            collectNote();
-          }
-          else{
-            dropNote();
-          }
-          break;
-        case "b1":
-          if(Character.getNumericValue(this.currentNote.charAt(0)) == 1){
-            collectNote();
-          }
-          else{
-            dropNote();
-          }
-          break;
-        case "b2":
-          if(Character.getNumericValue(this.currentNote.charAt(1)) == 1){
-            collectNote();
-          }
-          else{
-            dropNote();
-          }
-          break;
-        case "b3":
-          if(Character.getNumericValue(this.currentNote.charAt(2)) == 1){
-            collectNote();
-          }
-          else{
-            dropNote();
-          }
-          break;
+    if( this.currentNote != "000" ) {
+      if(guitarNote.equals(this.currentNote)) {
+        collectNote();
+      }
+      else {
+        dropNote();
       }
     }
     else {
