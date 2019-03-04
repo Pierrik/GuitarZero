@@ -23,5 +23,7 @@ class StoreManagerController1 implements ActionListener {
 
     storeManagerModel.setTitleFile(file);
 
+    storeManagerView.setTitleTitle(filePath);
+
   }
 }

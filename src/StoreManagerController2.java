@@ -23,5 +23,7 @@ class StoreManagerController2 implements ActionListener {
 
     storeManagerModel.setCoverArtFile(file);
 
+    storeManagerView.setCoverArtTitle(filePath);
+
   }
 }

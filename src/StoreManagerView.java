@@ -24,6 +24,10 @@ public class StoreManagerView extends JFrame {
   static File coverArtFile = null;
   static File musicFile = null;
 
+  static JTextField titleField = new JTextField(10);
+  static JTextField coverArtField = new JTextField(10);
+  static JTextField musicField = new JTextField(10);
+
   /**
    * Setups up the JFrame
    * @param storeManagerModel
@@ -44,9 +48,6 @@ public class StoreManagerView extends JFrame {
     JLabel coverArtLabel = new JLabel("Cover art:");
     JLabel musicLabel = new JLabel("Music:     ");
 
-    JTextField titleField = new JTextField(10);
-    JTextField coverArtField = new JTextField(10);
-    JTextField musicField = new JTextField(10);
 
     JButton titleBrowse = new JButton("Browse");
     JButton coverArtBrowse = new JButton("Browse");
@@ -97,6 +98,12 @@ public class StoreManagerView extends JFrame {
     panel.add(BorderLayout.LINE_END, button);
     return panel;
   }
+
+  public static void setTitleTitle (String filePath) { titleField.setText(filePath); }
+
+  public static void setCoverArtTitle (String filePath) { coverArtField.setText(filePath); }
+
+  public static void setMusicTitle (String filePath) { musicField.setText(filePath); }
 
 
 }
