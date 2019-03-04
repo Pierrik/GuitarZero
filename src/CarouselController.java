@@ -13,7 +13,7 @@ import net.java.games.input.ControllerEnvironment;
  *
  * @author  John Mercer
  * @author  Kamila Hoffmann-Derlacka
- * @version 1.00, February 2019.
+ * @version 1.2, March 2019.
  *
  *   Linux:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
@@ -27,11 +27,20 @@ import net.java.games.input.ControllerEnvironment;
  *   java -Djava.library.path=. CarouselController
  */
 public class CarouselController {
-  final static String GUITAR_HERO = "Guitar Hero";
-  final static int    DELAY       = 150;
 
-  private  CarouselModel model;
+  final static String GUITAR_HERO      = "Guitar Hero";
+  final static int    DELAY            = 150;
 
+  final static int    BUTTONS          = 3;
+  final static int    ZERO_POWER       = 8;
+  final static int    ESCAPE           = 10;
+  final static int    STRUM            = 16;
+
+  final static double BUTTON_THRESHOLD = 1.0;
+  final static double STRUM_THRESHOLD  = 0.75;
+
+
+  private  CarouselModel        model;
   private ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
   private Controller[]          ctrls = cenv.getControllers();
 
@@ -44,22 +53,22 @@ public class CarouselController {
    */
   private void pollForever( Controller ctrl ) {
     Component[] allCmps    = ctrl.getComponents();
-    float[]     vals       = new float[3];
-    Component[] activeCmps = {allCmps[8], allCmps[10], allCmps[16]};
+    float[]     vals       = new float[BUTTONS];
+    Component[] activeCmps = {allCmps[ZERO_POWER], allCmps[ESCAPE], allCmps[STRUM]};
 
     while (true) {
       if (ctrl.poll()) {
-        for ( int i = 0; i < 3; i++ ) {
+        for ( int i = 0; i < BUTTONS; i++ ) {
           vals[i] = activeCmps[i].getPollData();
         }
 
-        for ( int i = 0; i < 3; i++ ) {
+        for ( int i = 0; i < BUTTONS; i++ ) {
           float val = vals[i];
 
           switch(i){
             // zero-power button
             case 0 :
-              if (val == 1.0){
+              if (val == BUTTON_THRESHOLD){
                 model.select();
                 System.out.println("Zero power pressed");
               }
@@ -68,7 +77,7 @@ public class CarouselController {
 
             // escape button
             case 1 :
-              if (val >= 1.0){
+              if (val >= BUTTON_THRESHOLD){
                 model.select();
                 System.out.println("Escape button pressed");
               }
@@ -76,10 +85,10 @@ public class CarouselController {
 
             // strum
             case 2 :
-              if (val >= 0.75){
+              if (val >= STRUM_THRESHOLD){
                 model.right();
                 System.out.println("Strum right");
-              } else if (val <= -0.75){
+              } else if (val <= -STRUM_THRESHOLD){
                 model.left();
                 System.out.println("Strum left");
               }
@@ -89,7 +98,6 @@ public class CarouselController {
               } catch(Exception exn) {System.out.println(exn); System.exit(1);}
               */
               break;
-
           }
         }
       }

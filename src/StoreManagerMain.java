@@ -2,7 +2,7 @@
  * StoreManagerMain.
  *
  * @author  Pierrik Mellab
- * @version 1.0, January 2019.
+ * @version 1.0, February 2019.
  */
 public class StoreManagerMain {
 
