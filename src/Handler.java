@@ -3,14 +3,12 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Handler.
  *
  * @author  John Mercer
- * @version 1.05, February 2019.
+ * @version 1.07, February 2019.
  */
 public class Handler implements Runnable {
   private Socket sck;
@@ -66,7 +64,7 @@ public class Handler implements Runnable {
         return;
       }
     }
-    catch (NullPointerException exn){
+    catch (InvalidMethodException exn){
       System.out.println(exn); System.exit(1);
     }
 
@@ -107,7 +105,7 @@ public class Handler implements Runnable {
         return;
       }
     }
-    catch (NullPointerException exn){
+    catch (InvalidMethodException exn){
       System.out.println(exn); System.exit(1);
     }
 
@@ -136,22 +134,14 @@ public class Handler implements Runnable {
 
   /**
    * Builds (local) file path string from request method and file name.
-   * @param method: Request method(UPLOAD/DOWNLOAD + _BUNDLE/_PREVIEW)
+   * @param method: Request method (UPLOAD/DOWNLOAD + _BUNDLE/_PREVIEW)
    * @param fileName: File name for request (name of file to be uploaded/downloaded to/from server).
    * @return: File path to requested file.
-   * @throws NullPointerException: Thrown when any arguments object reference is null.
+   * @throws InvalidMethodException: Thrown when provided method is invalid.
    */
-  @NotNull
-  public static String getFilePath(@NotNull String method, @NotNull String fileName)
-      throws NullPointerException{
-
-    // checking arguments have been provided, else throwing nullpointer
-    Objects.requireNonNull(method, "No method provided.");
-    Objects.requireNonNull(fileName, "No filename provided.");
-
+  public static String getFilePath(String method, String fileName) throws InvalidMethodException{
     // building file path string
     String cd = System.getProperty("user.dir");
-
     if (method.equals("DOWNLOAD_BUNDLE") || method.equals("UPLOAD_BUNDLE")){
       return cd + "\\bundle_files\\" + fileName;
     }
@@ -159,7 +149,7 @@ public class Handler implements Runnable {
       return cd + "\\preview_files\\" + fileName;
     }
     else {
-      return "Invalid";
+      throw new InvalidMethodException("Invalid method provided.");
     }
   }
 }
