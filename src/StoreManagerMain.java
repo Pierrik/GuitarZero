@@ -1,9 +1,8 @@
-import javax.swing.JFrame;
 /*
- * Tetris.
+ * StoreManagerMain.
  *
- * @author  David Wakeling
- * @version 7.01a, January 2019.
+ * @author  Pierrik Mellab
+ * @version 1.0, January 2019.
  */
 public class StoreManagerMain {
 

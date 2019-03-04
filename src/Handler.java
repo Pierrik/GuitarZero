@@ -3,6 +3,8 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Handler.
@@ -25,7 +27,7 @@ public class Handler implements Runnable {
       final DataInputStream dataIn = new DataInputStream(sck.getInputStream());
       final DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
 
-      // parsing UTF - for method and file name
+      // parsing UTF - getting method and file name
       String header = dataIn.readUTF();
       String[] headers = header.split("/");
       String method = headers[0].toUpperCase();
@@ -35,7 +37,7 @@ public class Handler implements Runnable {
       // getting file size
       long fileSize = dataIn.readLong();
 
-      //processing request
+      // processing request
       if (methodType == 'U'){
         processUpload(method, dataIn, fileName, fileSize);
       }
@@ -58,15 +60,17 @@ public class Handler implements Runnable {
   public void processUpload(String method, DataInputStream dataIn, String fileName, long fileSize){
     // building file path string
     String filePath = "";
-    String cd = System.getProperty("user.dir");
-
-    if (method.equals("UPLOAD_BUNDLE")){
-      filePath = cd + "\\bundle_files\\" + fileName;
+    try{
+      filePath = getFilePath(method, fileName);
+      if (filePath.equals("Invalid")){
+        return;
+      }
     }
-    else if (method.equals("UPLOAD_PREVIEW")){
-      filePath = cd + "\\preview_files\\" + fileName;
+    catch (NullPointerException exn){
+      System.out.println(exn); System.exit(1);
     }
 
+    // processing the upload
     try{
       // stream for file to be written to (local directory on server)
       BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(filePath));
@@ -97,15 +101,17 @@ public class Handler implements Runnable {
   public void processDownload(String method, DataOutputStream dataOut, String fileName){
     // building file path string
     String filePath = "";
-    String cd = System.getProperty("user.dir");
-
-    if (method.equals("DOWNLOAD_BUNDLE")){
-      filePath = cd + "\\bundle_files\\" + fileName;
+    try{
+      filePath = getFilePath(method, fileName);
+      if (filePath.equals("Invalid")){
+        return;
+      }
     }
-    else if (method.equals("DOWNLOAD_PREVIEW")){
-      filePath = cd + "\\preview_files\\" + fileName;
+    catch (NullPointerException exn){
+      System.out.println(exn); System.exit(1);
     }
 
+    // processing the download
     try{
       // instantiating byte array of the correct size to store file
       File file = new File(filePath);
@@ -125,6 +131,35 @@ public class Handler implements Runnable {
     }
     catch (Exception exn) {
       System.out.println(exn); System.exit(1);
+    }
+  }
+
+  /**
+   * Builds (local) file path string from request method and file name.
+   * @param method: Request method(UPLOAD/DOWNLOAD + _BUNDLE/_PREVIEW)
+   * @param fileName: File name for request (name of file to be uploaded/downloaded to/from server).
+   * @return: File path to requested file.
+   * @throws NullPointerException: Thrown when any arguments object reference is null.
+   */
+  @NotNull
+  public static String getFilePath(@NotNull String method, @NotNull String fileName)
+      throws NullPointerException{
+
+    // checking arguments have been provided, else throwing nullpointer
+    Objects.requireNonNull(method, "No method provided.");
+    Objects.requireNonNull(fileName, "No filename provided.");
+
+    // building file path string
+    String cd = System.getProperty("user.dir");
+
+    if (method.equals("DOWNLOAD_BUNDLE") || method.equals("UPLOAD_BUNDLE")){
+      return cd + "\\bundle_files\\" + fileName;
+    }
+    else if (method.equals("DOWNLOAD_PREVIEW") || method.equals("UPLOAD_PREVIEW")){
+      return cd + "\\preview_files\\" + fileName;
+    }
+    else {
+      return "Invalid";
     }
   }
 }
