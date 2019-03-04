@@ -8,10 +8,11 @@ import javax.swing.JLabel;
  * @version 1.0, March 2019
  */
 public class StoreMode {
-  public static void readPreviewsFromServer(){}
-  //public static void
+  private static final String HOST = "localhost";
+  private static final int    PORT = 8888;
 
   public static void main(String args[]) {
+    ArrayList<String> fileNames = MockClient.listDirectory(HOST, PORT);
     ArrayList<JLabel> menuOptions = new ArrayList<>();
 
     // Create all menu option labels with their image icon and title

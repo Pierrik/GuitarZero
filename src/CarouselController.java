@@ -40,7 +40,7 @@ public class CarouselController {
   final static double STRUM_THRESHOLD  = 0.75;
 
 
-  private  CarouselModel        model;
+  private CarouselModel         model;
   private ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
   private Controller[]          ctrls = cenv.getControllers();
 

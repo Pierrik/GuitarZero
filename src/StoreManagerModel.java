@@ -140,16 +140,6 @@ public class StoreManagerModel {
   }
 
   /**
-   * Uploads a file to the server
-   * @param filePath: Location of the file to upload
-   * @param method: Upload method (UPLOAD_BUNDLE or UPLOAD_PREVIEW)
-   */
-  public static void sendFileToServer(String filePath, String method){
-    MockClient client = new MockClient(HOST, PORT);
-    client.uploadFile(filePath, method);
-  }
-
-  /**
    * Deletes specified file
    * @param filePath: File to delete
    */
@@ -164,8 +154,8 @@ public class StoreManagerModel {
           // zipping files and sending to server
           String bundlePath = bundleZipper(titleFile, coverArtFile, musicFile);
           String previewPath = previewZipper(titleFile, coverArtFile);
-          sendFileToServer(bundlePath, "UPLOAD_BUNDLE");
-          sendFileToServer(previewPath, "UPLOAD_PREVIEW");
+          MockClient.uploadFile(HOST, PORT, bundlePath, "UPLOAD_BUNDLE");
+          MockClient.uploadFile(HOST, PORT, previewPath, "UPLOAD_PREVIEW");
 
           // cleaning up (deleting zips and noteFile on client-side)
           deleteFile(bundlePath);
