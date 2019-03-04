@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
+import java.util.ArrayList;
 
 /**
  * Play Mode View.
@@ -17,7 +18,8 @@ import javax.imageio.ImageIO;
  * @author Harper Ford
  * @version 1.00, February 2019.
 */
-public class PlayModeView{
+public class PlayModeView extends JPanel{
+  ArrayList<Note> notes = new ArrayList<Note>();
   static int frame;
   //Setup background animation values
   static int backgroundFrameCount = 1;
@@ -28,7 +30,7 @@ public class PlayModeView{
     frame = 0;
     try{
       for(int i = 0; i<backgroundFrameCount; i++){
-        bg[i] = ImageIO.read(new File("../assets/bg"+i+".bmp"));
+        bg[i] = ImageIO.read(new File("assets/bg"+i+".bmp"));
       }
     }
     catch(Exception e){
@@ -36,13 +38,20 @@ public class PlayModeView{
     }
   }
 
+  public void addNote(String note){
+    notes.add(new Note(note));
+  }
+
   /**
-    * Draws all necessary GUI elements on the JPanel
+    * Draws all neccesary GUI elements on the JPanel
     * @param g: The the graphics object associated with the JPanel
     */
   public void paint(Graphics g) {
     //Draw the background animation frame depending on the current frame/10%(number of frames in the animation)
-    g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0, null);
+    g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0,null);
+    for (Note n : notes){
+      n.paintComponent(g);
+    }
     frame++;
   }
 }
