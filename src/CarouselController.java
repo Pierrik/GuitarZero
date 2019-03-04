@@ -13,7 +13,7 @@ import net.java.games.input.ControllerEnvironment;
  *
  * @author  John Mercer
  * @author  Kamila Hoffmann-Derlacka
- * @version 1.2, March 2019.
+ * @version 1.4, March 2019.
  *
  *   Linux:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
@@ -162,7 +162,7 @@ public class CarouselController {
     } else if (isUnix()) {
       ZERO_POWER       = 8;
       ESCAPE           = 10;
-      STRUM            = 16;
+      STRUM            = 14;
     }
 
     for ( Controller ctrl : ctrls ) {
