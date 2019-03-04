@@ -102,47 +102,33 @@ public class CarouselView extends JFrame {
 
         if (label.getX() == bounds.get(0).x) {
           label.setBounds(bounds.get(carouselLength - 1));
+          label.setVisible(false);
 
         } else if (label.getX() == bounds.get(i).x) {
           label.setBounds(bounds.get(i - 1));
+
+          if(i-1 < 5) {
+            label.setVisible(true);
+
+          } else {
+            label.setVisible(false);
+          }
+
         }
+
       }
     }
   }
-
-    /**
-     * Shifts the JLabels right, called from the CarouselModel object
-
-     public static void rightMovement () {
-
-     for (JLabel label : menuOptions) {
-
-     if (label.getX() == bounds[0].x) {
-     label.setBounds(bounds[1]);
-
-     } else if (label.getX() == bounds[1].x) {
-     label.setBounds(bounds[2]);
-
-     } else if (label.getX() == bounds[2].x) {
-     label.setBounds(bounds[3]);
-
-     } else if (label.getX() == bounds[3].x) {
-     label.setBounds(bounds[4]);
-
-     } else if (label.getX() == bounds[4].x) {
-     label.setBounds(bounds[0]);
-
-     }
-
-     }
-     }
-     ***/
 
     public static void initialiseBounds( int labelLength){
 
       for (int i = 0; i <= labelLength; i++) {
 
-        bounds.add(new Rectangle(i * 150, 0, 140, 140));
+        if (i < 5) {
+          bounds.add(new Rectangle(i * 150, 0, 140, 140));
+        } else {
+          bounds.add(new Rectangle(0, 0, 0, 0));
+        }
       }
     }
 }

@@ -9,7 +9,7 @@ import javax.swing.JLabel;
  */
 public class StoreMode {
   public static void readPreviewsFromServer(){}
-  public static void
+  //public static void
 
   public static void main(String args[]) {
     ArrayList<JLabel> menuOptions = new ArrayList<>();
