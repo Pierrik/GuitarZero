@@ -12,7 +12,7 @@ import java.awt.*;
 public class Run{
   public static void main(String[] args){
     JFrame window = new JFrame("GZ");
-    PlayMode p = new PlayMode(window);
+    PlayMode p = new PlayMode(window, "C:\\Users\\tomma\\Documents\\GuitarZero\\testBundle");
     //Set the content to the drawings from the GamePanel object
     window.setPreferredSize(new Dimension(1000,500));
     window.setContentPane(p);
