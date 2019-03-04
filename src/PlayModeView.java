@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Play Mode View.
  *
  * @author Harper Ford
- * @version 1.00, February 2019.
+ * @version 2.00, March 2019.
 */
 public class PlayModeView extends JPanel{
   ArrayList<Note> notes = new ArrayList<Note>();
