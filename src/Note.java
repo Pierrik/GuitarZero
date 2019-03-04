@@ -6,8 +6,8 @@ import java.awt.*;
 
 public class Note{
   //Load note sprites
-  Image blackNote = new ImageIcon("assets/BlackNote.png").getImage();
-  Image whiteNote = new ImageIcon("assets/WhiteNote.png").getImage();
+  Image blackNote = new ImageIcon("../assets/BlackNote.png").getImage();
+  Image whiteNote = new ImageIcon("../assets/WhiteNote.png").getImage();
   Image sprite;
   //Setup position/speed variables
   int velocity = 3;
