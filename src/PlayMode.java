@@ -17,13 +17,14 @@ public class PlayMode extends JPanel{
     /**
      * Initialises the GUI classes for a PlayMode
      */
-    public PlayMode() {
+    public PlayMode(JFrame frame) {
+
         // Initialise the model, controller, view GUI classes
-        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         PlayModeView view = new PlayModeView();
-        //this.add(view);
-        //PlayModeModel      model      = new PlayModeModel(view);
-        //PlayModeController controller = new PlayModeController(model);
+        view.setPreferredSize(new Dimension(1000,500));
+        PlayModeModel      model      = new PlayModeModel(view);
+        PlayModeController controller = new PlayModeController(model);
+        this.add(view);
         //controller.pollGuitarForever();
     }
 }
