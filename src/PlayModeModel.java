@@ -27,10 +27,27 @@ public class PlayModeModel {
   private int totalCurrency;
   private int currencyEarned;
   private int score;
-  private String currentNote = "";
+  private String currentNote;
   private long currentTick;
   private HashMap<Long, String> notes;
   private HashMap<Long, String> notesCollected;
+  private boolean endOfSong;
+
+  public long getCurrentTick() {
+    return this.currentTick;
+  }
+
+  public HashMap<Long, String> getNotes() {
+    return this.notes;
+  }
+
+  public HashMap<Long, String> getNotesCollected() {
+    return this.notesCollected;
+  }
+
+  public boolean isEndOfSong() {
+    return endOfSong;
+  }
 
   public PlayModeModel( String bundlePath ) {
     this.bundlePath = bundlePath;
@@ -60,6 +77,8 @@ public class PlayModeModel {
     }
     this.notes = new HashMap<>();
     loadNotesFile();
+    this.currentNote = "";
+    this.endOfSong = false;
   }
 
   /**
@@ -237,12 +256,13 @@ public class PlayModeModel {
         currentTick = seq.getTickPosition();
         this.currentTick = currentTick;
         changeCurrentNote(currentTick);
-        checkCollected();
+
       }
 
     } catch ( Exception exn ) {
       System.out.println( exn ); System.exit( 1 );
     }
+    this.endOfSong = true;
   }
 
   /**
