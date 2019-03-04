@@ -13,6 +13,11 @@ import javax.swing.filechooser.FileSystemView;
 
 public class StoreManagerModel {
 
+  // server settings
+  private static final String HOST = "localhost";
+  private static final int    PORT = 8888;
+
+  // storing bundle files
   private File titleFile = null;
   private File coverArtFile = null;
   private File musicFile = null;
@@ -140,7 +145,7 @@ public class StoreManagerModel {
    * @param method: Upload method (UPLOAD_BUNDLE or UPLOAD_PREVIEW)
    */
   public static void sendFileToServer(String filePath, String method){
-    MockClient client = new MockClient("localhost", 8888);
+    MockClient client = new MockClient(HOST, PORT);
     client.uploadFile(filePath, method);
   }
 
