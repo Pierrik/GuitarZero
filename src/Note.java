@@ -4,6 +4,12 @@ import javax.swing.ImageIcon;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Notes to be displayed on the highway
+ *
+ * @author Harper Ford
+ * @version 2.00, March 2019.
+*/
 public class Note{
   //Load note sprites
   Image blackNote = new ImageIcon("../assets/BlackNote.png").getImage();
