@@ -23,5 +23,7 @@ class StoreManagerController3 implements ActionListener {
 
     storeManagerModel.setMusicFile(file);
 
+    storeManagerView.setMusicTitle(filePath);
+
   }
 }
