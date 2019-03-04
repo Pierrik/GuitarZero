@@ -24,7 +24,7 @@ public class CarouselModel {
      */
     public void right() {
 
-        CarouselView.rightMovement();
+        //CarouselView.rightMovement();
     }
 
     /**

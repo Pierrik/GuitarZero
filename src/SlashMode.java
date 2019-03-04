@@ -23,7 +23,7 @@ public class SlashMode {
 
 
     /**
-     * Initialises the GUI classes for a courssel with menu options specific to Slash Mode
+     * Initialises the GUI classes for a courel with menu options specific to Slash Mode
      */
     public static void main(String args[]) {
 

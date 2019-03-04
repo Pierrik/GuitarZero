@@ -108,4 +108,30 @@ public class MockClient {
     }
 
   }
+
+  public void getJSON(String method, String destinationPath){
+    try{
+      // requesting json
+      Socket sck = new Socket(this.host, this.port);
+      DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
+
+      dataOut.writeUTF(method);
+      dataOut.flush();
+
+      // attempting to receive the file
+      DataInputStream  dataIn  = new DataInputStream(sck.getInputStream());
+      ObjectOutputStream fileOut = new ObjectOutputStream(new BufferedOutputStream(
+                                                          new FileOutputStream(destinationPath)));
+
+      byte[] bytes = dataIn.readAllBytes();
+      fileOut.write(bytes);
+
+      // cleaning up
+      fileOut.close();
+      sck.close();
+
+  } catch ( Exception exn ) {
+    System.out.println( exn ); System.exit( 1 );
+  }
+  }
 }
