@@ -32,24 +32,10 @@ public class PlayModeModel {
   private HashMap<Long, String> notes;
   private HashMap<Long, String> notesCollected;
   private boolean endOfSong;
+  private PlayModeView view;
 
-  public long getCurrentTick() {
-    return this.currentTick;
-  }
-
-  public HashMap<Long, String> getNotes() {
-    return this.notes;
-  }
-
-  public HashMap<Long, String> getNotesCollected() {
-    return this.notesCollected;
-  }
-
-  public boolean isEndOfSong() {
-    return endOfSong;
-  }
-
-  public PlayModeModel( String bundlePath ) {
+  public PlayModeModel( String bundlePath, PlayModeView view ) {
+    this.view = view;
     this.bundlePath = bundlePath;
     this.multiplier = 1;
     this.streakCount = 0;
@@ -79,6 +65,26 @@ public class PlayModeModel {
     loadNotesFile();
     this.currentNote = "";
     this.endOfSong = false;
+  }
+
+  public long getCurrentTick() {
+    return this.currentTick;
+  }
+
+  public HashMap<Long, String> getNotes() {
+    return this.notes;
+  }
+
+  public HashMap<Long, String> getNotesCollected() {
+    return this.notesCollected;
+  }
+
+  public boolean isEndOfSong() {
+    return endOfSong;
+  }
+
+  public String getCurrentNote() {
+    return this.currentNote;
   }
 
   /**
@@ -236,6 +242,7 @@ public class PlayModeModel {
       final Sequencer seq = MidiSystem.getSequencer();
       final Transmitter trans  = seq.getTransmitter();
       long currentTick;
+      AddNoteToHighway addNoteToHighway= new AddNoteToHighway(this, view);
 
       seq.open();
 
@@ -250,6 +257,8 @@ public class PlayModeModel {
       });
 
       seq.start();
+      addNoteToHighway.run();
+
 
       // Set the current tick pointer to the current tick of the song
       while(seq.isRunning()){
@@ -316,7 +325,7 @@ public class PlayModeModel {
 
 
   // Temporary main to test methods
-  public static void main(String args[]) {
+  /*public static void main(String args[]) {
     PlayModeModel playMode = new PlayModeModel("C:\\Users\\tomma\\Documents\\GuitarZero\\testBundle");
     //System.out.println(playMode.findNotesFile().getPath());
     //playMode.playSong();
@@ -330,7 +339,7 @@ public class PlayModeModel {
     playMode.playSong();
 
     //System.out.println(playMode.notesFile.getName());
-  }
+  }*/
 
 
 }

@@ -30,7 +30,7 @@ public class PlayModeView extends JPanel{
     frame = 0;
     try{
       for(int i = 0; i<backgroundFrameCount; i++){
-        bg[i] = ImageIO.read(new File("../assets/bg"+i+".bmp"));
+        bg[i] = ImageIO.read(new File("assets\\bg"+i+".bmp"));
       }
     }
     catch(Exception e){
