@@ -49,7 +49,7 @@ public class PlayModeController {
 
   // Variables that change for different operating systems, default: windows
   static int          BENDER_ROUND = 13;
-  static int          WHAMMY       = 16;
+  static int          WHAMMY       = 14;
 
   public PlayModeController(PlayModeModel model){
     this.model = model;
@@ -107,7 +107,7 @@ public class PlayModeController {
               }
             } else if (i == ESCAPE) { // escape button
               if (val == BUTTON_THRESHOLD) {
-                // action
+                System.out.println("escape");
               }
             } else if (i == BENDER_CLICK) { //bender button click
               if (val == BUTTON_THRESHOLD) {
@@ -262,7 +262,7 @@ public class PlayModeController {
       WHAMMY           = 17;
     } else if (Run.OSvalidator() == 'u') {
       BENDER_ROUND     = 17;
-      WHAMMY           = 14 ;
+      WHAMMY           = 16;
     }
 
     for ( Controller ctrl : ctrls ) {
