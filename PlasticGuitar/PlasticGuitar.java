@@ -12,7 +12,7 @@ import net.java.games.input.ControllerEnvironment;
  *
  * @author  David Wakeling
  * @version 1.00, January 2019. 
- * 
+ *   $ (CD src)
  *   $ CLASSPATH=jinput-2.0.9.jar:.
  *   $ export CLASSPATH
  *   $ javac PlasicGuitar.java
