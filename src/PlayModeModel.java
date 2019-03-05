@@ -19,7 +19,7 @@ import java.lang.Thread;
  * @author Harper Ford (Threading Work)
  */
 
-public class PlayModeModel implements Runnable {
+public class PlayModeModel {
   private String bundlePath;
   private File midiFile;
   private File notesFile;
@@ -241,38 +241,21 @@ public class PlayModeModel implements Runnable {
    * Play the MIDI song
    * Sets current tick and current note values as the song is played
    */
-  public void run() {
-    Thread viewThread = new Thread(view);
-    viewThread.start();
-    try {
-      final Sequencer seq = MidiSystem.getSequencer();
-      final Transmitter trans  = seq.getTransmitter();
-      long currentTick;
-      seq.open();
-      seq.setSequence( MidiSystem.getSequence( midiFile ) );
-      seq.addMetaEventListener( new MetaEventListener() {
-        public void meta( MetaMessage msg ) {
-          if ( msg.getType() == 0x2F ) {
-            seq.close();
-          }
-        }
-      });
-      seq.start();
+  public void playSong() {
+    PlaySong playSong = new PlaySong(this.midiFile);
+    Thread playSongThread = new Thread(playSong);
+    playSongThread.start();
 
 
       // Set the current tick pointer to the current tick of the song
-      while(seq.isRunning()){
-        currentTick = seq.getTickPosition();
-        this.currentTick = currentTick;
-        changeCurrentNote(currentTick);
-        view.addNote(currentNote);
-        view.repaint();
+      while(!playSong.endOfSong){
+        this.currentTick = playSong.currentTick;
+        changeCurrentNote(this.currentTick);
+        if(this.currentNote != "000"){
+          view.addNote(currentNote);
+          view.repaint();
+        }
       }
-      seq.stop();
-    } catch ( Exception exn ) {
-      System.out.println( exn ); System.exit( 1 );
-    }
-    this.endOfSong = true;
 
   }
 
@@ -286,7 +269,7 @@ public class PlayModeModel implements Runnable {
       this.currentNote = this.notes.get(Long.valueOf(tick));
     }
     else{
-      this.currentNote = "010";
+      this.currentNote = "000";
     }
   }
 
@@ -328,7 +311,7 @@ public class PlayModeModel implements Runnable {
 
   // Temporary main to test methods
   /*public static void main(String args[]) {
-    PlayModeModel playMode = new PlayModeModel("C:\\Users\\tomma\\Documents\\GuitarZero\\testBundle");
+    PlayModeModel playMode = new PlayModeModel("C:\\Users\\tomma\\Documents\\GuitarZero\\testBundle", new PlayModeView());
     //System.out.println(playMode.findNotesFile().getPath());
     //playMode.playSong();
 
