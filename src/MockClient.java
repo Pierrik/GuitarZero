@@ -10,14 +10,11 @@ import java.util.ArrayList;
  *
  * @author  John Mercer
  * @author  Harper Ford (Javadoc)
- * @version 2.00, February 2019.
+ * @version 2.01, February 2019.
  */
 public class MockClient {
-
   /**
    * Uploads the given bundle to the server
-   * @param host: Host address
-   * @param port: Port number
    * @param fileName: The filepath of the file to upload
    * @param method: Upload method (UPLOAD_BUNDLE or UPLOAD_PREVIEW)
    */
@@ -51,12 +48,8 @@ public class MockClient {
     }
   }
 
-
-
   /**
    * Downloads the given file from the server
-   * @param host: Host address
-   * @param port: Port number
    * @param fileName: The filepath of the file to download
    * @param method: Download method (DOWNLOAD_BUNDLE or DOWNLOAD_PREVIEW)
    */
@@ -110,37 +103,38 @@ public class MockClient {
 
   /**
    * Requests a directory listing of the previews directory on the server
-   * @param host: Host address
-   * @param port: Port number
    * @return ArrayList: ArrayList of filenames (songs available to buy)
    */
+  /*
   public static ArrayList<String> listDirectory(String host, int port){
     try{
       // requesting the directory listing
       Socket sck = new Socket(host, port);
-      DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
+      ObjectOutputStream objOut = new ObjectOutputStream(sck.getOutputStream());
 
-      dataOut.writeUTF("LIST_DIRECTORY");
-      dataOut.flush();
+      objOut.writeUTF("LIST_DIRECTORY");
+      objOut.flush();
 
       // attempting to receive the object (file array of previews from server)
-      ObjectInputStream objIn = new ObjectInputStream(new DataInputStream(sck.getInputStream()));
-      File[] previews = (File[]) objIn.readObject();
-      ArrayList<String> filenames = new ArrayList<>();
+      ObjectInputStream objIn = new ObjectInputStream(sck.getInputStream());
+      ArrayList<String> songNames = (ArrayList<String>) objIn.readObject();
 
       // reading object contents and storing in String arraylist
+
       for (File preview : previews) {
         if (preview.isFile()) {
           filenames.add(preview.getName());
         }
       }
 
+
       // cleaning up and returning arraylist of filenames
       sck.close();
-      return filenames;
+      return previews;
 
   } catch ( Exception exn ) {
     System.out.println(exn); return null;
     }
   }
+  */
 }

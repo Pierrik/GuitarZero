@@ -16,7 +16,7 @@ import java.util.zip.ZipOutputStream;
  * @author  John Mercer
  * @author  Harper Ford (Javadoc)
  * @author  John Merer (Added bundle/preview functionality)
- * @version 1.4, February 2019.
+ * @version 1.5, March 2019.
  *
  */
 public class StoreManager extends JFrame {
