@@ -11,9 +11,8 @@ import net.java.games.input.ControllerEnvironment;
 /**
  * PlayModeController.
  *
- * @author  John Mercer
  * @author  Kamila Hoffmann-Derlacka
- * @version 1.1, February 2019.
+ * @version 1.3, February 2019.
  *
  *   Linux:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
@@ -29,11 +28,36 @@ import net.java.games.input.ControllerEnvironment;
 public class PlayModeController {
   final static String GUITAR_HERO = "Guitar Hero";
   final static int    DELAY       = 150;
+  private static String OS = System.getProperty("os.name").toLowerCase();
 
   private  PlayModeModel model;
+  // make them non static when not using main anymore
+  private static ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
+  private static Controller[]          ctrls = cenv.getControllers();
 
-  private ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
-  private Controller[]          ctrls = cenv.getControllers();
+  final static double BUTTON_THRESHOLD = 1.0;
+
+  // variables that change for different operating systems, default: windows
+  final static int    WHITE1       = 0;
+  final static int    BLACK1       = 1;
+  final static int    WHITE2       = 4;
+  final static int    BLACK2       = 2;
+  final static int    WHITE3       = 5;
+  final static int    BLACK3       = 3;
+  final static int    ZERO_POWER   = 8;
+  final static int    ESCAPE       = 10;
+  final static int    BENDER_CLICK = 12;
+  static int          BENDER_ROUND = 13;
+  static int          WHAMMY       = 16;
+
+  public static boolean isMac() {
+    return (OS.indexOf("mac") >= 0);
+  }
+
+  public static boolean isUnix() {
+    return (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 );
+  }
+
 
   public PlayModeController(PlayModeModel model){
     this.model = model;
@@ -42,7 +66,7 @@ public class PlayModeController {
   /*
    * Poll forever, and altering model depending on buttons pressed
    */
-  public void pollForever(Controller ctrl) {
+  public static void pollForever(Controller ctrl) {
     Component[] allCmps    = ctrl.getComponents();
     float[]     vals       = new float[allCmps.length];
     int         previous1;
@@ -57,207 +81,169 @@ public class PlayModeController {
         previous1 = -1;
         previous2 = -1;
         previous3 = -1;
+
         for ( int i = 0; i < allCmps.length; i++ ) {
           float val = vals[i];
 
-          switch(i){
-            // white one
-            case 0 :
-              if (val == 1.0){
+            if (i == WHITE1) {
+              if (val == BUTTON_THRESHOLD){
                 previous1 = i;
               }
-              break;
-
-            // black one
-            case 1 :
-              if (val == 1.0){
+            } else if ( i == BLACK1) {
+              if (val == BUTTON_THRESHOLD){
                 previous1 = i;
               }
-              break;
-
-            // black two
-            case 2 :
-              if (val == 1.0){
+            } else if (i == BLACK2) {
+              if (val == BUTTON_THRESHOLD){
                 previous2 = i;
               }
-              break;
-
-            // black three
-            case 3 :
-              if (val == 1.0){
+            } else if (i == BLACK3) {
+              if (val == BUTTON_THRESHOLD){
                 previous3 = i;
               }
-              break;
-
-            // white two
-            case 4 :
-              if (val == 1.0){
+            } else if (i == WHITE2) {
+              if (val == BUTTON_THRESHOLD){
                 previous2 = i;
               }
-              break;
-
-            // white three
-            case 5 :
-              if (val == 1.0){
+            } else if (i == WHITE3) {
+              if (val == BUTTON_THRESHOLD){
                 previous3 = i;
               }
-              break;
-
-            // zero power button
-            case 8 :
-              if (val == 1.0){
+            } else if (i == ZERO_POWER) {
+              if (val == BUTTON_THRESHOLD) {
                 //model.select();
               }
-              break;
-
-            // escape button
-            case 10 :
-              if (val == 1.0){
+            } else if (i == ESCAPE) { // escape button
+              if (val == BUTTON_THRESHOLD) {
                 // action
               }
-              break;
-
-            // bender button click
-            case 12 :
-              if (val == 1.0){
+            } else if (i == BENDER_CLICK) { //bender button click
+              if (val == BUTTON_THRESHOLD) {
                 // action
               }
-              break;
-
-            // bender button playing around (values 1/8, 2/8, 3/8...)
-            case 13 :
-              if (val > 0){
+            } else if (i == BENDER_ROUND) { // bender button playing around (values 1/8, 2/8, 3/8...) // linux 17
+              if (val > 0) {
                 // action
               }
-              break;
-
-            // whammy bar (responsible for strumming)
-            case 14 :
+            } else if (i == WHAMMY) { // whammy bar (responsible for strumming) // 16 in linux
               if (val >= 0){
-                if (previous1 == 0) {
-                  if (previous2 == 4) {
-                    if (previous3 == 5) {
+                if (previous1 == WHITE1) {
+                  if (previous2 == WHITE2) {
+                    if (previous3 == WHITE3) {
                       System.out.println("white one + white two + white three + strum");
-                      model.checkNote("222");
-                    } else if (previous3 == 3) {
+                      //model.checkNote("222");
+                    } else if (previous3 == BLACK3) {
                       System.out.println("white one + white two + black three + strum");
-                      model.checkNote("221");
+                      //model.checkNote("221");
                     } else {
                       System.out.println("white one + white two + strum");
-                      model.checkNote("220");
+                      //model.checkNote("220");
                     }
                   }
-                  else if (previous2 == 2) {
-                    if (previous3 == 5) {
+                  else if (previous2 == BLACK2) {
+                    if (previous3 == WHITE3) {
                       System.out.println("white one + black two + white three + strum");
-                      model.checkNote("");
-                    } else if (previous3 == 3) {
+                      //model.checkNote("212");
+                    } else if (previous3 == BLACK3) {
                       System.out.println("white one + black two + black three + strum");
-                      model.checkNote("211");
+                      //model.checkNote("211");
                     } else {
                       System.out.println("white one + black two + strum");
-                      model.checkNote("210");
+                      //model.checkNote("210");
                     }
                   }
                   else {
-                    if (previous3 == 5) {
+                    if (previous3 == WHITE3) {
                       System.out.println("white one + white three + strum");
-                      model.checkNote("202");
+                      //model.checkNote("202");
                     }
-                    else if (previous3 == 3) {
+                    else if (previous3 == BLACK3) {
                       System.out.println("white one + black three + strum");
-                      model.checkNote("201");
+                      //model.checkNote("201");
                     }
                     else {
                       System.out.println("white one + strum");
-                      model.checkNote("200");
+                      //model.checkNote("200");
                     }
                   }
                 }
-                else if (previous1 == 1) {
-                  if (previous2 == 4) {
-                    if (previous3 == 5) {
+                else if (previous1 == BLACK1) {
+                  if (previous2 == WHITE2) {
+                    if (previous3 == WHITE3) {
                       System.out.println("black one + white two + white three + strum");
-                      model.checkNote("122");
-                    } else if (previous3 == 3) {
+                      //model.checkNote("122");
+                    } else if (previous3 == BLACK3) {
                       System.out.println("black one + white two + black three + strum");
-                      model.checkNote("121");
+                      //model.checkNote("121");
                     } else {
                       System.out.println("black one + white two + strum");
-                      model.checkNote("120");
+                      //model.checkNote("120");
                     }
-                  } else if (previous2 == 2) {
-                    if (previous3 == 5) {
+                  } else if (previous2 == BLACK2) {
+                    if (previous3 == WHITE3) {
                       System.out.println("black one + black two + white three + strum");
-                      model.checkNote("112");
-                    } else if (previous3 == 3) {
+                      //model.checkNote("112");
+                    } else if (previous3 == BLACK3) {
                       System.out.println("black one + black two + black three + strum");
-                      model.checkNote("111");
+                      //model.checkNote("111");
                     } else {
                       System.out.println("black one + black two + strum");
-                      model.checkNote("110");
+                      //model.checkNote("110");
                     }
                   } else {
-                    if (previous3 == 5) {
+                    if (previous3 == WHITE3) {
                       System.out.println("black one + white three + strum");
-                      model.checkNote("120");
-                    } else if (previous3 == 3) {
+                      //model.checkNote("120");
+                    } else if (previous3 == BLACK3) {
                       System.out.println("black one + black three + strum");
-                      model.checkNote("101");
+                      //model.checkNote("101");
                     } else {
                       System.out.println("black one + strum");
-                      model.checkNote("100");
+                      //model.checkNote("100");
                     }
                   }
                 }
                 else {
-                  if (previous2 == 4) {
-                    if (previous3 == 5) {
+                  if (previous2 == WHITE2) {
+                    if (previous3 == WHITE3) {
                       System.out.println("white two + white three + strum");
-                      model.checkNote("022");
-                    } else if (previous3 == 3) {
+                      //model.checkNote("022");
+                    } else if (previous3 == BLACK3) {
                       System.out.println("white two + black three + strum");
-                      model.checkNote("021");
+                      //model.checkNote("021");
                     } else {
                       System.out.println("white two + strum");
-                      model.checkNote("020");
+                      //model.checkNote("020");
                     }
                   }
-                  else if (previous2 == 2) {
-                    if (previous3 == 5) {
+                  else if (previous2 == BLACK2) {
+                    if (previous3 == WHITE3) {
                       System.out.println("black two + white three + strum");
-                      model.checkNote("012");
-                    } else if (previous3 == 3) {
+                      //model.checkNote("012");
+                    } else if (previous3 == BLACK3) {
                       System.out.println("black two + black three + strum");
-                      model.checkNote("011");
+                      //model.checkNote("011");
                     } else {
                       System.out.println("black two + strum");
-                      model.checkNote("010");
+                      //model.checkNote("010");
                     }
                   }
                   else {
-                    if (previous3 == 5) {
+                    if (previous3 == WHITE3) {
                       System.out.println("white three + strum");
-                      model.checkNote("002");
+                      //model.checkNote("002");
                     }
-                    else if (previous3 == 3) {
+                    else if (previous3 == BLACK3) {
                       System.out.println("black three + strum");
-                      model.checkNote("001");
+                      //model.checkNote("001");
                     }
                     else {
                       System.out.println("nothing lol + strum");
-                      model.checkNote("000");
+                      //model.checkNote("000");
                     }
                   }
                 }
               }
-              /*
-              try {
-                Thread.sleep(DELAY);       // sleeping so strum is less sensitive
-              } catch(Exception exn) {System.out.println(exn); System.exit(1);}
-              */
-              break;
-
           }
         }
       }
@@ -277,9 +263,35 @@ public class PlayModeController {
 
   // Main commented out as pollForever can't be referenced from static
 
-  /*public static void main(String[] argv) {
-    ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
-    Controller[]          ctrls = cenv.getControllers();
+  public static void main(String[] args) {
+
+    if (isMac()) {
+      BENDER_ROUND     = 13;
+      WHAMMY           = 16;
+    } else if (isUnix()) {
+      BENDER_ROUND     = 17;
+      WHAMMY           = 14 ;
+    }
+
+    for ( Controller ctrl : ctrls ) {
+      if ( ctrl.getName().contains( GUITAR_HERO ) ) {
+        pollForever( ctrl );
+      }
+    }
+
+    System.out.println( GUITAR_HERO + " controller not found" );
+    System.exit( 1 );
+  }
+/*
+  public void pollGuitarForever() {
+
+    if (isMac()) {
+      BENDER_ROUND     = 13;
+      WHAMMY           = 16;
+    } else if (isUnix()) {
+      BENDER_ROUND     = 17;
+      WHAMMY           = 14 ;
+    }
 
     for ( Controller ctrl : ctrls ) {
       if ( ctrl.getName().contains( GUITAR_HERO ) ) {
@@ -290,5 +302,4 @@ public class PlayModeController {
     System.out.println( GUITAR_HERO + " controller not found" );
     System.exit( 1 );
   }*/
-
 }

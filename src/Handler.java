@@ -3,12 +3,13 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 /**
  * Handler.
  *
  * @author  John Mercer
- * @version 1.07, February 2019.
+ * @version 1.08, February 2019.
  */
 public class Handler implements Runnable {
   private Socket sck;
@@ -22,8 +23,9 @@ public class Handler implements Runnable {
   public void run() {
     try {
       // client socket streams
-      final DataInputStream dataIn = new DataInputStream(sck.getInputStream());
-      final DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
+      final DataInputStream    dataIn  = new DataInputStream(sck.getInputStream());
+      final DataOutputStream   dataOut = new DataOutputStream(sck.getOutputStream());
+      final ObjectOutputStream objOut  = new ObjectOutputStream(dataOut);
 
       // parsing UTF - getting method and file name
       String header = dataIn.readUTF();
@@ -41,6 +43,9 @@ public class Handler implements Runnable {
       }
       else if (methodType == 'D'){
         processDownload(method, dataOut, fileName);
+      }
+      else if (method.equals("LIST_DIRECTORY")){
+        processListing(objOut);
       }
     }
     catch (Exception exn) {
@@ -60,9 +65,6 @@ public class Handler implements Runnable {
     String filePath = "";
     try{
       filePath = getFilePath(method, fileName);
-      if (filePath.equals("Invalid")){
-        return;
-      }
     }
     catch (InvalidMethodException exn){
       System.out.println(exn); System.exit(1);
@@ -101,9 +103,6 @@ public class Handler implements Runnable {
     String filePath = "";
     try{
       filePath = getFilePath(method, fileName);
-      if (filePath.equals("Invalid")){
-        return;
-      }
     }
     catch (InvalidMethodException exn){
       System.out.println(exn); System.exit(1);
@@ -130,6 +129,28 @@ public class Handler implements Runnable {
     catch (Exception exn) {
       System.out.println(exn); System.exit(1);
     }
+  }
+
+  /**
+   * Processes a listing request to the server.
+   * @param objOut: ObjectOutputStream to write to.
+   */
+  public void processListing(ObjectOutputStream objOut){
+    File   previewDir = new File(System.getProperty("user.dir") + "\\preview_files\\");
+    File[] previews   = previewDir.listFiles();
+
+    try{
+      // writing the file array to output stream
+      objOut.writeObject(previews);
+      objOut.flush();
+
+      // cleaning up
+      sck.close();
+    }
+    catch (Exception exn) {
+      System.out.println(exn); System.exit(1);
+    }
+
   }
 
   /**
