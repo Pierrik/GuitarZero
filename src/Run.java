@@ -14,16 +14,17 @@ public class Run {
 
   private static String OS = System.getProperty("os.name").toLowerCase();
 
-  public static void main(String[] args) {
+  public static void main(String[] args){
     JFrame window = new JFrame("GZ");
-    PlayMode p = new PlayMode(window, "C:\\Users\\tomma\\Documents\\GuitarZero\\testBundle");
+    PlayMode p = new PlayMode("../assets/Bundle");
     //Set the content to the drawings from the GamePanel object
-    window.setPreferredSize(new Dimension(1000, 500));
+    window.setPreferredSize(new Dimension(1000,500));
     window.setContentPane(p);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
     window.setVisible(true);
-
+    Thread PlayModeThread = new Thread(p);
+    PlayModeThread.start();
   }
 
   public static char OSvalidator() {
