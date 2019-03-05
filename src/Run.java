@@ -40,10 +40,3 @@ public class Run {
     }
   }
 }
-// buttons on mac:
-// strum 15
-//whammy 17
-// escape 10
-// bender click 12
-// bender round 13
-// zero power 8

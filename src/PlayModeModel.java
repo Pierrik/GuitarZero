@@ -193,6 +193,12 @@ public class PlayModeModel {
   public void collectNote() {
     this.notesCollected.put(Long.valueOf(currentTick), "collected");
     this.streakCount ++;
+    /*
+    * do we need to click all buttons in order to get points?
+    * do we get points for separate notes clicked? so if there are 3 notes, do we get 1/3 points? or do we get normal notes for 1 note and if we click
+    *    all 3 of them at the same time we get x3 points??
+    * how do we count streak then? when u click all of them at the same time?
+    * */
     setMultiplier();
     this.score += this.multiplier;
     updateCurrency();

@@ -14,7 +14,7 @@ import net.java.games.input.ControllerEnvironment;
  * @author  Kamila Hoffmann-Derlacka
  * @version 1.4, February 2019.
  *
- *   Linux:
+ *   Linux/Mac:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
  *   $ export CLASSPATH
  *   $ javac PlayModeController.java

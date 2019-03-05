@@ -13,7 +13,13 @@ import javax.swing.JLabel;
  *
  * @author John Mercer
  * @author Pierrik Mellab
- * @version 1.00, February 2019.
+ * @version 1.1, February 2019.
+ *
+ *   Linux/Mac:
+ *   $ CLASSPATH=jinput-2.0.9.jar:.
+ *   $ export CLASSPATH
+ *   javac SlashMode.java
+ *   java -Djava.library.path=. SlashMode
  *
  *   Windows:
  *   set CLASSPATH=jinput-2.0.9.jar;.

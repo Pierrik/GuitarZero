@@ -40,7 +40,7 @@ public class CarouselView extends JFrame {
       ArrayList<JLabel> allOptions) {
     this.model = model;
 
-    setContentPane(new JLabel(new ImageIcon("..\\assets\\carousel.PNG")));
+    setContentPane(new JLabel(new ImageIcon("../assets/carousel.PNG")));
 
     initialiseBounds(allOptions.size());
 

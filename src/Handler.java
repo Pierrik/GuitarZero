@@ -136,7 +136,7 @@ public class Handler implements Runnable {
    * @param objOut: ObjectOutputStream to write to.
    */
   public void processListing(ObjectOutputStream objOut){
-    File   previewDir = new File(System.getProperty("user.dir") + "\\preview_files\\");
+    File   previewDir = new File(System.getProperty("user.dir") + "/preview_files/");
     File[] previews   = previewDir.listFiles();
 
     try{
@@ -164,10 +164,10 @@ public class Handler implements Runnable {
     // building file path string
     String cd = System.getProperty("user.dir");
     if (method.equals("DOWNLOAD_BUNDLE") || method.equals("UPLOAD_BUNDLE")){
-      return cd + "\\bundle_files\\" + fileName;
+      return cd + "/bundle_files/" + fileName;
     }
     else if (method.equals("DOWNLOAD_PREVIEW") || method.equals("UPLOAD_PREVIEW")){
-      return cd + "\\preview_files\\" + fileName;
+      return cd + "/preview_files/" + fileName;
     }
     else {
       throw new InvalidMethodException("Invalid method provided.");
