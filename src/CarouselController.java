@@ -41,17 +41,10 @@ public class CarouselController {
   final static double BUTTON_THRESHOLD = 1.0;
   final static double STRUM_THRESHOLD  = 0.75;
 
-  // variables that change for different operating systems
+  // variables that change for different operating systems, default: windows
   static int    ZERO_POWER       = 8;
   static int    ESCAPE           = 10;
   static int    STRUM            = 16;
-
-
-  public static boolean isWindows() {
-
-    return (OS.indexOf("win") >= 0);
-
-  }
 
   public static boolean isMac() {
 
@@ -72,7 +65,7 @@ public class CarouselController {
   /*
    * Poll forever, and altering model depending on buttons pressed
    */
-  private static void pollForever( Controller ctrl ) {
+  private void pollForever(Controller ctrl) {
     Component[] allCmps    = ctrl.getComponents();
     float[]     vals       = new float[BUTTONS];
     Component[] activeCmps = {allCmps[ZERO_POWER], allCmps[ESCAPE], allCmps[STRUM]};
@@ -90,7 +83,7 @@ public class CarouselController {
             // zero-power button
             case 0 :
               if (val == BUTTON_THRESHOLD){
-                //model.select();
+                model.select();
                 System.out.println("Zero power pressed");
               }
               break;
@@ -99,7 +92,7 @@ public class CarouselController {
             // escape button
             case 1 :
               if (val >= BUTTON_THRESHOLD){
-                //model.select();
+                model.select();
                 System.out.println("Escape button pressed");
               }
               break;
@@ -107,10 +100,10 @@ public class CarouselController {
             // strum
             case 2 :
               if (val >= STRUM_THRESHOLD){
-                //model.right();
+                model.right();
                 System.out.println("Strum right");
               } else if (val <= -STRUM_THRESHOLD){
-               // model.left();
+                model.left();
                 System.out.println("Strum left");
               }
               /*
@@ -135,7 +128,17 @@ public class CarouselController {
    * Finds GH controller and polls it forever. If none found, error is printed and program
    * terminates.
    */
-  /*public void pollGuitarForever(){
+  public void pollGuitarForever(){
+
+    if (isMac()) {
+      ZERO_POWER       = 8;
+      ESCAPE           = 10;
+      STRUM            = 16;
+    } else if (isUnix()) {
+      ZERO_POWER       = 8;
+      ESCAPE           = 10;
+      STRUM            = 14;
+    }
     for (Controller ctrl : ctrls) {
       if (ctrl.getName().contains(GUITAR_HERO)) {
         pollForever(ctrl);
@@ -144,18 +147,14 @@ public class CarouselController {
 
     System.out.println(GUITAR_HERO + " controller not found");
     System.exit(1);
-  }*/
-
-  public static void main(String[] argv) {
+  }
+/*
+  public static void main(String[] args) {
     ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
     Controller[]          ctrls = cenv.getControllers();
 
-    if (isWindows()) {
-      ZERO_POWER       = 8;
-      ESCAPE           = 10;
-      STRUM            = 16;
 
-    } else if (isMac()) {
+    if (isMac()) {
       ZERO_POWER       = 8;
       ESCAPE           = 10;
       STRUM            = 16;
@@ -173,6 +172,6 @@ public class CarouselController {
 
     System.out.println( GUITAR_HERO + " controller not found" );
     System.exit( 1 );
-  }
+  }*/
 
 }
