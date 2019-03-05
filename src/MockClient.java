@@ -57,8 +57,8 @@ public class MockClient {
     try {
       // checking if local_store directory exists, and creates it if it doesn't yet
       String cd = System.getProperty("user.dir");
-      String bundleDir = cd + "local_store\\bundle_files\\";
-      String previewDir = cd + "local_store\\preview_files\\";
+      String bundleDir = cd + "local_store/bundle_files/";
+      String previewDir = cd + "local_store/preview_files/";
 
       if (Files.notExists(Paths.get(bundleDir))) {
         Files.createDirectories(Paths.get(bundleDir));

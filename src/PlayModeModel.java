@@ -10,14 +10,16 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Transmitter;
 import java.io.FilenameFilter;
+import java.lang.Thread;
 
 /**
  * PlayModeModel
  * Version 2.1, February 2019
  * @author Tom Mansfield
+ * @author Harper Ford (Threading Work)
  */
 
-public class PlayModeModel {
+public class PlayModeModel implements Runnable {
   private String bundlePath;
   private File midiFile;
   private File notesFile;
@@ -45,19 +47,19 @@ public class PlayModeModel {
     this.currentTick = 0;
     try {
       this.notesFile = findNotesFile();
-    } catch (NotesFileNotFoundException e) {
+    } catch (Exception e) {
       e.printStackTrace();
       // Exit and go back to slash mode
     }
     try {
       this.midiFile = findMidiFile();
-    } catch (MidiFileNotFoundException e) {
+    } catch (Exception e) {
       e.printStackTrace();
       // Exit and go back to slash mode
     }
     try {
       this.coverArt = findCoverArt();
-    } catch (CoverArtNotFoundException e) {
+    } catch (Exception e) {
       e.printStackTrace();
       // Exit and go back to slash mode
     }
@@ -90,9 +92,9 @@ public class PlayModeModel {
   /**
    * findNotesFile
    * @return the notes file in the bundle
-   * @throws NotesFileNotFoundException when notes file is not found
+   * @throws Exception when notes file is not found
    */
-  public File findNotesFile() throws NotesFileNotFoundException {
+  public File findNotesFile() throws Exception {
 
     File bundle = new File(this.bundlePath);
 
@@ -107,16 +109,16 @@ public class PlayModeModel {
     if ( files.length > 0 ) {
       return files[0];
     } else {
-      throw new NotesFileNotFoundException("No Notes File In Bundle");
+      throw new Exception("No Notes File In Bundle");
     }
   }
 
   /**
    * findMidiFile
    * @return the MIDI file in the bundle
-   * @throws MidiFileNotFoundException when MIDI file is not found
+   * @throws Exception when MIDI file is not found
    */
-  public File findMidiFile() throws MidiFileNotFoundException {
+  public File findMidiFile() throws Exception {
 
     File bundle = new File(this.bundlePath);
 
@@ -131,16 +133,16 @@ public class PlayModeModel {
     if ( files.length > 0 ) {
       return files[0];
     } else {
-      throw new MidiFileNotFoundException("No MIDI File In Bundle");
+      throw new Exception("No MIDI File In Bundle");
     }
   }
 
   /**
    * findCoverArt
    * @return the cover art file in the bundle
-   * @throws CoverArtNotFoundException when a cover art file cannot be found
+   * @throws Exception when a cover art file cannot be found
    */
-  public File findCoverArt() throws CoverArtNotFoundException {
+  public File findCoverArt() throws Exception {
 
     File bundle = new File(this.bundlePath);
 
@@ -155,7 +157,9 @@ public class PlayModeModel {
     if ( files.length > 0 ) {
       return files[0];
     } else {
-      throw new CoverArtNotFoundException("No Cover Art In Bundle");
+      //!! SHOULD HAVE A BLANK .PNG IN ASSETS SO THE GAME DOESNT CRASH JUST DISPLAYS EMPTY .PNG !!
+      //throw new Exception("No Cover Art In Bundle");
+      return bundle;
     }
   }
 
@@ -237,17 +241,15 @@ public class PlayModeModel {
    * Play the MIDI song
    * Sets current tick and current note values as the song is played
    */
-  public void playSong() {
+  public void run() {
+    Thread viewThread = new Thread(view);
+    viewThread.start();
     try {
       final Sequencer seq = MidiSystem.getSequencer();
       final Transmitter trans  = seq.getTransmitter();
       long currentTick;
-      AddNoteToHighway addNoteToHighway= new AddNoteToHighway(this, view);
-
       seq.open();
-
       seq.setSequence( MidiSystem.getSequence( midiFile ) );
-
       seq.addMetaEventListener( new MetaEventListener() {
         public void meta( MetaMessage msg ) {
           if ( msg.getType() == 0x2F ) {
@@ -255,9 +257,7 @@ public class PlayModeModel {
           }
         }
       });
-
       seq.start();
-      addNoteToHighway.run();
 
 
       // Set the current tick pointer to the current tick of the song
@@ -265,13 +265,15 @@ public class PlayModeModel {
         currentTick = seq.getTickPosition();
         this.currentTick = currentTick;
         changeCurrentNote(currentTick);
-
+        view.addNote(currentNote);
+        view.repaint();
       }
-
+      seq.stop();
     } catch ( Exception exn ) {
       System.out.println( exn ); System.exit( 1 );
     }
     this.endOfSong = true;
+
   }
 
   /**
@@ -284,7 +286,7 @@ public class PlayModeModel {
       this.currentNote = this.notes.get(Long.valueOf(tick));
     }
     else{
-      this.currentNote = "000";
+      this.currentNote = "010";
     }
   }
 

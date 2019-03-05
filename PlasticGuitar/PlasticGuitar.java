@@ -12,7 +12,7 @@ import net.java.games.input.ControllerEnvironment;
  *
  * @author  David Wakeling
  * @version 1.00, January 2019. 
- * 
+ *   $ (CD src)
  *   $ CLASSPATH=jinput-2.0.9.jar:.
  *   $ export CLASSPATH
  *   $ javac PlasicGuitar.java
@@ -66,13 +66,16 @@ public class PlasticGuitar {
           if ( val == 0.0 ) {
 	    col = Color.WHITE;
             val = i;
-          } else if ( val == 1.0 || val == -1.0 ) {
-	    col = Color.BLUE;
+          } else if ( val == 1.0) {
+            //down
+            col = Color.CYAN;
+          } else if (val == -1.0 ) {
+	    col = Color.BLUE; //up
           } else {
             col = Color.YELLOW;
           }
           buttons[ i ].setBackground( col );
-	  buttons[ i ].setText( "" + val );
+	  buttons[ i ].setText( "" + i );
           buttons[ i ].setOpaque( true );
           buttons[ i ].repaint();
         }

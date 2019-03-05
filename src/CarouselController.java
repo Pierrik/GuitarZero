@@ -6,9 +6,9 @@ import net.java.games.input.ControllerEnvironment;
  *
  * @author  John Mercer
  * @author  Kamila Hoffmann-Derlacka
- * @version 1.4, March 2019.
+ * @version 1.5, March 2019.
  *
- *   Linux:
+ *   Linux/Mac:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
  *   $ export CLASSPATH
  *   $ javac CarouselController.java
@@ -24,32 +24,19 @@ public class CarouselController {
   final static String GUITAR_HERO      = "Guitar Hero";
   final static int    DELAY            = 150;
 
-  private static String OS = System.getProperty("os.name").toLowerCase();
-
-  private  CarouselModel        model;
+  private CarouselModel        model;
   private ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
   private Controller[]          ctrls = cenv.getControllers();
 
   final static int    BUTTONS          = 3;
   final static double BUTTON_THRESHOLD = 1.0;
   final static double STRUM_THRESHOLD  = 0.75;
+  final static int    ZERO_POWER       = 8;
+  final static int    ESCAPE           = 10;
 
   // variables that change for different operating systems, default: windows
-  static int    ZERO_POWER       = 8;
-  static int    ESCAPE           = 10;
   static int    STRUM            = 16;
 
-  public static boolean isMac() {
-
-    return (OS.indexOf("mac") >= 0);
-
-  }
-
-  public static boolean isUnix() {
-
-    return (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 );
-
-  }
 
   public CarouselController(CarouselModel model){
     this.model = model;
@@ -99,11 +86,6 @@ public class CarouselController {
                 model.left();
                 System.out.println("Strum left");
               }
-              /*
-              try {
-                Thread.sleep(DELAY);       // sleeping so strum is less sensitive
-              } catch(Exception exn) {System.out.println(exn); System.exit(1);}
-              */
               break;
           }
         }
@@ -118,20 +100,17 @@ public class CarouselController {
   }
 
   /*
-   * Finds GH controller and polls it forever. If none found, error is printed and program
+   * Recognises the OS and sets the constants. Finds GH controller and polls it forever. If none found, error is printed and program
    * terminates.
    */
   public void pollGuitarForever(){
 
-    if (isMac()) {
-      ZERO_POWER       = 8;
-      ESCAPE           = 10;
-      STRUM            = 16;
-    } else if (isUnix()) {
-      ZERO_POWER       = 8;
-      ESCAPE           = 10;
+    if (Run.OSvalidator() == 'm') {
+      STRUM            = 15;
+    } else if (Run.OSvalidator() == 'u') {
       STRUM            = 14;
     }
+
     for (Controller ctrl : ctrls) {
       if (ctrl.getName().contains(GUITAR_HERO)) {
         pollForever(ctrl);

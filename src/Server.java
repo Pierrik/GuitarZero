@@ -18,8 +18,8 @@ public class Server {
     try {
       // checking if directories exist on server-side before starting
       String cd = System.getProperty("user.dir");
-      String bundleDir = cd + "\\bundle_files\\";
-      String previewDir = cd + "\\preview_files\\";
+      String bundleDir = cd + "/bundle_files/";
+      String previewDir = cd + "/preview_files/";
 
       if (Files.notExists(Paths.get(bundleDir))) {
         Files.createDirectories(Paths.get(bundleDir));

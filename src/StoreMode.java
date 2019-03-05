@@ -40,11 +40,11 @@ public class StoreMode {
     ArrayList<JLabel> menuOptions = new ArrayList<>();
 
     // Create all menu option labels with their image icon and title
-    JLabel label1 = new JLabel(new ImageIcon("..\\assets\\ExitLogo2.png"));
-    JLabel label2 = new JLabel(new ImageIcon("..\\assets\\StoreLogo2.png"));
-    JLabel label3 = new JLabel(new ImageIcon("..\\assets\\SelectLogo2.png"));
-    JLabel label4 = new JLabel(new ImageIcon("..\\assets\\PlayLogo2.png"));
-    JLabel label5 = new JLabel(new ImageIcon("..\\assets\\TutorialLogo2.png"));
+    JLabel label1 = new JLabel(new ImageIcon("../assets/ExitLogo2.png"));
+    JLabel label2 = new JLabel(new ImageIcon("../assets/StoreLogo2.png"));
+    JLabel label3 = new JLabel(new ImageIcon("../assets/SelectLogo2.png"));
+    JLabel label4 = new JLabel(new ImageIcon("../assets/PlayLogo2.png"));
+    JLabel label5 = new JLabel(new ImageIcon("../assets/TutorialLogo2.png"));
 
     label1.setText("Exit");
     label2.setText("Store");
