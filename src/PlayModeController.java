@@ -12,7 +12,7 @@ import net.java.games.input.ControllerEnvironment;
  * PlayModeController.
  *
  * @author  Kamila Hoffmann-Derlacka
- * @version 1.3, February 2019.
+ * @version 1.4, February 2019.
  *
  *   Linux:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
@@ -28,7 +28,6 @@ import net.java.games.input.ControllerEnvironment;
 public class PlayModeController {
   final static String GUITAR_HERO = "Guitar Hero";
   final static int    DELAY       = 150;
-  private static String OS = System.getProperty("os.name").toLowerCase();
 
   private  PlayModeModel model;
   // make them non static when not using main anymore
@@ -37,7 +36,7 @@ public class PlayModeController {
 
   final static double BUTTON_THRESHOLD = 1.0;
 
-  // variables that change for different operating systems, default: windows
+  // Buttons
   final static int    WHITE1       = 0;
   final static int    BLACK1       = 1;
   final static int    WHITE2       = 4;
@@ -47,17 +46,10 @@ public class PlayModeController {
   final static int    ZERO_POWER   = 8;
   final static int    ESCAPE       = 10;
   final static int    BENDER_CLICK = 12;
+
+  // Variables that change for different operating systems, default: windows
   static int          BENDER_ROUND = 13;
   static int          WHAMMY       = 16;
-
-  public static boolean isMac() {
-    return (OS.indexOf("mac") >= 0);
-  }
-
-  public static boolean isUnix() {
-    return (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 );
-  }
-
 
   public PlayModeController(PlayModeModel model){
     this.model = model;
@@ -265,10 +257,10 @@ public class PlayModeController {
 
   public static void main(String[] args) {
 
-    if (isMac()) {
+    if (Run.OSvalidator() == 'm') {
       BENDER_ROUND     = 13;
-      WHAMMY           = 16;
-    } else if (isUnix()) {
+      WHAMMY           = 17;
+    } else if (Run.OSvalidator() == 'u') {
       BENDER_ROUND     = 17;
       WHAMMY           = 14 ;
     }
@@ -287,7 +279,7 @@ public class PlayModeController {
 
     if (isMac()) {
       BENDER_ROUND     = 13;
-      WHAMMY           = 16;
+      WHAMMY           = 17;
     } else if (isUnix()) {
       BENDER_ROUND     = 17;
       WHAMMY           = 14 ;

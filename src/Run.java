@@ -7,18 +7,43 @@ import java.awt.*;
  * Main Game Call.
  *
  * @author Harper Ford
- * @version 1.00, March 2019.
+ * @author Kamila Hoffmann-Derlacka
+ * @version 1.1, March 2019.
 */
-public class Run{
-  public static void main(String[] args){
+public class Run {
+
+  private static String OS = System.getProperty("os.name").toLowerCase();
+
+  public static void main(String[] args) {
     JFrame window = new JFrame("GZ");
     PlayMode p = new PlayMode(window, "C:\\Users\\tomma\\Documents\\GuitarZero\\testBundle");
     //Set the content to the drawings from the GamePanel object
-    window.setPreferredSize(new Dimension(1000,500));
+    window.setPreferredSize(new Dimension(1000, 500));
     window.setContentPane(p);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
     window.setVisible(true);
 
   }
+
+  public static char OSvalidator() {
+    if (OS.indexOf("win") >= 0)
+      return 'w';
+    else if (OS.indexOf("mac") >= 0)
+      return 'm';
+    else if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0)
+      return 'u';
+    else {
+      System.out.println("OS not recognised.");
+      // throw an exception??
+      return 'q';
+    }
+  }
 }
+// buttons on mac:
+// strum 15
+//whammy 17
+// escape 10
+// bender click 12
+// bender round 13
+// zero power 8
