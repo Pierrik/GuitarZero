@@ -25,6 +25,14 @@ import javax.swing.JLabel;
  *   set CLASSPATH=jinput-2.0.9.jar;.
  *   javac SlashMode.java
  *   java -Djava.library.path=. SlashMode
+ *
+ *
+ *   Mac/ Linux:
+ *   $ (CD src)
+ *   $ CLASSPATH=jinput-2.0.9.jar:.
+ *   $ export CLASSPATH
+ *   $ javac SlashMode.java
+ *   $ java -Djava.library.path=. SlashMode
 */
 public class SlashMode {
 

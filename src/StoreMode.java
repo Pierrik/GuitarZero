@@ -8,11 +8,35 @@ import javax.swing.JLabel;
  * @version 1.0, March 2019
  */
 public class StoreMode {
+  // server settings
   private static final String HOST = "localhost";
   private static final int    PORT = 8888;
 
+  /**
+   * Uploads a file to the server
+   * @param filePath: Location of the file to upload
+   * @param method: Upload method (UPLOAD_BUNDLE or UPLOAD_PREVIEW)
+   */
+  /*
+  public static void sendFileToServer(String filePath, String method){
+    MockClient client = new MockClient(HOST, PORT);
+    client.uploadFile(filePath, method);
+  }
+  */
+
   public static void main(String args[]) {
-    ArrayList<String> fileNames = MockClient.listDirectory(HOST, PORT);
+    /*
+    MockClient client = new MockClient(HOST, PORT);
+    Object fileNames = client.listDirectory();
+    System.out.println(fileNames.toString());
+    */
+    /*
+    for (String string:fileNames){
+      System.out.println(string);
+    }
+    */
+
+    /*
     ArrayList<JLabel> menuOptions = new ArrayList<>();
 
     // Create all menu option labels with their image icon and title
@@ -42,5 +66,6 @@ public class StoreMode {
     CarouselView       view       = new CarouselView( controller, model, menuOptions);
     view.setVisible( true );
     controller.pollGuitarForever();
+    */
   }
 }

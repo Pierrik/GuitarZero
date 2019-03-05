@@ -1,10 +1,3 @@
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.KeyEvent;
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
