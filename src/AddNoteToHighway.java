@@ -1,6 +1,7 @@
 /**
  * AddNoteToHighway
  * Adds the current note to be played in the song to the view
+ * @author Tom Mansfield
  */
 public class AddNoteToHighway implements Runnable {
   PlayModeModel model;
