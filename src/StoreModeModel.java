@@ -7,6 +7,7 @@ import java.util.ArrayList;
  *
  * @author  Pierrik Mellab
  * @author  Kamila Hoffmann-Derlacka
+ * @author  John Mercer
  * @version 1.00, February 2019.
  */
 
@@ -14,6 +15,8 @@ public class StoreModeModel {
 
 
   private int totalCurrency;
+  final String HOST  = "localhost";
+  final int    PORT  = 8888;
 
   /**
    * Skeleton constructor for later use
@@ -58,6 +61,11 @@ public class StoreModeModel {
 
     if (totalCurrency > 1) {
       totalCurrency --;
+      
+      // Downloading the bundle
+      MockClient client = new MockClient(HOST, PORT);
+      client.downloadFile(song, "DOWNLOAD_BUNDLE");
+
       // add a song to local directory
     } else {
       // make them know they dont have enough money to buy a song (make the '0' in GUI bigger for a 2 secs maybe??)
