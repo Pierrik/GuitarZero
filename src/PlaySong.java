@@ -17,6 +17,10 @@ public class PlaySong implements Runnable {
   public String currentNote;
   public long currentTick;
   public boolean endOfSong;
+  public int ticksPerBeat;
+  public int bpm;
+  public int time;
+  public double x = 1.49;
 
   public PlaySong(File file){
     this.midiFile = file;
@@ -30,6 +34,8 @@ public class PlaySong implements Runnable {
     try {
       final Sequencer seq = MidiSystem.getSequencer();
       final Transmitter trans  = seq.getTransmitter();
+      this.ticksPerBeat = MidiSystem.getSequence( midiFile ).getResolution();
+      //System.out.println(this.bpm);
       long currentTick;
       seq.open();
       seq.setSequence( MidiSystem.getSequence( midiFile ) );
@@ -43,11 +49,16 @@ public class PlaySong implements Runnable {
       seq.start();
 
 
+      try{
+        bpm = Bpm.getBPM(MidiSystem.getSequence( midiFile ));
+        time = (bpm*ticksPerBeat)/60;
+      }
+      catch(Exception e){}
       // Set the current tick pointer to the current tick of the song
       while(seq.isRunning()){
-        currentTick = seq.getTickPosition();
+        currentTick = seq.getTickPosition()+Math.round(time*x);
         this.currentTick = currentTick;
-
+        //System.out.println(this.currentTick);
       }
       seq.stop();
       this.endOfSong = true;
