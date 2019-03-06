@@ -9,17 +9,19 @@ import java.io.File;
  */
 
 public class Bpm {
-  final static String FILE = "AC.mid";
-  static public void main(String[] args){
+
+  public static int getBPM(Sequence sequence){
     try {
       //Open sequencer
       Sequencer sequencer = MidiSystem.getSequencer();
       sequencer.open();
 
       //Get sequence from file
-      Sequence seq = MidiSystem.getSequence(new File(FILE));
-      System.out.println(60000000 / getMicrosecondsPerQuarterNote(seq));
-    }catch (Exception e) {}
+      return(60000000 / getMicrosecondsPerQuarterNote(sequence));
+    }catch (Exception e) {
+    	e.printStackTrace();
+		}
+		return 0;
   }
 
   private static int getMicrosecondsPerQuarterNote(Sequence sequence) {
