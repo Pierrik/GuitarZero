@@ -50,7 +50,7 @@ public class PlayModeModel implements Runnable{
     this.bundlePath = bundlePath;
     this.multiplier = 1;
     this.streakCount = 0;
-    this.totalCurrency = loadTotalCurrency();
+    this.totalCurrency = Currency.loadTotalCurrency();
     this.currencyEarned = 0;
     this.score = 0;
     this.currentTick = 0;
@@ -170,12 +170,6 @@ public class PlayModeModel implements Runnable{
       //throw new Exception("No Cover Art In Bundle");
       return bundle;
     }
-  }
-
-
-  public int loadTotalCurrency() {
-    // Get the user's currency from a text file
-    return 0;
   }
 
   /**

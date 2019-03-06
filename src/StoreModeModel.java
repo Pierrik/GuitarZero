@@ -1,6 +1,7 @@
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 public class StoreModeModel {
 
 
-  private int totalCurrency;
+  private static int totalCurrency;
   final String HOST  = "localhost";
   final int    PORT  = 8888;
 
@@ -25,12 +26,12 @@ public class StoreModeModel {
    * Skeleton constructor for later use
    */
   public StoreModeModel( ) {
-    this.totalCurrency = loadTotalCurrency();
+    this.totalCurrency = Currency.loadTotalCurrency();
   }
 
-  public int loadTotalCurrency() {
-    // Get the user's currency from a text file
-    return 0;
+  public static void main(String[] args){
+    StoreModeModel model = new StoreModeModel();
+    System.out.println(totalCurrency);
   }
 
   /**
@@ -83,7 +84,7 @@ public class StoreModeModel {
     if (Files.notExists(Paths.get(bundleDir))) {
       return false;
     } else {
-      File tmpDir = new File("local_store/bundle_files/" + song + ".zip");
+      File tmpDir = new File("local_store/bundle_files/" + song);
       if (tmpDir.exists())
         return true;
       else
