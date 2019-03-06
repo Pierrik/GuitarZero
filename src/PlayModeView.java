@@ -18,11 +18,11 @@ import java.util.ArrayList;
  * @author Harper Ford
  * @version 2.00, March 2019.
 */
-public class PlayModeView extends JPanel implements Runnable{
+public class PlayModeView extends JPanel{
   ArrayList<Note> notes = new ArrayList<Note>();
   static int frame;
   //Setup background animation values
-  static int backgroundFrameCount = 2;
+  static int backgroundFrameCount = 1;
   static int backgroundFrameDelay = 100;
   //Create BufferedImage array to store the background frames
   static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
@@ -38,8 +38,7 @@ public class PlayModeView extends JPanel implements Runnable{
     }
   }
 
-  @Override
-  public void run(){}
+
 
   public void addNote(String note){
     notes.add(new Note(note));
@@ -57,6 +56,11 @@ public class PlayModeView extends JPanel implements Runnable{
     int len = notes.size();
     for(int i=0; i<len; i++){
       notes.get(i).paintComponent(g);
+      if(notes.get(i).getY() > 500){
+        notes.remove(i);
+        i--;
+        len--;
+      }
     }
     frame++;
   }
