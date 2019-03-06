@@ -16,7 +16,6 @@ import java.lang.Thread;
  * PlayModeModel
  * Version 2.1, February 2019
  * @author Tom Mansfield
- * @author Harper Ford (Threading Work)
  */
 
 public class PlayModeModel {
