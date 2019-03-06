@@ -4,27 +4,26 @@ import net.java.games.input.ControllerEnvironment;
 /**
  * CarouselController.
  *
- * @author  John Mercer
  * @author  Kamila Hoffmann-Derlacka
- * @version 1.5, March 2019.
+ * @version 1.0, March 2019.
  *
  *   Linux/Mac:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
  *   $ export CLASSPATH
- *   $ javac CarouselController.java
- *   $ java -Djava.library.path=. CarouselController
+ *   $ javac StoreModeController.java
+ *   $ java -Djava.library.path=. StoreModeController
  *
  *   Windows:
  *   set CLASSPATH=jinput-2.0.9.jar;.
- *   javac CarouselController.java
- *   java -Djava.library.path=. CarouselController
+ *   javac StoreModeController.java
+ *   java -Djava.library.path=. StoreModeController
  */
-public class CarouselController {
+public class StoreModeController {
 
   final static String GUITAR_HERO      = "Guitar Hero";
   final static int    DELAY            = 150;
 
-  private CarouselModel        model;
+  private StoreModeModel        model;
   private ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
   private Controller[]          ctrls = cenv.getControllers();
 
@@ -35,10 +34,10 @@ public class CarouselController {
   final static int    ESCAPE           = 10;
 
   // variables that change for different operating systems, default: windows
-  static int    STRUM            = 16;
+  static int          STRUM            = 16;
 
 
-  public CarouselController(CarouselModel model){
+  public StoreModeController(StoreModeModel model){
     this.model = model;
   }
 
@@ -64,7 +63,7 @@ public class CarouselController {
             case 0 :
               if (val == BUTTON_THRESHOLD){
                 model.select();
-                System.out.println("Zero power pressed");
+                System.out.println("Zero power pressed + currency decreased");
               }
               break;
 
@@ -72,7 +71,7 @@ public class CarouselController {
             // escape button
             case 1 :
               if (val >= BUTTON_THRESHOLD){
-                // stay in slash mode
+                // go back to slash mode
                 System.out.println("Escape button pressed");
               }
               break;

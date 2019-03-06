@@ -3,20 +3,28 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * CarouselModel
+ * StoreModeModel
  *
  * @author  Pierrik Mellab
+ * @author  Kamila Hoffmann-Derlacka
  * @version 1.00, February 2019.
  */
 
-public class CarouselModel {
+public class StoreModeModel {
 
+
+  private int totalCurrency;
 
   /**
    * Skeleton constructor for later use
    */
-  public CarouselModel( ) {
+  public StoreModeModel( ) {
+    this.totalCurrency = loadTotalCurrency();
+  }
 
+  public int loadTotalCurrency() {
+    // Get the user's currency from a text file
+    return 0;
   }
 
   /**
@@ -45,4 +53,14 @@ public class CarouselModel {
     return CarouselView.chosenOption();
   }
 
+
+  public void buySong(String song) {
+
+    if (totalCurrency > 1) {
+      totalCurrency --;
+      // add a song to local directory
+    } else {
+      // make them know they dont have enough money to buy a song (make the '0' in GUI bigger for a 2 secs maybe??)
+    }
+  }
 }
