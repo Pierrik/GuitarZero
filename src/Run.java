@@ -17,16 +17,15 @@ public class Run {
   public static void main(String[] args){
     JFrame window = new JFrame("GZ");
     PlayMode p = new PlayMode("../assets/Bundle");
+    Dimension dims = new Dimension(1000,500);
     //Set the content to the drawings from the GamePanel object
-    window.setPreferredSize(new Dimension(1000,500));
+    window.setPreferredSize(dims);
     window.setContentPane(p);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
     window.setVisible(true);
-    Thread PlayModeThread = new Thread(p);
-    PlayModeThread.start();
+    p.run();
   }
-
   public static char OSvalidator() {
     if (OS.indexOf("win") >= 0)
       return 'w';
