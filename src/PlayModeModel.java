@@ -11,6 +11,8 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Transmitter;
 import java.io.FilenameFilter;
 import java.lang.Thread;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * PlayModeModel
@@ -19,7 +21,7 @@ import java.lang.Thread;
  * @author Harper Ford
  */
 
-public class PlayModeModel{
+public class PlayModeModel implements Runnable{
   private String bundlePath;
   private File midiFile;
   private File notesFile;
@@ -35,6 +37,13 @@ public class PlayModeModel{
   private HashMap<Long, String> notesCollected;
   private boolean endOfSong;
   private PlayModeView view;
+  private long lastTick = 0;
+  private int bpm;
+
+  @Override
+  public void run(){
+    playSong();
+  };
 
   public PlayModeModel( String bundlePath, PlayModeView view ) {
     this.view = view;
@@ -237,6 +246,8 @@ public class PlayModeModel{
     }
   }
 
+private int time;
+private int x = 20;
   /**
    * Play the MIDI song
    * Sets current tick and current note values as the song is played
@@ -246,17 +257,16 @@ public class PlayModeModel{
     Thread playSongThread = new Thread(playSong);
     playSongThread.start();
 
+    while(!playSong.endOfSong){
 
-      // Set the current tick pointer to the current tick of the song
-      while(!playSong.endOfSong){
-        this.currentTick = playSong.currentTick;
-        changeCurrentNote(this.currentTick);
-        if(this.currentNote != "000"){
-          view.addNote(currentNote);
-        }
-        view.repaint();
+      //!"!!!!!"
+      currentTick = playSong.currentTick;
+      changeCurrentNote(currentTick);
+      if(!currentNote.equals("000") && currentTick != lastTick){
+        view.addNote(currentNote);
+        lastTick = currentTick;
       }
-
+    }
   }
 
   /**
