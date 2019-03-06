@@ -33,6 +33,21 @@ public class PlayMode extends JPanel implements Runnable{
     }
 
     public void run() {
-      model.playSong();
+      Thread modelThread = new Thread(model);
+      modelThread.start();
+      long targetTime = 30;
+      while(true){
+        long s = System.nanoTime();
+        view.repaint();
+        long elapsed = System.nanoTime() - s;
+
+        long wait = targetTime - elapsed / 1000000;
+        //System.out.println(wait);
+        try {
+          Thread.sleep(wait);
+        } catch (Exception o) {
+          o.printStackTrace();
+        }
+      }
     }
 }
