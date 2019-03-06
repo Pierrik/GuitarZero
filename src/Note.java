@@ -16,10 +16,11 @@ public class Note{
   Image whiteNote = new ImageIcon("../assets/WhiteNote.png").getImage();
   Image sprite;
   //Setup position/speed variables
-  int velocity = 3;
+  int velocity = 10;
   int y = 0;
   int[][] positions = new int[3][2];
 
+  public int getY(){ return this.y; }
   /**
    *
    */
@@ -39,7 +40,6 @@ public class Note{
   */
   public void paintComponent(Graphics g){
     for(int[] each : positions){
-      System.out.println(each[0]);
       if(each[1] == 1){
         g.drawImage(whiteNote,each[0], this.y, null);
       }
@@ -51,6 +51,5 @@ public class Note{
 
     y += velocity;
     //Reset note --!!REMOVE LATER!!--
-    if(y>500){y=0;}
   }
 }
