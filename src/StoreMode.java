@@ -25,18 +25,18 @@ public class StoreMode {
   */
 
   public static void main(String args[]) {
-    /*
-    MockClient client = new MockClient(HOST, PORT);
+
+    /*MockClient client = new MockClient(HOST, PORT);
     Object fileNames = client.listDirectory();
     System.out.println(fileNames.toString());
-    */
-    /*
+
+
     for (String string:fileNames){
       System.out.println(string);
-    }
-    */
+    }*/
 
-    /*
+
+
     ArrayList<JLabel> menuOptions = new ArrayList<>();
 
     // Create all menu option labels with their image icon and title
@@ -61,11 +61,11 @@ public class StoreMode {
     menuOptions.add(label5);
 
     // Initialise the model, controller, view GUI classes
-    CarouselModel      model      = new CarouselModel();
-    CarouselController controller = new CarouselController( model );
-    CarouselView       view       = new CarouselView( controller, model, menuOptions);
+    StoreModeModel      model      = new StoreModeModel();
+    StoreModeController controller = new StoreModeController( model );
+    StoreModeView       view       = new StoreModeView(model, menuOptions);
     view.setVisible( true );
     controller.pollGuitarForever();
-    */
+
   }
 }
