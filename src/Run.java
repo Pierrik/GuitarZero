@@ -16,6 +16,8 @@ public class Run {
 
   public static void main(String[] args){
     JFrame window = new JFrame("GZ");
+    //SlashMode sl = new SlashMode();
+    //StoreMode st  = new StoreMode();
     PlayMode p = new PlayMode("../assets/Bundle");
     Dimension dims = new Dimension(1000,500);
     //Set the content to the drawings from the GamePanel object
@@ -25,6 +27,27 @@ public class Run {
     window.pack();
     window.setVisible(true);
     p.run();
+  }
+
+  public void changeMode(String option){
+    JPanel mode;
+
+    switch(option){
+      case "Slash": mode = sl;
+      break;
+      case "Store": mode = st;
+      break;
+      case "Select": mode = se;
+      break;
+      case "Play": mode = p;
+      break;
+      case "Tutorial": mode = t;
+      break;
+      default: window.close();
+      break;
+    }
+    window.setContentPane(mode);
+
   }
   public static char OSvalidator() {
     if (OS.indexOf("win") >= 0)
