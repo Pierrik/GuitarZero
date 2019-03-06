@@ -16,9 +16,10 @@ import java.lang.Thread;
  * PlayModeModel
  * Version 2.1, February 2019
  * @author Tom Mansfield
+ * @author Harper Ford
  */
 
-public class PlayModeModel {
+public class PlayModeModel{
   private String bundlePath;
   private File midiFile;
   private File notesFile;
@@ -252,8 +253,8 @@ public class PlayModeModel {
         changeCurrentNote(this.currentTick);
         if(this.currentNote != "000"){
           view.addNote(currentNote);
-          view.repaint();
         }
+        view.repaint();
       }
 
   }
@@ -306,24 +307,6 @@ public class PlayModeModel {
     }
 
   }
-
-
-  // Temporary main to test methods
-  /*public static void main(String args[]) {
-    PlayModeModel playMode = new PlayModeModel("C:\\Users\\tomma\\Documents\\GuitarZero\\testBundle", new PlayModeView());
-    //System.out.println(playMode.findNotesFile().getPath());
-    //playMode.playSong();
-
-    //for (Map.Entry<Long, String> entry : playMode.notes.entrySet()) {
-
-      //System.out.println(entry.getKey() + "," + entry.getValue());
-
-    //}
-
-    playMode.playSong();
-
-    //System.out.println(playMode.notesFile.getName());
-  }*/
 
 
 }
