@@ -1,3 +1,4 @@
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.swing.*;
@@ -74,17 +75,19 @@ public class StoreModeModel {
   }
 
     // checks if the song is already in the local directory
-  public boolean isInLocalDir(String song) {
+  public static boolean isInLocalDir(String song) {
     // checking if local_store directory exists, and creates it if it doesn't yet
     String cd = System.getProperty("user.dir");
-    String bundleDir = cd + "local_store/bundle_files/";
+    String bundleDir = cd + "/local_store/bundle_files/";
 
     if (Files.notExists(Paths.get(bundleDir))) {
       return false;
     } else {
-
-    }
-
-    return false;
+      File tmpDir = new File("local_store/bundle_files/" + song + ".zip");
+      if (tmpDir.exists())
+        return true;
+      else
+        return false;
+      }
   }
 }
