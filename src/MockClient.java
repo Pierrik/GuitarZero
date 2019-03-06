@@ -4,6 +4,8 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.Collections;
 
 /**
  * MockClient.
@@ -13,14 +15,22 @@ import java.util.ArrayList;
  * @version 2.01, February 2019.
  */
 public class MockClient {
+  private String host;
+  private int    port;
+
+  MockClient(String host, int port){
+    this.host = host;
+    this.port = port;
+  }
+
   /**
    * Uploads the given bundle to the server
    * @param fileName: The filepath of the file to upload
    * @param method: Upload method (UPLOAD_BUNDLE or UPLOAD_PREVIEW)
    */
-  public static void uploadFile(String host, int port, String fileName, String method){
+  public void uploadFile(String fileName, String method){
     try {
-      Socket sck = new Socket(host, port);
+      Socket sck = new Socket(this.host, this.port);
 
       // instantiating byte array of correct size to store file
       File file = new File(fileName);
@@ -53,7 +63,7 @@ public class MockClient {
    * @param fileName: The filepath of the file to download
    * @param method: Download method (DOWNLOAD_BUNDLE or DOWNLOAD_PREVIEW)
    */
-  public static void downloadFile(String host, int port, String fileName, String method){
+  public void downloadFile(String fileName, String method){
     try {
       // checking if local_store directory exists, and creates it if it doesn't yet
       String cd = System.getProperty("user.dir");
@@ -68,7 +78,7 @@ public class MockClient {
       }
 
       // requesting to download the file
-      Socket sck = new Socket(host, port);
+      Socket sck = new Socket(this.host, this.port);
       DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
 
       dataOut.writeUTF(method + "/" + fileName);
@@ -105,36 +115,29 @@ public class MockClient {
    * Requests a directory listing of the previews directory on the server
    * @return ArrayList: ArrayList of filenames (songs available to buy)
    */
-  /*
-  public static ArrayList<String> listDirectory(String host, int port){
+  public ArrayList<String> listDirectory(String host, int port){
     try{
       // requesting the directory listing
-      Socket sck = new Socket(host, port);
-      ObjectOutputStream objOut = new ObjectOutputStream(sck.getOutputStream());
+      Socket sck = new Socket(this.host, this.port);
+      DataOutputStream out = new DataOutputStream(sck.getOutputStream());
+      out.writeUTF("LIST_DIRECTORY");
+      out.flush();
 
-      objOut.writeUTF("LIST_DIRECTORY");
-      objOut.flush();
+      // attempting to receive the filenames and build arraylist
+      DataInputStream  dataIn  = new DataInputStream(sck.getInputStream());
+      ArrayList<String> songNames = new ArrayList<>();
 
-      // attempting to receive the object (file array of previews from server)
-      ObjectInputStream objIn = new ObjectInputStream(sck.getInputStream());
-      ArrayList<String> songNames = (ArrayList<String>) objIn.readObject();
-
-      // reading object contents and storing in String arraylist
-
-      for (File preview : previews) {
-        if (preview.isFile()) {
-          filenames.add(preview.getName());
-        }
+      String songName;
+      while (!(songName = dataIn.readUTF()).equals("END")){
+        songNames.add(songName);
       }
-
 
       // cleaning up and returning arraylist of filenames
       sck.close();
-      return previews;
+      return songNames;
 
   } catch ( Exception exn ) {
     System.out.println(exn); return null;
     }
   }
-  */
 }
