@@ -7,26 +7,32 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.lang.Thread;
 /**
  * Play Mode.
  *
  * @author Harper Ford
  * @version 2.00, March 2019.
 */
-public class PlayMode extends JPanel{
+public class PlayMode extends JPanel implements Runnable{
     /**
      * Initialises the GUI classes for a PlayMode
      */
-    public PlayMode(JFrame frame, String bundlePath) {
+    PlayModeView view;
+    PlayModeModel model;
+    public PlayMode(String bundlePath) {
 
         // Initialise the model, controller, view GUI classes
-        PlayModeView view = new PlayModeView();
+        view = new PlayModeView();
         view.setPreferredSize(new Dimension(1000,500));
-        PlayModeModel      model      = new PlayModeModel(bundlePath, view);
+        model = new PlayModeModel(bundlePath, view);
         //PlayModeController controller = new PlayModeController(model);
         this.add(view);
         view.setVisible(true);
-        model.playSong();
         //controller.pollForever();
+    }
+
+    public void run() {
+      model.playSong();
     }
 }
