@@ -16,8 +16,9 @@ public class Note{
   Image whiteNote = new ImageIcon("../assets/WhiteNote.png").getImage();
   Image sprite;
   //Setup position/speed variables
-  int velocity = 10;
-  int y = 0;
+  int velocity = 4;
+  int y = 250;
+  int x;
   int[][] positions = new int[3][2];
 
   public int getY(){ return this.y; }
@@ -26,9 +27,9 @@ public class Note{
    */
   public Note(String notes){
     //Set X position
-    this.positions[0][0] = (1000/4);
+    this.positions[0][0] = (1000/2) - blackNote.getWidth(null)*1.5;
     this.positions[1][0] = (1000/2) - blackNote.getWidth(null)/2;
-    this.positions[2][0] = (1000/4) + (1000/2) - blackNote.getWidth(null)/2;
+    this.positions[2][0] = (1000/2) + blackNote.getWidth(null)/2;
     //Set object sprite to correct color
     this.positions[0][1] = Character.getNumericValue(notes.charAt(0));
     this.positions[1][1] = Character.getNumericValue(notes.charAt(1));
@@ -50,6 +51,8 @@ public class Note{
     }
 
     y += velocity;
-    //Reset note --!!REMOVE LATER!!--
+    //Set X position
+    this.positions[0][0] -= Math.ceil(0.4);
+    this.positions[2][0] += Math.ceil(0.4);
   }
 }
