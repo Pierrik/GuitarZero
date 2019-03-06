@@ -6,10 +6,12 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Transmitter;
 
 /**
- * PlaySong
- * Plays a MIDI and stores the current tick of the song
+ * Run midi file in different Thread
+ * Version 2.1, February 2019
  * @author Tom Mansfield
+ * @author Harper Ford
  */
+
 public class PlaySong implements Runnable {
   public File midiFile;
   public String currentNote;
@@ -57,4 +59,3 @@ public class PlaySong implements Runnable {
 
 
 }
-
