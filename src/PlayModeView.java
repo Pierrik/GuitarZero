@@ -49,13 +49,14 @@ public class PlayModeView extends JPanel{
     * @param g: The the graphics object associated with the JPanel
     */
   @Override
-  public void paintComponent(Graphics g) {
+  public synchronized void paintComponent(Graphics g) {
     super.paintComponent(g);
     //Draw the background animation frame depending on the current frame/10%(number of frames in the animation)
     g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0,null);
     int len = notes.size();
     for(int i=0; i<len; i++){
       notes.get(i).paintComponent(g);
+      //System.out.println(len);
       if(notes.get(i).getY() > 500){
         notes.remove(i);
         i--;
