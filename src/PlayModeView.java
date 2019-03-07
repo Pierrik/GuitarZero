@@ -1,33 +1,35 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
 
+
 /**
- * Play Mode View.
+ * PlayModeView
  *
  * @author Harper Ford
- * @version 2.00, March 2019.
+ * @author Tom Mansfield
+ * @version 3.00, March 2019.
 */
 public class PlayModeView extends JPanel{
+
   ArrayList<Note> notes = new ArrayList<Note>();
   static int frame;
-  //Setup background animation values
+
+  // Setup background animation values
   static int backgroundFrameCount = 1;
   static int backgroundFrameDelay = 100;
-  boolean dropNote = false;
-  //Create BufferedImage array to store the background frames
+
+  // Create BufferedImage array to store the background frames
   static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
-  //Queue <Note> currentNotePointer;
+
+  // Used to check whether a note has passed the screen and points to the note that needs to be played
+  boolean dropNote = false;
+  String currentNotePointer;
+
+
   public PlayModeView(){
     frame = 0;
     try{
@@ -40,30 +42,48 @@ public class PlayModeView extends JPanel{
     }
   }
 
-
-
+  /**
+   * addNote
+   * @param note the note to be added to the highway, passed from the model
+   */
   public void addNote(Note note){
     notes.add(note);
   }
 
   /**
-    * Draws all neccesary GUI elements on the JPanel
+    * paintComponent
+    * Draws all necessary GUI elements on the JPanel
+    * Also checks whether a note is in the correct region to be played
     * @param g: The the graphics object associated with the JPanel
     */
-
   @Override
   public synchronized void paintComponent(Graphics g) {
+
     super.paintComponent(g);
     //Draw the background animation frame depending on the current frame/10%(number of frames in the animation)
     g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0,null);
     int len = notes.size();
+
     for(int i=0; i<len; i++){
+      // Draw the note
       notes.get(i).paintComponent(g);
-      //System.out.println(len);
+
+      // If the note is in the region at the bottom of the screen
+      // ONLY FOR TESTING COLLECTION OF NOTES, WILL CHANGE WHEN FRET BOARD IS ADDED
+      if( notes.get(i).getY() > 350 && notes.get(i).getY() < 500 ) {
+        currentNotePointer = notes.get(i).noteValue;
+      }
+
+      // If the note has passed the screen
       if(notes.get(i).getY() > 500){
-        //if(!notes.get(i).collected) {
-          //dropNote = true;
-        //}
+        if(!notes.get(i).collected) {
+          // Note has not been played
+          dropNote = true;
+        }
+        // Reset pointer, stop user from collecting same note multiple times
+        currentNotePointer="";
+
+        // Remove from the notes ArrayList as no longer needed
         notes.remove(i);
         i--;
         len--;
