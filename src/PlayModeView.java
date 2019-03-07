@@ -27,6 +27,7 @@ public class PlayModeView extends JPanel{
 
   // Used to check whether a note has passed the screen and points to the note that needs to be played
   boolean dropNote = false;
+  boolean collected = true;
   String currentNotePointer;
 
 
@@ -76,7 +77,7 @@ public class PlayModeView extends JPanel{
 
       // If the note has passed the screen
       if(notes.get(i).getY() > 500){
-        if(!notes.get(i).collected) {
+        if(!collected) {
           // Note has not been played
           dropNote = true;
         }
@@ -87,6 +88,7 @@ public class PlayModeView extends JPanel{
         notes.remove(i);
         i--;
         len--;
+        collected = false;
       }
     }
     frame++;

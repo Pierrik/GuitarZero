@@ -337,6 +337,7 @@ public class PlayModeModel implements Runnable{
       if(view.currentNotePointer.equals(guitarNote)){
           collectNote();
           noteCollected = true;
+          view.collected = true;
 
           // Testing
           System.out.println("Note collected");
@@ -354,6 +355,7 @@ public class PlayModeModel implements Runnable{
     // User has not pressed the right note or attempted to play a note when none should be played
     if ( !noteCollected ) {
       dropNote();
+      view.collected = false;
 
       // Testing
       System.out.println("Note Dropped");
