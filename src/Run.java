@@ -28,8 +28,12 @@ public class Run {
     window.setVisible(true);
     p.run();
   }
-
-  /*public void changeMode(String option){
+  
+  /*
+   * Changes which MVC to display in the JFrame
+   * @param option: Mode to change to
+   */
+  public void changeMode(String option){
     JPanel mode;
 
     switch(option){
@@ -48,7 +52,8 @@ public class Run {
     }
     window.setContentPane(mode);
 
-  }*/
+  }
+  
   public static char OSvalidator() {
     if (OS.indexOf("win") >= 0)
       return 'w';
