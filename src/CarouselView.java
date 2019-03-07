@@ -14,15 +14,15 @@ import javax.swing.JLayeredPane;
  * CarouselView.
  *
  * @author Pierrik Mellab
- * @modified by Harper Ford
- * @modified by Kamila Hoffmann-Derlacka
+ * @modified Harper Ford
+ * @modified Kamila Hoffmann-Derlacka
  * @version 1.00, February 2019.
  */
 public class CarouselView extends JPanel {
 
-  private static ArrayList<JLabel> menuOptions = new ArrayList<>();
-  private static ArrayList<Rectangle> bounds = new ArrayList<>();
-  private static int carouselLength = 0;
+  private ArrayList<JLabel> menuOptions = new ArrayList<>();
+  private ArrayList<Rectangle> bounds = new ArrayList<>();
+  private int carouselLength = 0;
 
   /**
    * Alters the GUI by taking commands from a model class
@@ -31,7 +31,7 @@ public class CarouselView extends JPanel {
    */
   public CarouselView(ArrayList<JLabel> allOptions) {
 
-    JLabel carousel = new JLabel(new ImageIcon("../assets/carousel.PNG"));
+    JLabel carousel = new JLabel(new ImageIcon("../assets/carousel.png"));
     carousel.setLayout(null);
     carouselLength = allOptions.size();
     initialiseBounds(carouselLength);
@@ -55,7 +55,7 @@ public class CarouselView extends JPanel {
    *
    * @return The title of the selected song
    */
-  public static String chosenOption() {
+  public String chosenOption() {
 
     String optionTitle = null;
 
@@ -72,7 +72,7 @@ public class CarouselView extends JPanel {
   /**
    * Shifts the JLabels left, called from the CarouselModel object
    */
-  public static void leftMovement() {
+  public void leftMovement() {
 
     for (JLabel label : menuOptions) {
 
@@ -101,7 +101,7 @@ public class CarouselView extends JPanel {
   /**
    * Shifts the JLabels right, called from the CarouselModel object
    */
-  public static void rightMovement() {
+  public void rightMovement() {
 
     for (JLabel label : menuOptions) {
 
@@ -127,7 +127,7 @@ public class CarouselView extends JPanel {
     }
   }
 
-    public static void initialiseBounds( int labelLength){
+    public void initialiseBounds( int labelLength){
       for (int i = 0; i <= labelLength; i++) {
           bounds.add(new Rectangle((i * 150)+40, 65, 140, 140));
       }

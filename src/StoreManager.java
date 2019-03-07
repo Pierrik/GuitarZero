@@ -15,7 +15,7 @@ import java.util.zip.ZipOutputStream;
  * @author  Pierrik Mellab
  * @author  John Mercer
  * @author  Harper Ford (Javadoc)
- * @author  John Merer (Added bundle/preview functionality)
+ * @author  John Mercer (Added bundle/preview functionality)
  * @version 1.5, March 2019.
  *
  */
@@ -269,8 +269,10 @@ public class StoreManager extends JFrame {
             // zipping files and sending to server
             String bundlePath = bundleZipper(titleFile, coverArtFile, musicFile);
             String previewPath = previewZipper(titleFile, coverArtFile);
-            //MockClient.uploadFile(HOST, PORT, bundlePath, "UPLOAD_BUNDLE");
-            //MockClient.uploadFile(HOST, PORT, previewPath, "UPLOAD_PREVIEW");
+
+            MockClient client = new MockClient(HOST, PORT);
+            client.uploadFile(bundlePath, "UPLOAD_BUNDLE");
+            client.uploadFile(previewPath, "UPLOAD_PREVIEW");
 
             // cleaning up (deleting zips and noteFile on client-side)
             deleteFile(bundlePath);

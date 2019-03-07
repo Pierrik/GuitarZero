@@ -10,11 +10,11 @@ import java.io.File;
  */
 class StoreManagerController1 implements ActionListener {
   private StoreManagerModel storeManagerModel;
-  private StoreManagerView storeManagerView;
+  private StoreManagerView  storeManagerView;
 
   public StoreManagerController1 ( StoreManagerModel storeManagerModel ) {
     this.storeManagerModel = storeManagerModel;
-    this.storeManagerView = storeManagerView;
+    this.storeManagerView  = storeManagerView;
   }
 
   public void actionPerformed( ActionEvent ev ) {
@@ -22,8 +22,6 @@ class StoreManagerController1 implements ActionListener {
     String filePath = file.getPath();
 
     storeManagerModel.setTitleFile(file);
-
     storeManagerView.setTitleTitle(filePath);
-
   }
 }

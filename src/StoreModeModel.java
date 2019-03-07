@@ -12,20 +12,20 @@ import java.util.ArrayList;
  * @author  Pierrik Mellab
  * @author  Kamila Hoffmann-Derlacka
  * @author  John Mercer
- * @version 1.1, March 2019.
+ * @version 1.00, February 2019.
  */
 
 public class StoreModeModel {
 
-
+  CarouselView view;
   private static int totalCurrency;
-  final String HOST  = "localhost";
-  final int    PORT  = 8888;
+  final static String HOST  = "localhost";
+  final static int    PORT  = 8888;
 
   /**
    * Skeleton constructor for later use
    */
-  public StoreModeModel( ) {
+  public StoreModeModel() {
     this.totalCurrency = Currency.loadTotalCurrency();
   }
 
@@ -34,7 +34,7 @@ public class StoreModeModel {
    */
   public void right() {
 
-    CarouselView.rightMovement();
+    view.rightMovement();
   }
 
   /**
@@ -42,7 +42,7 @@ public class StoreModeModel {
    */
   public void left() {
 
-    CarouselView.leftMovement();
+    view.leftMovement();
   }
 
 
@@ -52,16 +52,17 @@ public class StoreModeModel {
    */
   public void select() {
 
-    buySong(CarouselView.chosenOption());
+    buySong(view.chosenOption());
   }
 
-
+  /**
+   * Downloads a song to local directory.
+   */
   public void buySong(String song) {
 
     if (totalCurrency > 1 && !isInLocalDir(song) ) {
       totalCurrency --;
-      
-      // Downloading the bundle
+
       MockClient client = new MockClient(HOST, PORT);
       client.downloadFile(song, "DOWNLOAD_BUNDLE");
 
@@ -70,7 +71,9 @@ public class StoreModeModel {
     }
   }
 
-    // checks if the song is already in the local directory
+  /**
+   * Checks if the song is already in the local directory.
+   */
   public static boolean isInLocalDir(String song) {
     // checking if local_store directory exists, and creates it if it doesn't yet
     String cd = System.getProperty("user.dir");
