@@ -195,7 +195,9 @@ public class PlayModeModel implements Runnable{
    * Updates the streakCount, Multiplier and currencyEarned if necessary
    */
   public void collectNote() {
+    System.out.println("before");
     this.notesCollected.put(Long.valueOf(currentTick), "collected");
+    System.out.println("after");
     this.streakCount ++;
     setMultiplier();
     this.score += this.multiplier;

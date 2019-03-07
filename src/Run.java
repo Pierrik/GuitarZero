@@ -18,7 +18,7 @@ public class Run {
     JFrame window = new JFrame("GZ");
     //SlashMode sl = new SlashMode();
     //StoreMode st  = new StoreMode();
-    PlayMode p = new PlayMode("C:\\Users\\tomma\\Documents\\GuitarZero\\assets\\testBundle");
+    PlayMode p = new PlayMode("../testBundle");
     Dimension dims = new Dimension(1000,500);
     //Set the content to the drawings from the GamePanel object
     window.setPreferredSize(dims);

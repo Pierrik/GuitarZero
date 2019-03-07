@@ -27,12 +27,11 @@ public class PlayModeView extends JPanel{
   boolean dropNote = false;
   //Create BufferedImage array to store the background frames
   static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
-  //Queue <Note> currentNotePointer;
   public PlayModeView(){
     frame = 0;
     try{
       for(int i = 0; i<backgroundFrameCount; i++){
-        bg[i] = ImageIO.read(new File("C:\\Users\\tomma\\Documents\\GuitarZero\\assets\\bg"+i+".bmp"));
+        bg[i] = ImageIO.read(new File("C:\\Users\\Kamila\\IdeaProjects\\GuitarHero\\assets\\bg0.bmp"));
       }
     }
     catch(Exception e){
