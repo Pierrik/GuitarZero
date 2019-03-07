@@ -40,8 +40,8 @@ public class StoreMode {
 
     // Initialise the model, controller, view GUI classes
     StoreModeModel      model      = new StoreModeModel();
-    StoreModeController controller = new StoreModeController( model );
-    StoreModeView       view       = new StoreModeView(model, menuOptions);
+    StoreModeController controller = new StoreModeController(model);
+    CarouselView        view       = new CarouselView(menuOptions);
     view.setVisible(true);
     controller.pollGuitarForever();
 

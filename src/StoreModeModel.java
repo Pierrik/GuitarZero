@@ -25,13 +25,8 @@ public class StoreModeModel {
   /**
    * Skeleton constructor for later use
    */
-  public StoreModeModel( ) {
+  public StoreModeModel() {
     this.totalCurrency = Currency.loadTotalCurrency();
-  }
-
-  public static void main(String[] args){
-    MockClient client = new MockClient(HOST, PORT);
-    client.downloadFile("Song Name(bundle).zip", "DOWNLOAD_BUNDLE");
   }
 
   /**

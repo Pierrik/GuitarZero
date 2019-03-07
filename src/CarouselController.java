@@ -24,9 +24,9 @@ public class CarouselController implements Runnable {
   final static String GUITAR_HERO      = "Guitar Hero";
   final static int    DELAY            = 150;
 
-  private CarouselModel        model;
-  private ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
-  private Controller[]          ctrls = cenv.getControllers();
+  CarouselModel         model;
+  ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
+  Controller[]          ctrls = cenv.getControllers();
 
   final static int    BUTTONS          = 3;
   final static double BUTTON_THRESHOLD = 1.0;
