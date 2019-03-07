@@ -14,8 +14,8 @@ import javax.swing.JLayeredPane;
  * CarouselView.
  *
  * @author Pierrik Mellab
- * @modified Harper Ford
- * @modified Kamila Hoffmann-Derlacka
+ * @modified by Harper Ford
+ * @modified by Kamila Hoffmann-Derlacka
  * @version 1.00, February 2019.
  */
 public class CarouselView extends JPanel {
@@ -38,6 +38,8 @@ public class CarouselView extends JPanel {
 
     // sets private menuOptions to, passed in variable, allOptions
     for (JLabel label : allOptions) {
+      label.setVerticalTextPosition(JLabel.BOTTOM);
+      label.setHorizontalTextPosition(JLabel.CENTER);
       menuOptions.add(label);
       carousel.add(label);
     }
@@ -45,6 +47,13 @@ public class CarouselView extends JPanel {
     // sets the initial menuOption bounds
     for (int i = 0; i < allOptions.size(); i++) {
       menuOptions.get(i).setBounds(bounds.get(i));
+      if(i-1 < 4) {
+        menuOptions.get(i).setVisible(true);
+
+      } else {
+        menuOptions.get(i).setVisible(false);
+
+      }
     }
     this.add(carousel);
     this.setBounds(80, 65, 740, 150);
@@ -87,7 +96,7 @@ public class CarouselView extends JPanel {
           break;
         }
 
-        if(i-1 < 5) {
+        if(i-1 < 4) {
           label.setVisible(true);
 
         } else {
@@ -116,7 +125,7 @@ public class CarouselView extends JPanel {
           break;
         }
 
-        if(i-1 < 5) {
+        if(i-1 < 4) {
           label.setVisible(true);
 
         } else {
@@ -126,13 +135,10 @@ public class CarouselView extends JPanel {
       }
     }
   }
-  
-    /*
-     * Sets the JLabel bounds so are displayed correctly
-     */
+
     public void initialiseBounds( int labelLength){
       for (int i = 0; i <= labelLength; i++) {
-          bounds.add(new Rectangle((i * 150)+40, 65, 140, 140));
+          bounds.add(new Rectangle((i * 150)+40, 50, 140, 160));
       }
     }
 }
