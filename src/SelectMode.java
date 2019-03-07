@@ -41,7 +41,7 @@ public class SelectMode extends JPanel {
     ArrayList<JLabel> menuOptions = new ArrayList<>();
 
     String cd = System.getProperty("user.dir");
-    String bundleDirPath = cd + "/local_store/bundle_files/";
+    String bundleDirPath = "../local_store/bundle_files/";
 
     System.out.println(bundleDirPath);
 
@@ -71,7 +71,7 @@ public class SelectMode extends JPanel {
         }
 
         JLabel label = new JLabel(new ImageIcon(albumCover.getPath()));
-        label.setBackground(Color.BLUE);
+        //label.setBackground(Color.BLUE);
         label.setText(songName);
 
         menuOptions.add(label);
@@ -79,6 +79,8 @@ public class SelectMode extends JPanel {
 
     }
 
+
+    System.out.println(menuOptions.size());
     // Initialise the model, controller, view GUI classes
     CarouselView       view       = new CarouselView( menuOptions );
     CarouselModel      model      = new CarouselModel( view );
@@ -90,7 +92,7 @@ public class SelectMode extends JPanel {
 
 
 
-  public static String getExtension (String fileName) {
+   private String getExtension (String fileName) {
 
     String extension = "";
 
