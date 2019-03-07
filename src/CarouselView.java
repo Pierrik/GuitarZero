@@ -31,7 +31,7 @@ public class CarouselView extends JPanel {
    */
   public CarouselView(ArrayList<JLabel> allOptions) {
 
-    JLabel carousel = new JLabel(new ImageIcon("../assets/carousel.png"));
+    JLabel carousel = new JLabel(new ImageIcon("../assets/carousel.PNG"));
     carousel.setLayout(null);
     carouselLength = allOptions.size();
     initialiseBounds(carouselLength);
