@@ -9,11 +9,12 @@ import java.util.ArrayList;
  * Handler.
  *
  * @author  John Mercer
- * @version 1.08, February 2019.
+ * @version 1.13, February 2019.
  */
 public class Handler implements Runnable {
 
   private Socket sck;
+  final int BUFFER_SIZE = 4092;
 
   Handler(Socket sck) {
     this.sck = sck;
@@ -85,7 +86,7 @@ public class Handler implements Runnable {
 
         // reading file in from dataIn and writing it to fileOut stream
         int n;
-        byte[] buf = new byte[4092];
+        byte[] buf = new byte[BUFFER_SIZE];
         while (fileSize > 0
             && (n = dataIn.read(buf, 0, (int) Math.min(buf.length, fileSize))) != -1) {
           fileOut.write(buf, 0, n);

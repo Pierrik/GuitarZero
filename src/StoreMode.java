@@ -21,27 +21,30 @@ public class StoreMode extends JPanel {
   private static final int    PORT = 8888;
 
   // store settings
-  private static final String BUNDLES = System.getProperty("user.dir") + "/local_store/bundle_files/";
-  private static final String PREVIEWS = System.getProperty("user.dir") + "/local_store/preview_files/";
+  private static final String BUNDLES = System.getProperty("user.dir") + "\\local_store\\bundle_files\\";
+  private static final String PREVIEWS = System.getProperty("user.dir") + "\\local_store\\preview_files\\";
 
   public StoreMode() {
     MockClient client = new MockClient(HOST, PORT);
 
-    // Getting all available songs on the server
+    // Getting preview filenames of all available songs on the server
     ArrayList<String> fileNames = client.listDirectory();
 
     // Downloading and unzipping all previews, and giving each title/cover a JLabel
     ArrayList<JLabel> menuOptions = new ArrayList<>();
-
     for (String fileName : fileNames){
-      // Downloading preview and unzipping
+      // Downloading and unzipping preview, then deleting zip
       client.downloadFile(fileName, "DOWNLOAD_PREVIEW");
-      MockClient.deleteFile(PREVIEWS + fileName);
-      // Reading in the cover image and song name, assigning to a JLabel and adding to ArrayList
       String songName = MockClient.getSongPreview(fileName);
-      File[] cover = new File(PREVIEWS + songName).listFiles();
-      if (cover != null){
-        JLabel label = new JLabel(new ImageIcon(cover[0].getAbsolutePath()));
+      String previewDir = PREVIEWS + songName + "\\";
+      MockClient.unzip(PREVIEWS + fileName, previewDir);
+
+      // Reading in the cover image and song name, assigning to a JLabel and adding to ArrayList
+      File[] previewContents = new File(previewDir).listFiles();
+
+      for (File cover : previewContents){
+        System.out.println(previewDir + cover.getName());
+        JLabel label = new JLabel(new ImageIcon(previewDir + cover.getName()));
         label.setText(songName);
         menuOptions.add(label);
       }
