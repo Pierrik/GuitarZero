@@ -16,19 +16,17 @@ public class Run {
 
   public static void main(String[] args){
     JFrame window = new JFrame("GZ");
-    SlashMode sl = new SlashMode();
-    //SelectMode selectMode = new SelectMode();
+    //SlashMode sl = new SlashMode();
     //StoreMode st  = new StoreMode();
-    //PlayMode p = new PlayMode("assets\\testBundle");
+    PlayMode p = new PlayMode("C:\\Users\\tomma\\Documents\\GuitarZero\\assets\\testBundle");
     Dimension dims = new Dimension(1000,500);
-
     //Set the content to the drawings from the GamePanel object
     window.setPreferredSize(dims);
-    window.setContentPane(sl);
+    window.setContentPane(p);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
     window.setVisible(true);
-    //p.run();
+    p.run();
   }
 
   /*public void changeMode(String option){

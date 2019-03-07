@@ -27,11 +27,12 @@ public class PlayModeView extends JPanel{
   boolean dropNote = false;
   //Create BufferedImage array to store the background frames
   static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
+  //Queue <Note> currentNotePointer;
   public PlayModeView(){
     frame = 0;
     try{
       for(int i = 0; i<backgroundFrameCount; i++){
-        bg[i] = ImageIO.read(new File("assets\\bg"+i+".bmp"));
+        bg[i] = ImageIO.read(new File("C:\\Users\\tomma\\Documents\\GuitarZero\\assets\\bg"+i+".bmp"));
       }
     }
     catch(Exception e){
@@ -60,9 +61,9 @@ public class PlayModeView extends JPanel{
       notes.get(i).paintComponent(g);
       //System.out.println(len);
       if(notes.get(i).getY() > 500){
-        if(!notes.get(i).collected) {
-          dropNote = true;
-        }
+        //if(!notes.get(i).collected) {
+          //dropNote = true;
+        //}
         notes.remove(i);
         i--;
         len--;

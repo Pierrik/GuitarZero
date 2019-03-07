@@ -252,6 +252,10 @@ public class PlayModeModel implements Runnable{
       if(!currentNote.equals("000") && currentTick != lastTick){
         Note note = new Note(currentNote);
         view.addNote(note);
+
+        //Testing
+        System.out.println(currentNote);
+
         notesAddedToHighway.add(note);
         lastTick = currentTick;
       }
@@ -293,22 +297,28 @@ public class PlayModeModel implements Runnable{
    */
   public void checkNote(String guitarNote) {
     boolean noteCollected = false;
+    System.out.println("Checking note "+ guitarNote);
 
-    for(Note note: view.notes) {
-      if( note.getY() > 400 && note.getY() < 500 ){
-        if ( note.noteValue.equals(guitarNote) ) {
-          collectNote();
-          noteCollected = true;
+    try {
+      //for(Note note: view.notes) {
+        if(notesAddedToHighway.peek().noteValue.equals(guitarNote)){
+          //if ( note.noteValue.equals(guitarNote) ) {
+            collectNote();
+            noteCollected = true;
 
-          // Testing
-          System.out.println("Note collected");
-
+            // Testing
+            System.out.println("Note collected");
+          //}
         }
-      }
+      //}
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("Tried to collect note");
     }
 
     if ( !noteCollected ) {
       dropNote();
+      System.out.println("Note Dropped");
     }
   }
 
