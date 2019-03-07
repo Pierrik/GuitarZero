@@ -16,17 +16,19 @@ public class Run {
 
   public static void main(String[] args){
     JFrame window = new JFrame("GZ");
-    //SlashMode sl = new SlashMode();
+    SlashMode sl = new SlashMode();
+    //SelectMode selectMode = new SelectMode();
     //StoreMode st  = new StoreMode();
-    PlayMode p = new PlayMode("assets\\testBundle");
+    //PlayMode p = new PlayMode("assets\\testBundle");
     Dimension dims = new Dimension(1000,500);
+
     //Set the content to the drawings from the GamePanel object
     window.setPreferredSize(dims);
-    window.setContentPane(p);
+    window.setContentPane(sl);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
     window.setVisible(true);
-    p.run();
+    //p.run();
   }
 
   /*public void changeMode(String option){

@@ -29,7 +29,7 @@ public class TutorialModeController {
   final static String GUITAR_HERO = "Guitar Hero";
   final static int    DELAY       = 150;
 
-  private  TutorialModeModel model;
+  //private  TutorialModeModel model;
   // make them non static when not using main anymore
   private static ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
   private static Controller[]          ctrls = cenv.getControllers();
@@ -51,9 +51,9 @@ public class TutorialModeController {
   static int          BENDER_ROUND = 13;
   static int          WHAMMY       = 14;
 
-  public TutorialModeController(TutorialModeModel model){
-    this.model = model;
-  }
+  //public TutorialModeController(TutorialModeModel model){
+    //this.model = model;
+  //}
 
   /*
    * Poll forever, and altering model depending on buttons pressed

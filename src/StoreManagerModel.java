@@ -154,8 +154,8 @@ public class StoreManagerModel {
           // zipping files and sending to server
           String bundlePath = bundleZipper(titleFile, coverArtFile, musicFile);
           String previewPath = previewZipper(titleFile, coverArtFile);
-          MockClient.uploadFile(HOST, PORT, bundlePath, "UPLOAD_BUNDLE");
-          MockClient.uploadFile(HOST, PORT, previewPath, "UPLOAD_PREVIEW");
+          //MockClient.uploadFile(HOST, PORT, bundlePath, "UPLOAD_BUNDLE");
+          //MockClient.uploadFile(HOST, PORT, previewPath, "UPLOAD_PREVIEW");
 
           // cleaning up (deleting zips and noteFile on client-side)
           deleteFile(bundlePath);

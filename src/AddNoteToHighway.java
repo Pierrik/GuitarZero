@@ -16,7 +16,7 @@ public class AddNoteToHighway implements Runnable {
   public void run() {
     while(!model.isEndOfSong()){
       if(!(model.getCurrentNote().equals("000")) && !model.getCurrentNote().equals("")){
-        view.addNote(model.getCurrentNote());
+        //view.addNote(model.getCurrentNote());
       }
     }
   }
