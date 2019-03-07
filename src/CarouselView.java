@@ -13,34 +13,28 @@ import javax.swing.JLabel;
 /**
  * CarouselView.
  *
- * @author  Pierrik Mellab
- * @author  Harper Ford (Javadoc)
+ * @author Pierrik Mellab
+ * @modified by Harper Ford
+ * @modified by Kamila Hoffmann-Derlacka
  * @version 1.00, February 2019.
  */
-public class CarouselView extends JFrame {
+public class CarouselView extends JPanel {
 
   private CarouselModel model;
   private JPanel panel;
 
   private static ArrayList<JLabel> menuOptions = new ArrayList<>();
-
   private static ArrayList<Rectangle> bounds = new ArrayList<>();
-
   private static int carouselLength = 0;
 
   /**
    * Alters the GUI by taking commands from a model class
    *
-   * @param controller: The object that reads the guitar/keyboard inputs
-   * @param model: The object that takes the controller inputs then calls the corresponding
-   * CarouselView function
    * @param allOptions: A list of options to display graphically
    */
-  public CarouselView(CarouselController controller, CarouselModel model,
-      ArrayList<JLabel> allOptions) {
-    this.model = model;
+  public CarouselView(ArrayList<JLabel> allOptions) {
 
-    setContentPane(new JLabel(new ImageIcon("../assets/carousel.PNG")));
+    this.add(new JLabel(new ImageIcon("../assets/carousel.PNG")));
 
     carouselLength = allOptions.size();
     initialiseBounds(carouselLength);
@@ -62,13 +56,8 @@ public class CarouselView extends JFrame {
       panel.add(menuOptions.get(i));
     }
 
-    setLayout(null);
     panel.setBounds(80, 65, 740, 150);
-    this.add(panel);
-    this.pack();
     this.setSize(900, 300);
-    this.setResizable(false);
-
   }
 
   /**
@@ -86,9 +75,7 @@ public class CarouselView extends JFrame {
         optionTitle = label.getText();
         System.out.println(optionTitle);
       }
-
     }
-
     return optionTitle;
   }
 
@@ -117,7 +104,6 @@ public class CarouselView extends JFrame {
           label.setVisible(false);
 
         }
-
       }
     }
   }
@@ -147,7 +133,6 @@ public class CarouselView extends JFrame {
           label.setVisible(false);
 
         }
-
       }
     }
   }

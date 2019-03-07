@@ -39,18 +39,19 @@ public class StoreMode {
 
     ArrayList<JLabel> menuOptions = new ArrayList<>();
 
+    // create menu options with songs and their covers and titles
     // Create all menu option labels with their image icon and title
-    JLabel label1 = new JLabel(new ImageIcon("../assets/ExitLogo2.png"));
-    JLabel label2 = new JLabel(new ImageIcon("../assets/StoreLogo2.png"));
-    JLabel label3 = new JLabel(new ImageIcon("../assets/SelectLogo2.png"));
-    JLabel label4 = new JLabel(new ImageIcon("../assets/PlayLogo2.png"));
-    JLabel label5 = new JLabel(new ImageIcon("../assets/TutorialLogo2.png"));
+    JLabel label1 = new JLabel(new ImageIcon("../assets/.png"));
+    JLabel label2 = new JLabel(new ImageIcon("../assets/.png"));
+    JLabel label3 = new JLabel(new ImageIcon("../assets/.png"));
+    JLabel label4 = new JLabel(new ImageIcon("../assets/.png"));
+    JLabel label5 = new JLabel(new ImageIcon("../assets/.png"));
 
-    label1.setText("Exit");
-    label2.setText("Store");
-    label3.setText("Select");
-    label4.setText("Play");
-    label5.setText("Tutorial");
+    label1.setText("song1");
+    label2.setText("song2");
+    label3.setText("song3");
+    label4.setText("song4");
+    label5.setText("song5");
 
 
     // Add labels to arrayList
@@ -63,7 +64,7 @@ public class StoreMode {
     // Initialise the model, controller, view GUI classes
     StoreModeModel      model      = new StoreModeModel();
     StoreModeController controller = new StoreModeController( model );
-    StoreModeView       view       = new StoreModeView(model, menuOptions);
+    CarouselView        view       = new CarouselView( menuOptions );
     view.setVisible( true );
     controller.pollGuitarForever();
 
