@@ -45,7 +45,7 @@ public class SlashMode extends JPanel{
      * Initialises the GUI classes for a courel with menu options specific to Slash Mode
      */
     public SlashMode() {
-
+      // cheeky comment
         ArrayList<JLabel> menuOptions = new ArrayList<>();
 
 
