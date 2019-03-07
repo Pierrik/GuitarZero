@@ -19,7 +19,7 @@ import net.java.games.input.ControllerEnvironment;
  *   javac CarouselController.java
  *   java -Djava.library.path=. CarouselController
  */
-public class CarouselController {
+public class CarouselController implements Runnable {
 
   final static String GUITAR_HERO      = "Guitar Hero";
   final static int    DELAY            = 150;
@@ -119,6 +119,11 @@ public class CarouselController {
 
     System.out.println(GUITAR_HERO + " controller not found");
     System.exit(1);
+  }
+
+  @Override
+  public void run() {
+    this.pollGuitarForever();
   }
 /*
   public static void main(String[] args) {

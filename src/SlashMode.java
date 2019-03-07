@@ -37,6 +37,9 @@ import javax.swing.JLabel;
 */
 public class SlashMode extends JPanel{
 
+    CarouselView view;
+    CarouselModel model;
+    CarouselController controller;
 
     /**
      * Initialises the GUI classes for a courel with menu options specific to Slash Mode
@@ -68,12 +71,12 @@ public class SlashMode extends JPanel{
         menuOptions.add(label5);
 
         // Initialise the model, controller, view GUI classes
-        //CarouselController controller = new CarouselController( model );
         CarouselView       view       = new CarouselView(menuOptions);
         CarouselModel      model      = new CarouselModel(view);
+        CarouselController controller = new CarouselController( model );
+        Thread controllerThread = new Thread(controller);
+        controllerThread.start();
         this.add(view);
-      //controller.pollGuitarForever();
-
+        //controller.pollGuitarForever();
     }
-
 }

@@ -25,7 +25,7 @@ import net.java.games.input.ControllerEnvironment;
  *   javac PlayModeController.java
  *   java -Djava.library.path=. PlayModeController
  */
-public class PlayModeController {
+public class PlayModeController implements Runnable {
   final static String GUITAR_HERO = "Guitar Hero";
   final static int    DELAY       = 150;
 
@@ -293,5 +293,10 @@ public class PlayModeController {
 
     System.out.println( GUITAR_HERO + " controller not found" );
     System.exit( 1 );
+  }
+
+  @Override
+  public void run() {
+    this.pollGuitarForever();
   }
 }
