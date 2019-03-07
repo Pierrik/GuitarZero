@@ -60,7 +60,9 @@ public class StoreModeModel {
     buySong(view.chosenOption());
   }
 
-
+  /**
+   * Downloads a song to local directory.
+   */
   public void buySong(String song) {
 
     if (totalCurrency > 1 && !isInLocalDir(song) ) {
@@ -74,7 +76,9 @@ public class StoreModeModel {
     }
   }
 
-    // checks if the song is already in the local directory
+  /**
+   * Checks if the song is already in the local directory.
+   */
   public static boolean isInLocalDir(String song) {
     // checking if local_store directory exists, and creates it if it doesn't yet
     String cd = System.getProperty("user.dir");
