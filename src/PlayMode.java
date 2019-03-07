@@ -32,6 +32,7 @@ public class PlayMode extends JPanel implements Runnable{
 
   /**
    * The thread for Play Mode
+   * Continuously repaints the screen and checks whether any notes have not been played
    */
   public void run() {
       Thread modelThread = new Thread(model);
