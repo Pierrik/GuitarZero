@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+import javax.swing.JLayeredPane;
 
 // Manages the display model
 
@@ -20,9 +20,6 @@ import javax.swing.JLabel;
  */
 public class CarouselView extends JPanel {
 
-  private CarouselModel model;
-  private JPanel panel;
-
   private static ArrayList<JLabel> menuOptions = new ArrayList<>();
   private static ArrayList<Rectangle> bounds = new ArrayList<>();
   private static int carouselLength = 0;
@@ -34,30 +31,23 @@ public class CarouselView extends JPanel {
    */
   public CarouselView(ArrayList<JLabel> allOptions) {
 
-    this.add(new JLabel(new ImageIcon("../assets/carousel.PNG")));
-
+    JLabel carousel = new JLabel(new ImageIcon("../assets/carousel.png"));
+    carousel.setLayout(null);
     carouselLength = allOptions.size();
     initialiseBounds(carouselLength);
-
-    // Creates panel and sets to correct size/ layout
-    panel = new JPanel();
-    //panel.setSize(610, 150);
-    panel.setBackground(Color.WHITE);
-    panel.setLayout(null);
 
     // sets private menuOptions to, passed in variable, allOptions
     for (JLabel label : allOptions) {
       menuOptions.add(label);
+      carousel.add(label);
     }
 
     // sets the initial menuOption bounds
     for (int i = 0; i < allOptions.size(); i++) {
       menuOptions.get(i).setBounds(bounds.get(i));
-      panel.add(menuOptions.get(i));
     }
-
-    panel.setBounds(80, 65, 740, 150);
-    this.setSize(900, 300);
+    this.add(carousel);
+    this.setBounds(80, 65, 740, 150);
   }
 
   /**
@@ -139,7 +129,7 @@ public class CarouselView extends JPanel {
 
     public static void initialiseBounds( int labelLength){
       for (int i = 0; i <= labelLength; i++) {
-          bounds.add(new Rectangle(i * 150, 0, 140, 140));
+          bounds.add(new Rectangle((i * 150)+40, 65, 140, 140));
       }
     }
 }
