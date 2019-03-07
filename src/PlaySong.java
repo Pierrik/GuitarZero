@@ -30,6 +30,9 @@ public class PlaySong implements Runnable {
   }
 
   @Override
+  /*
+   * Threaded function that starts the MIDI sequence and then adds Notes to the highway in PlayModeView
+   */
   public void run() {
     try {
       final Sequencer seq = MidiSystem.getSequencer();
@@ -50,6 +53,7 @@ public class PlaySong implements Runnable {
 
 
       try{
+        //Calculate how many frames a note travels per second
         bpm = Bpm.getBPM(MidiSystem.getSequence( midiFile ));
         time = (bpm*ticksPerBeat)/60;
       }
