@@ -49,6 +49,7 @@ public class PlayModeView extends JPanel{
     * Draws all neccesary GUI elements on the JPanel
     * @param g: The the graphics object associated with the JPanel
     */
+
   @Override
   public synchronized void paintComponent(Graphics g) {
     super.paintComponent(g);

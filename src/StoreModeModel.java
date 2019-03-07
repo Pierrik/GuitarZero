@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author  Pierrik Mellab
  * @author  Kamila Hoffmann-Derlacka
  * @author  John Mercer
- * @version 1.00, February 2019.
+ * @version 1.1, March 2019.
  */
 
 public class StoreModeModel {
@@ -29,17 +29,12 @@ public class StoreModeModel {
     this.totalCurrency = Currency.loadTotalCurrency();
   }
 
-  public static void main(String[] args){
-    StoreModeModel model = new StoreModeModel();
-    System.out.println(totalCurrency);
-  }
-
   /**
    * Calls the rightMovement method in the carouselView file causing icons to shift right
    */
   public void right() {
 
-    StoreModeView.rightMovement();
+    CarouselView.rightMovement();
   }
 
   /**
@@ -47,7 +42,7 @@ public class StoreModeModel {
    */
   public void left() {
 
-    StoreModeView.leftMovement();
+    CarouselView.leftMovement();
   }
 
 
@@ -57,7 +52,7 @@ public class StoreModeModel {
    */
   public void select() {
 
-    buySong(StoreModeView.chosenOption());
+    buySong(CarouselView.chosenOption());
   }
 
 

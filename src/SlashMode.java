@@ -69,8 +69,8 @@ public class SlashMode {
         // Initialise the model, controller, view GUI classes
         CarouselModel      model      = new CarouselModel();
         CarouselController controller = new CarouselController( model );
-        CarouselView       view       = new CarouselView( controller, model, menuOptions);
-        view.setVisible( true );
+        CarouselView       view       = new CarouselView(menuOptions);
+        //view.setVisible( true );
         controller.pollGuitarForever();
 
     }
