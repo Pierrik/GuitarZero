@@ -52,7 +52,6 @@ public class MockClient {
       dataOut.flush();
 
       // cleaning up
-      dataOut.close();
       sck.close();
 
     } catch ( Exception exn ) {
@@ -82,12 +81,11 @@ public class MockClient {
       // requesting to download the file
       Socket sck = new Socket(this.host, this.port);
       DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
-
       dataOut.writeUTF(method + "/" + fileName);
       dataOut.flush();
 
       // attempting to receive the file
-      DataInputStream  dataIn  = new DataInputStream(sck.getInputStream());
+      DataInputStream dataIn = new DataInputStream(sck.getInputStream());
       BufferedOutputStream fileOut;
 
       if (method.equals("DOWNLOAD_BUNDLE")) {
@@ -103,8 +101,14 @@ public class MockClient {
         return;
       }
 
-      byte[] bytes = dataIn.readAllBytes();
-      fileOut.write(bytes);
+      int fileSize = (int)dataIn.readLong();
+      int n;
+      byte[] buf = new byte[4092];
+      while (fileSize > 0
+          && (n = dataIn.read(buf, 0, (int) Math.min(buf.length, fileSize))) != -1) {
+        fileOut.write(buf, 0, n);
+        fileSize -= 1;
+      }
 
       //unzip(previewDir + fileName, previewDir);
 

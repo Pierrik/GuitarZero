@@ -60,7 +60,7 @@ public class StoreModeModel {
    */
   public void buySong(String song) {
 
-    if (totalCurrency > 1 && !isInLocalDir(song) ) {
+    if (totalCurrency > 1 && !isInLocalDir(song)) {
       totalCurrency --;
 
       MockClient client = new MockClient(HOST, PORT);
