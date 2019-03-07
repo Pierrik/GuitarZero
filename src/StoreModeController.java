@@ -18,7 +18,7 @@ import net.java.games.input.ControllerEnvironment;
  *   javac StoreModeController.java
  *   java -Djava.library.path=. StoreModeController
  */
-public class StoreModeController {
+public class StoreModeController implements Runnable {
 
   final static String GUITAR_HERO      = "Guitar Hero";
   final static int    DELAY            = 150;
@@ -118,6 +118,11 @@ public class StoreModeController {
 
     System.out.println(GUITAR_HERO + " controller not found");
     System.exit(1);
+  }
+
+  @Override
+  public void run() {
+    this.pollGuitarForever();
   }
 /*
   public static void main(String[] args) {
