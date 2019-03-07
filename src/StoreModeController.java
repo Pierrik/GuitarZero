@@ -5,7 +5,7 @@ import net.java.games.input.ControllerEnvironment;
  * CarouselController.
  *
  * @author  Kamila Hoffmann-Derlacka
- * @version 1.0, March 2019.
+ * @version 1.1, March 2019.
  *
  *   Linux/Mac:
  *   $ CLASSPATH=jinput-2.0.9.jar:.

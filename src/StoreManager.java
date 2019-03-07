@@ -15,7 +15,7 @@ import java.util.zip.ZipOutputStream;
  * @author  Pierrik Mellab
  * @author  John Mercer
  * @author  Harper Ford (Javadoc)
- * @author  John Merer (Added bundle/preview functionality)
+ * @author  John Mercer (Added bundle/preview functionality)
  * @version 1.5, March 2019.
  *
  */

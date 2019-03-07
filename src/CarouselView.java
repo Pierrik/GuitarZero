@@ -14,8 +14,8 @@ import javax.swing.JLayeredPane;
  * CarouselView.
  *
  * @author Pierrik Mellab
- * @modified by Harper Ford
- * @modified by Kamila Hoffmann-Derlacka
+ * @modified Harper Ford
+ * @modified Kamila Hoffmann-Derlacka
  * @version 1.00, February 2019.
  */
 public class CarouselView extends JPanel {

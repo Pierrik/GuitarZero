@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class StoreModeModel {
 
-
+  CarouselView view;
   private static int totalCurrency;
   final static String HOST  = "localhost";
   final static int    PORT  = 8888;
@@ -39,7 +39,7 @@ public class StoreModeModel {
    */
   public void right() {
 
-    StoreModeView.rightMovement();
+    view.rightMovement();
   }
 
   /**
@@ -47,7 +47,7 @@ public class StoreModeModel {
    */
   public void left() {
 
-    StoreModeView.leftMovement();
+    view.leftMovement();
   }
 
 
@@ -57,7 +57,7 @@ public class StoreModeModel {
    */
   public void select() {
 
-    buySong(StoreModeView.chosenOption());
+    buySong(view.chosenOption());
   }
 
 
