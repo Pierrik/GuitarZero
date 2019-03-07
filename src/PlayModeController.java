@@ -25,7 +25,7 @@ import net.java.games.input.ControllerEnvironment;
  *   javac PlayModeController.java
  *   java -Djava.library.path=. PlayModeController
  */
-public class PlayModeController {
+public class PlayModeController implements Runnable {
   final static String GUITAR_HERO = "Guitar Hero";
   final static int    DELAY       = 150;
 
@@ -109,16 +109,16 @@ public class PlayModeController {
               if (val == BUTTON_THRESHOLD) {
                 System.out.println("escape");
               }
-            } else if (i == BENDER_CLICK) { //bender button click
-              if (val == BUTTON_THRESHOLD) {
+            } else if (i == WHAMMY) { //whammy  16 in linux
+              if (val >=BUTTON_THRESHOLD) {
                 //action
               }
-            } else if (i == BENDER_ROUND) { // bender button playing around (values 1/8, 2/8, 3/8...) // linux 17
+            } else if (i == BENDER_CLICK) { // bender click
               if (val > 0) {
                 // action
               }
-            } else if (i == WHAMMY) { // whammy bar (responsible for strumming) // 16 in linux
-              if (val >= 0){
+            } else if (i == BENDER_ROUND) { //bender round linux 17
+              if (val > 0){
                 if (previous1 == WHITE1) {
                   if (previous2 == WHITE2) {
                     if (previous3 == WHITE3) {
@@ -293,5 +293,10 @@ public class PlayModeController {
 
     System.out.println( GUITAR_HERO + " controller not found" );
     System.exit( 1 );
+  }
+
+  @Override
+  public void run() {
+    this.pollGuitarForever();
   }
 }

@@ -17,7 +17,7 @@ public class CarouselControllerTest {
 
   @org.junit.Before
   public void setUp() throws Exception {
-    controller = new CarouselController(new CarouselModel());
+    //controller = new CarouselController(new CarouselModel());
   }
 
   @org.junit.Test

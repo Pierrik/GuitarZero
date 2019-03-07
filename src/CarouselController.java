@@ -19,12 +19,12 @@ import net.java.games.input.ControllerEnvironment;
  *   javac CarouselController.java
  *   java -Djava.library.path=. CarouselController
  */
-public class CarouselController {
+public class CarouselController implements Runnable {
 
   final static String GUITAR_HERO      = "Guitar Hero";
   final static int    DELAY            = 150;
 
-  private CarouselModel         model;
+  private CarouselModel        model;
   private ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
   private Controller[]          ctrls = cenv.getControllers();
 
@@ -35,15 +35,15 @@ public class CarouselController {
   final static int    ESCAPE           = 10;
 
   // variables that change for different operating systems, default: windows
-  static int    STRUM                  = 16;
+  static int    STRUM            = 16;
 
 
   public CarouselController(CarouselModel model){
     this.model = model;
   }
 
-  /**
-   * Poll forever, calling different model methods depending on the buttons pressed
+  /*
+   * Poll forever, and altering model depending on buttons pressed
    */
   private void pollForever(Controller ctrl) {
     Component[] allCmps    = ctrl.getComponents();
@@ -99,9 +99,9 @@ public class CarouselController {
     }
   }
 
-  /**
-   * Recognises the OS and sets the constants. Finds GH controller and polls it forever.
-   * If none found, error is printed and program terminates.
+  /*
+   * Recognises the OS and sets the constants. Finds GH controller and polls it forever. If none found, error is printed and program
+   * terminates.
    */
   public void pollGuitarForever(){
 
@@ -120,5 +120,35 @@ public class CarouselController {
     System.out.println(GUITAR_HERO + " controller not found");
     System.exit(1);
   }
+
+  @Override
+  public void run() {
+    this.pollGuitarForever();
+  }
+/*
+  public static void main(String[] args) {
+    ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
+    Controller[]          ctrls = cenv.getControllers();
+
+
+    if (isMac()) {
+      ZERO_POWER       = 8;
+      ESCAPE           = 10;
+      STRUM            = 16;
+    } else if (isUnix()) {
+      ZERO_POWER       = 8;
+      ESCAPE           = 10;
+      STRUM            = 14;
+    }
+
+    for ( Controller ctrl : ctrls ) {
+      if ( ctrl.getName().contains( GUITAR_HERO ) ) {
+        pollForever( ctrl );
+      }
+    }
+
+    System.out.println( GUITAR_HERO + " controller not found" );
+    System.exit( 1 );
+  }*/
 
 }

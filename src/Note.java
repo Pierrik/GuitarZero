@@ -12,14 +12,16 @@ import java.awt.*;
 */
 public class Note{
   //Load note sprites
-  Image blackNote = new ImageIcon("../assets/BlackNote.png").getImage();
-  Image whiteNote = new ImageIcon("../assets/WhiteNote.png").getImage();
+  Image blackNote = new ImageIcon("assets\\BlackNote.png").getImage();
+  Image whiteNote = new ImageIcon("assets\\WhiteNote.png").getImage();
   Image sprite;
   //Setup position/speed variables
   int velocity = 4;
   int y = 250;
   int x;
+  String noteValue;
   int[][] positions = new int[3][2];
+  boolean collected = false;
 
   public int getY(){ return this.y; }
   /**
@@ -27,13 +29,15 @@ public class Note{
    */
   public Note(String notes){
     //Set X position
-    //this.positions[0][0] = (1000/2) - blackNote.getWidth(null)*1.5;
+    this.positions[0][0] = (1000/2) - blackNote.getWidth(null)*2;
     this.positions[1][0] = (1000/2) - blackNote.getWidth(null)/2;
     this.positions[2][0] = (1000/2) + blackNote.getWidth(null)/2;
     //Set object sprite to correct color
     this.positions[0][1] = Character.getNumericValue(notes.charAt(0));
     this.positions[1][1] = Character.getNumericValue(notes.charAt(1));
     this.positions[2][1] = Character.getNumericValue(notes.charAt(2));
+
+    this.noteValue = notes;
   }
 
   /*

@@ -12,6 +12,7 @@ import java.lang.Thread;
  * Play Mode.
  *
  * @author Harper Ford
+ * @author Tom Mansfield
  * @version 2.00, March 2019.
 */
 public class PlayMode extends JPanel implements Runnable{
@@ -20,21 +21,24 @@ public class PlayMode extends JPanel implements Runnable{
      */
     PlayModeView view;
     PlayModeModel model;
+    PlayModeController controller;
     public PlayMode(String bundlePath) {
 
         // Initialise the model, controller, view GUI classes
         view = new PlayModeView();
         view.setPreferredSize(new Dimension(1000,500));
         model = new PlayModeModel(bundlePath, view);
-        //PlayModeController controller = new PlayModeController(model);
+        controller = new PlayModeController(model);
         this.add(view);
         view.setVisible(true);
-        //controller.pollForever();
+        //controller.pollGuitarForever();
     }
 
     public void run() {
       Thread modelThread = new Thread(model);
+      Thread controllerThread = new Thread(controller);
       modelThread.start();
+      controllerThread.start();
       long targetTime = 30;
       while(true){
         long s = System.nanoTime();
@@ -47,6 +51,12 @@ public class PlayMode extends JPanel implements Runnable{
           Thread.sleep(wait);
         } catch (Exception o) {
           o.printStackTrace();
+        }
+
+        if(view.dropNote) {
+          model.dropNote();
+          //System.out.println("Note Dropped");
+          view.dropNote = false;
         }
       }
     }

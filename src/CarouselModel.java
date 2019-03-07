@@ -6,17 +6,18 @@ import java.util.ArrayList;
  * CarouselModel
  *
  * @author  Pierrik Mellab
- * @version 1.00, February 2019.
+ * @modified Harper Ford
+ * @version 1.00, March 2019.
  */
 
 public class CarouselModel {
-
+  CarouselView view;
 
   /**
    * Skeleton constructor for later use
    */
-  public CarouselModel( ) {
-
+  public CarouselModel(CarouselView view) {
+    this.view = view;
   }
 
   /**
@@ -24,7 +25,7 @@ public class CarouselModel {
    */
   public void right() {
 
-    CarouselView.rightMovement();
+    view.rightMovement();
   }
 
   /**
@@ -32,7 +33,7 @@ public class CarouselModel {
    */
   public void left() {
 
-    CarouselView.leftMovement();
+    view.leftMovement();
   }
 
 
@@ -42,7 +43,7 @@ public class CarouselModel {
    */
   public String select() {
 
-    return CarouselView.chosenOption();
+    return view.chosenOption();
   }
 
 }
