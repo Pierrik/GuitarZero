@@ -126,7 +126,10 @@ public class CarouselView extends JPanel {
       }
     }
   }
-
+  
+    /*
+     * Sets the JLabel bounds so are displayed correctly
+     */
     public void initialiseBounds( int labelLength){
       for (int i = 0; i <= labelLength; i++) {
           bounds.add(new Rectangle((i * 150)+40, 65, 140, 140));
