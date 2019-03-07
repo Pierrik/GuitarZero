@@ -2,6 +2,7 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -19,6 +20,8 @@ import java.util.zip.ZipInputStream;
 public class MockClient {
   private String host;
   private int    port;
+
+  private final static int BUFFER_SIZE = 4092;
 
   MockClient(String host, int port){
     this.host = host;
@@ -87,32 +90,39 @@ public class MockClient {
       // attempting to receive the file
       DataInputStream dataIn = new DataInputStream(sck.getInputStream());
       BufferedOutputStream fileOut;
+      String basePath, zipPath, songName;
 
       if (method.equals("DOWNLOAD_BUNDLE")) {
-        File file = new File(bundleDir + fileName);
-        fileOut = new BufferedOutputStream(new FileOutputStream(file));
+        basePath = bundleDir;
+        zipPath = bundleDir + fileName;
+        songName = getSongBundle(fileName);
       }
       else if (method.equals("DOWNLOAD_PREVIEW")) {
-        File file = new File(previewDir + fileName);
-        fileOut = new BufferedOutputStream(new FileOutputStream(file));
+        basePath = previewDir;
+        zipPath = previewDir + fileName;
+        songName = getSongPreview(fileName);
       }
       else {
         sck.close();
         return;
       }
 
+      File file = new File(zipPath);
+      fileOut = new BufferedOutputStream(new FileOutputStream(file));
+
       int fileSize = (int)dataIn.readLong();
       int n;
-      byte[] buf = new byte[4092];
+      byte[] buf = new byte[BUFFER_SIZE];
       while (fileSize > 0
           && (n = dataIn.read(buf, 0, (int) Math.min(buf.length, fileSize))) != -1) {
         fileOut.write(buf, 0, n);
         fileSize -= 1;
       }
 
-      //unzip(previewDir + fileName, previewDir);
+      unzip(zipPath, basePath + songName + "/");
 
       // cleaning up
+      deleteFile(zipPath);
       fileOut.close();
       sck.close();
 
@@ -120,6 +130,39 @@ public class MockClient {
       System.out.println( exn ); System.exit( 1 );
     }
 
+  }
+
+  /**
+   * Deletes specified file.
+   * @param filePath: File path of file to delete.
+   */
+  public static void deleteFile(String filePath){
+    try {
+      Path path = Paths.get(filePath);
+      Files.delete(path);
+    } catch (IOException e){
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Removes the parentheses and file extension from a bundle file name.
+   * e.g. "Song(bundle).zip" to "Song"
+   * @param bundle: Bundle file name.
+   * @return: Song name.
+   */
+  public static String getSongBundle(String bundle){
+    return bundle.substring(0, bundle.length() - 12);
+  }
+
+  /**
+   * Removes the parentheses and file extension from a preview file name.
+   * e.g. "Song(preview).zip" to "Song"
+   * @param preview: Preview file name.
+   * @return: Song name.
+   */
+  public static String getSongPreview(String preview){
+    return preview.substring(0, preview.length() - 13);
   }
 
   /**
@@ -134,41 +177,32 @@ public class MockClient {
       dir.mkdirs();
     }
 
-    //buffer for read and write data to file
-    FileInputStream fileIn;
-    byte[] bytes = new byte[1024];
-
     try {
-      fileIn = new FileInputStream(zipFilePath);
-      ZipInputStream zipIn = new ZipInputStream(fileIn);
-
       // unzipping and writing each entry to disk
+      ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
       ZipEntry entry = zipIn.getNextEntry();
-      while(entry != null){
-        String fileName = entry.getName();
-        File newFile = new File(destDir + File.separator + fileName);
 
-        // create directories for sub directories in zip
-        new File(newFile.getParent()).mkdirs();
-        FileOutputStream fileOut = new FileOutputStream(newFile);
-
-        int length;
-        while ((length = zipIn.read(bytes)) > 0) {
-          fileOut.write(bytes, 0, length);
+      while (entry != null) {
+        String filePath = destDir + "/" + entry.getName();
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+        byte[] buf = new byte[BUFFER_SIZE];
+        int read = 0;
+        while ((read = zipIn.read(buf)) != -1) {
+          bos.write(buf, 0, read);
         }
-        fileOut.close();
-
-        // close the entry and reassigning to the next one
+        bos.close();
         zipIn.closeEntry();
         entry = zipIn.getNextEntry();
       }
       zipIn.closeEntry();
-
-      // cleaning up
       zipIn.close();
-      fileIn.close();
+      deleteFile(zipFilePath);
 
-    } catch (IOException e) {
+    }
+    catch (EOFException e){
+      // JVM bug (JVM-6519463) - So catch every time and do nothing with it (extraction still works)
+    }
+    catch (Exception e) {
       e.printStackTrace();
     }
 
@@ -176,7 +210,7 @@ public class MockClient {
 
   /**
    * Requests a directory listing of the previews directory on the server
-   * @return ArrayList: ArrayList of filenames (songs available to buy)
+   * @return ArrayList: ArrayList of filenames in previews directory (songs available to buy)
    */
   public ArrayList<String> listDirectory(){
     try{

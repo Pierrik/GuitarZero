@@ -36,6 +36,7 @@ public class Run {
   public void changeMode(String option){
     JPanel mode;
 
+    /*
     switch(option){
       case "Slash": mode = sl;
       break;
@@ -50,7 +51,9 @@ public class Run {
       default: window.close();
       break;
     }
+
     window.setContentPane(mode);
+    */
 
   }
   

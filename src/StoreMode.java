@@ -28,19 +28,21 @@ public class StoreMode extends JPanel {
     MockClient client = new MockClient(HOST, PORT);
 
     // Getting all available songs on the server
-    ArrayList<String> songNames = client.listDirectory();
+    ArrayList<String> fileNames = client.listDirectory();
 
     // Downloading and unzipping all previews, and giving each title/cover a JLabel
     ArrayList<JLabel> menuOptions = new ArrayList<>();
 
-    for (String song:songNames){
+    for (String fileName : fileNames){
       // Downloading preview and unzipping
-      client.downloadFile(song, "DOWNLOAD_PREVIEW");
+      client.downloadFile(fileName, "DOWNLOAD_PREVIEW");
+      MockClient.deleteFile(PREVIEWS + fileName);
       // Reading in the cover image and song name, assigning to a JLabel and adding to ArrayList
-      File[] cover = new File(PREVIEWS + song).listFiles();
+      String songName = MockClient.getSongPreview(fileName);
+      File[] cover = new File(PREVIEWS + songName).listFiles();
       if (cover != null){
         JLabel label = new JLabel(new ImageIcon(cover[0].getAbsolutePath()));
-        label.setText(song);
+        label.setText(songName);
         menuOptions.add(label);
       }
     }
