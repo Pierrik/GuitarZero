@@ -12,6 +12,7 @@ import java.lang.Thread;
  * Play Mode.
  *
  * @author Harper Ford
+ * @author Tom Mansfield
  * @version 2.00, March 2019.
 */
 public class PlayMode extends JPanel implements Runnable{
@@ -47,6 +48,12 @@ public class PlayMode extends JPanel implements Runnable{
           Thread.sleep(wait);
         } catch (Exception o) {
           o.printStackTrace();
+        }
+
+        if(view.dropNote) {
+          model.dropNote();
+          System.out.println("Note Dropped");
+          view.dropNote = false;
         }
       }
     }

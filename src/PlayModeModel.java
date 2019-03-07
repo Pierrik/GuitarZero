@@ -4,19 +4,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.Math;
 import java.util.HashMap;
-import javax.sound.midi.MetaEventListener;
-import javax.sound.midi.MetaMessage;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequencer;
-import javax.sound.midi.Transmitter;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.io.FilenameFilter;
 import java.lang.Thread;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * PlayModeModel
- * Version 2.1, February 2019
+ * Version 3.1, February 2019
  * @author Tom Mansfield
  * @author Harper Ford
  */
@@ -39,13 +34,15 @@ public class PlayModeModel implements Runnable{
   private PlayModeView view;
   private long lastTick = 0;
   private int bpm;
+  private Queue<Note> notesAddedToHighway;
 
   @Override
   public void run(){
     playSong();
-  };
+  }
 
   public PlayModeModel( String bundlePath, PlayModeView view ) {
+
     this.view = view;
     this.bundlePath = bundlePath;
     this.multiplier = 1;
@@ -54,6 +51,8 @@ public class PlayModeModel implements Runnable{
     this.currencyEarned = 0;
     this.score = 0;
     this.currentTick = 0;
+    this.notesAddedToHighway = new LinkedList<>();
+
     try {
       this.notesFile = findNotesFile();
     } catch (Exception e) {
@@ -166,9 +165,7 @@ public class PlayModeModel implements Runnable{
     if ( files.length > 0 ) {
       return files[0];
     } else {
-      //!! SHOULD HAVE A BLANK .PNG IN ASSETS SO THE GAME DOESNT CRASH JUST DISPLAYS EMPTY .PNG !!
-      //throw new Exception("No Cover Art In Bundle");
-      return bundle;
+      throw new Exception("No Cover Art In Bundle");
     }
   }
 
@@ -179,7 +176,7 @@ public class PlayModeModel implements Runnable{
   public void loadNotesFile() {
     try {
       BufferedReader br = new BufferedReader( new FileReader(this.notesFile));
-      String line = null;
+      String line;
 
       while((line = br.readLine())!=null) {
         String str[] = line.split(",");
@@ -240,8 +237,6 @@ public class PlayModeModel implements Runnable{
     }
   }
 
-private int time;
-private int x = 20;
   /**
    * Play the MIDI song
    * Sets current tick and current note values as the song is played
@@ -252,12 +247,12 @@ private int x = 20;
     playSongThread.start();
 
     while(!playSong.endOfSong){
-
-      //!"!!!!!"
       currentTick = playSong.currentTick;
       changeCurrentNote(currentTick);
       if(!currentNote.equals("000") && currentTick != lastTick){
-        view.addNote(currentNote);
+        Note note = new Note(currentNote);
+        view.addNote(note);
+        notesAddedToHighway.add(note);
         lastTick = currentTick;
       }
     }
@@ -297,20 +292,24 @@ private int x = 20;
    * @param guitarNote the note played on the guitar
    */
   public void checkNote(String guitarNote) {
-    if( this.currentNote != "000" ) {
-      if(guitarNote.equals(this.currentNote)) {
-        collectNote();
-      }
-      else {
-        dropNote();
+    boolean noteCollected = false;
+
+    for(Note note: view.notes) {
+      if( note.getY() > 400 && note.getY() < 500 ){
+        if ( note.noteValue.equals(guitarNote) ) {
+          collectNote();
+          noteCollected = true;
+
+          // Testing
+          System.out.println("Note collected");
+
+        }
       }
     }
-    else {
-      // No note should have been played, end streak and reset multiplier
+
+    if ( !noteCollected ) {
       dropNote();
     }
-
   }
-
 
 }
