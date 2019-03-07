@@ -5,11 +5,13 @@ import java.io.File;
  * BPM.
  *
  * @author  Harper Ford
- * @version 1.00, February 2019.
+ * @version 1.00, March 2019.
  */
 
 public class Bpm {
-
+  /*
+   * Returns the BPM of the given MIDI sequence
+   */
   public static int getBPM(Sequence sequence){
     try {
       //Open sequencer
@@ -24,6 +26,9 @@ public class Bpm {
 		return 0;
   }
 
+  /*
+   * Returns the microseconds per quarter note of a given sequence
+   */
   private static int getMicrosecondsPerQuarterNote(Sequence sequence) {
   	// Check all MIDI tracks for MIDI_SET_TEMPO message
   	for (Track track : sequence.getTracks()) {

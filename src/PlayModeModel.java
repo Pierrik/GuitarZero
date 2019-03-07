@@ -4,8 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.Math;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.io.FilenameFilter;
 import java.lang.Thread;
 
@@ -29,12 +27,11 @@ public class PlayModeModel implements Runnable{
   private String currentNote;
   private long currentTick;
   private HashMap<Long, String> notes;
-  private HashMap<Long, String> notesCollected;
   private boolean endOfSong;
   private PlayModeView view;
   private long lastTick = 0;
   private int bpm;
-  private Queue<Note> notesAddedToHighway;
+
 
   @Override
   public void run(){
@@ -43,6 +40,7 @@ public class PlayModeModel implements Runnable{
 
   public PlayModeModel( String bundlePath, PlayModeView view ) {
 
+    // Set initial values of the game
     this.view = view;
     this.bundlePath = bundlePath;
     this.multiplier = 1;
@@ -51,26 +49,28 @@ public class PlayModeModel implements Runnable{
     this.currencyEarned = 0;
     this.score = 0;
     this.currentTick = 0;
-    this.notesAddedToHighway = new LinkedList<>();
 
     try {
       this.notesFile = findNotesFile();
     } catch (Exception e) {
       e.printStackTrace();
-      // Exit and go back to slash mode
+      // NEED TO GO BACK TO SLASH MODE
     }
+
     try {
       this.midiFile = findMidiFile();
     } catch (Exception e) {
       e.printStackTrace();
-      // Exit and go back to slash mode
+      // NEED TO GO BACK TO SLASH MODE
     }
+
     try {
       this.coverArt = findCoverArt();
     } catch (Exception e) {
       e.printStackTrace();
-      // Exit and go back to slash mode
+      // NEED TO GO BACK TO SLASH MODE
     }
+
     this.notes = new HashMap<>();
     loadNotesFile();
     this.currentNote = "";
@@ -83,10 +83,6 @@ public class PlayModeModel implements Runnable{
 
   public HashMap<Long, String> getNotes() {
     return this.notes;
-  }
-
-  public HashMap<Long, String> getNotesCollected() {
-    return this.notesCollected;
   }
 
   public boolean isEndOfSong() {
@@ -115,10 +111,16 @@ public class PlayModeModel implements Runnable{
     });
 
     if ( files.length > 0 ) {
+
+      // Returns first occurrence of a text file, should only be one
       return files[0];
+
     } else {
+
       throw new Exception("No Notes File In Bundle");
+
     }
+
   }
 
   /**
@@ -139,10 +141,16 @@ public class PlayModeModel implements Runnable{
     });
 
     if ( files.length > 0 ) {
+
+      // Returns first occurrence of MIDI file, should only be one
       return files[0];
+
     } else {
+
       throw new Exception("No MIDI File In Bundle");
+
     }
+
   }
 
   /**
@@ -154,7 +162,7 @@ public class PlayModeModel implements Runnable{
 
     File bundle = new File(this.bundlePath);
 
-    // Find MIDI files in the directory
+    // Find PNG files in the bundle
     File[] files = bundle.listFiles(new FilenameFilter() {
       @Override
       public boolean accept(File dir, String name) {
@@ -163,10 +171,16 @@ public class PlayModeModel implements Runnable{
     });
 
     if ( files.length > 0 ) {
+
+      // Returns first occurrence of PNG file, should only be one
       return files[0];
+
     } else {
+
       throw new Exception("No Cover Art In Bundle");
+
     }
+
   }
 
   /**
@@ -174,11 +188,12 @@ public class PlayModeModel implements Runnable{
    * Reads the notes file in the bundle and adds notes to a map
    */
   public void loadNotesFile() {
+
     try {
       BufferedReader br = new BufferedReader( new FileReader(this.notesFile));
       String line;
-
       while((line = br.readLine())!=null) {
+        // Split notes file by comma, separating ticks and notes
         String str[] = line.split(",");
         this.notes.put(Long.parseLong(str[0]), str[1]);
       }
@@ -186,7 +201,9 @@ public class PlayModeModel implements Runnable{
       br.close();
     } catch (IOException e) {
       e.printStackTrace();
+      // NEED TO GO BACK TO SLASH MODE
     }
+
   }
 
   /**
@@ -195,13 +212,12 @@ public class PlayModeModel implements Runnable{
    * Updates the streakCount, Multiplier and currencyEarned if necessary
    */
   public void collectNote() {
-    System.out.println("before");
-    this.notesCollected.put(Long.valueOf(currentTick), "collected");
-    System.out.println("after");
+
     this.streakCount ++;
     setMultiplier();
     this.score += this.multiplier;
     updateCurrency();
+
   }
 
   /**
@@ -211,62 +227,89 @@ public class PlayModeModel implements Runnable{
    */
   public void dropNote() {
     this.streakCount = 0;
-    this.multiplier = 1;
+    setMultiplier();
   }
 
   /**
    * setMultiplier
-   * changes the value of the multiplier if streakCount is multiple of 10 or 0
+   * Changes the value of the multiplier if streakCount is multiple of 10 or 0
+   * Does nothing if streak count not multiple of 10 or 0
    */
   public void setMultiplier() {
-    if( streakCount % 10 == 0 ) {
-      this.multiplier = (int) Math.pow( 2, streakCount/10 );
+
+    // Each time streak is a multiple of 10, change the multiplier
+    if( this.streakCount % 10 == 0 ) {
+
+      // Multiplier value doubles each time, e.g. 2, 4, 8, 16, 32, 64 etc.
+      this.multiplier = (int) Math.pow( 2, this.streakCount/10 );
+
     }
-    else if( streakCount == 0 ) {
+
+    // When streak is 0, reset multiplier to 1
+    else if( this.streakCount == 0 ) {
       this.multiplier = 1;
     }
+
   }
 
   /**
    * updateCurrency
-   * updates the current currency earned during the song
+   * Updates the current currency earned during the song
    */
   public void updateCurrency() {
+
+    // Can only earn a maximum currency value of 5 per game
     if( currencyEarned < 5 ) {
+
+      // Currency is earned every time score is a multiple of 500
       if( score % 500 == 0) {
         currencyEarned ++;
       }
+
     }
+
   }
 
   /**
+   * playSong
    * Play the MIDI song
    * Sets current tick and current note values as the song is played
    */
   public void playSong() {
+
+    // Plays the MIDI song in a separate thread
     PlaySong playSong = new PlaySong(this.midiFile);
     Thread playSongThread = new Thread(playSong);
     playSongThread.start();
 
+    // While the song is still playing
     while(!playSong.endOfSong){
+
+      // Change the current tick and current note values
       currentTick = playSong.currentTick;
       changeCurrentNote(currentTick);
+
+      // If there is a not to be played and the note has not already been added to highway
       if(!currentNote.equals("000") && currentTick != lastTick){
+
+        // Add the note to the highway
         Note note = new Note(currentNote);
         view.addNote(note);
 
-        //Testing
-        System.out.println(currentNote);
-
-        notesAddedToHighway.add(note);
+        // Note for the current tick has been added
         lastTick = currentTick;
       }
     }
+
+    if(playSong.endOfSong) {
+      // OUTPUT END OF GAME MESSAGE ?? RETURN TO SLASH MODE?? WAIT FOR USER TO ESCAPE??
+    }
+
   }
 
   /**
    * changeCurrentNote
-   * changes the current note to the note that should be played
+   * Changes the current note to the note that should be played
    * @param tick the current tick
    */
   public void changeCurrentNote(long tick) {
@@ -279,47 +322,42 @@ public class PlayModeModel implements Runnable{
   }
 
   /**
-   * checkCollected
-   * Checks that a note that should've been played was collected
-   * Otherwise, drop the note
-   */
-  public void checkCollected(){
-    if(this.notes.get(Long.valueOf(currentTick))!=null){
-      if(this.notesCollected.get(Long.valueOf(currentTick))!= "collected") {
-        dropNote();
-      }
-    }
-  }
-
-  /**
    * checkNote
-   * checks whether a note played on the guitar is correct
-   * collect note if correct, otherwise drop the note
+   * Called by the controller, checks whether a note played on the guitar is correct
+   * Collect note if correct, otherwise drop the note
    * @param guitarNote the note played on the guitar
    */
   public void checkNote(String guitarNote) {
+
     boolean noteCollected = false;
-    System.out.println("Checking note "+ guitarNote);
 
     try {
-      //for(Note note: view.notes) {
-        if(notesAddedToHighway.peek().noteValue.equals(guitarNote)){
-          //if ( note.noteValue.equals(guitarNote) ) {
-            collectNote();
-            noteCollected = true;
 
-            // Testing
-            System.out.println("Note collected");
-          //}
-        }
-      //}
+      // Checks if the user has pressed the note that is at the bottom of the screen
+      if(view.currentNotePointer.equals(guitarNote)){
+          collectNote();
+          noteCollected = true;
+          view.collected = true;
+
+          // Testing
+          System.out.println("Note collected");
+          System.out.println(Integer.toString(score));
+      }
+
     } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println("Tried to collect note");
+
+      // If there is an error, continue game and don't crash
+      // Very rare but may need to revisit how this is dealt with
+      dropNote();
+
     }
 
+    // User has not pressed the right note or attempted to play a note when none should be played
     if ( !noteCollected ) {
       dropNote();
+      view.collected = false;
+
+      // Testing
       System.out.println("Note Dropped");
     }
   }

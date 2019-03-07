@@ -1,6 +1,7 @@
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
+
 /**
  * PlayModeController.
  *
@@ -25,7 +26,7 @@ public class PlayModeController implements Runnable {
   private  PlayModeModel model;
   // make them non static when not using main anymore
   private static ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
-  private static Controller[]          ctrls = cenv.getControllers();
+  private static net.java.games.input.Controller[] ctrls = cenv.getControllers();
 
   final static double BUTTON_THRESHOLD = 1.0;
 
@@ -223,7 +224,7 @@ public class PlayModeController implements Runnable {
                       model.checkNote("001");
                     }
                     else {
-                      System.out.println("nothing lol + strum");
+                      System.out.println("nothing + strum");
                       model.checkNote("000");
                     }
                   }
@@ -247,8 +248,8 @@ public class PlayModeController implements Runnable {
    */
 
   // Main commented out as pollForever can't be referenced from static
-/*
-  public static void main(String[] args) {
+
+  /*public static void main(String[] args) {
 
     if (Run.OSvalidator() == 'm') {
       BENDER_ROUND     = 13;
