@@ -75,6 +75,9 @@ public class CarouselView extends JPanel {
         System.out.println(optionTitle);
       }
     }
+
+    System.out.println("CHOSEN HAS BEEN SELECTED");
+
     return optionTitle;
   }
 
@@ -87,6 +90,14 @@ public class CarouselView extends JPanel {
 
       for (int i = 0; i < carouselLength; i++) {
 
+        if(i-1 < 5) {
+          label.setVisible(true);
+
+        } else {
+          label.setVisible(false);
+
+        }
+
         if (label.getX() == bounds.get(0).x) {
           label.setBounds(bounds.get(carouselLength-1));
           break;
@@ -96,13 +107,6 @@ public class CarouselView extends JPanel {
           break;
         }
 
-        if(i-1 < 4) {
-          label.setVisible(true);
-
-        } else {
-          label.setVisible(false);
-
-        }
       }
     }
   }
@@ -116,6 +120,15 @@ public class CarouselView extends JPanel {
 
       for (int i = 0; i < carouselLength; i++) {
 
+        if(i-1 < 3) {
+          label.setVisible(true);
+
+        } else {
+          label.setVisible(false);
+
+        }
+
+
         if (label.getX() == bounds.get(carouselLength-1).x) {
           label.setBounds(bounds.get(0));
           break;
@@ -125,20 +138,14 @@ public class CarouselView extends JPanel {
           break;
         }
 
-        if(i-1 < 4) {
-          label.setVisible(true);
 
-        } else {
-          label.setVisible(false);
-
-        }
       }
     }
   }
 
     public void initialiseBounds( int labelLength){
       for (int i = 0; i <= labelLength; i++) {
-          bounds.add(new Rectangle((i * 150)+40, 50, 140, 160));
+          bounds.add(new Rectangle((i * 150)+30, 50, 140, 160));
       }
     }
 }

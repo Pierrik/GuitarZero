@@ -21,8 +21,8 @@ public class StoreMode extends JPanel {
   private static final int    PORT = 8888;
 
   // store settings
-  private static final String BUNDLES = System.getProperty("user.dir") + "\\local_store\\bundle_files\\";
-  private static final String PREVIEWS = System.getProperty("user.dir") + "\\local_store\\preview_files\\";
+  private static final String BUNDLES = System.getProperty("user.dir") + "/local_store/bundle_files/";
+  private static final String PREVIEWS = System.getProperty("user.dir") + "/local_store/preview_files/";
 
   public StoreMode() {
     MockClient client = new MockClient(HOST, PORT);
@@ -36,7 +36,7 @@ public class StoreMode extends JPanel {
       // Downloading and unzipping preview, then deleting zip
       client.downloadFile(fileName, "DOWNLOAD_PREVIEW");
       String songName = MockClient.getSongPreview(fileName);
-      String previewDir = PREVIEWS + songName + "\\";
+      String previewDir = PREVIEWS + songName + "/";
       MockClient.unzip(PREVIEWS + fileName, previewDir);
 
       // Reading in the cover image and song name, assigning to a JLabel and adding to ArrayList

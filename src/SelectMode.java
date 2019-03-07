@@ -61,26 +61,19 @@ public class SelectMode extends JPanel {
         for (File song_file : song_files) {
 
           if (getExtension(song_file.getName()).equals("png") || getExtension(song_file.getName()).equals("PNG")) {
-
             albumCover = song_file;
-            System.out.println("Album cover is: " + albumCover);
-
           }
 
 
         }
 
         JLabel label = new JLabel(new ImageIcon(albumCover.getPath()));
-        //label.setBackground(Color.BLUE);
         label.setText(songName);
 
         menuOptions.add(label);
       }
-
     }
 
-
-    System.out.println(menuOptions.size());
     // Initialise the model, controller, view GUI classes
     CarouselView       view       = new CarouselView( menuOptions );
     CarouselModel      model      = new CarouselModel( view );

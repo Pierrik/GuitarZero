@@ -6,6 +6,19 @@ import java.awt.*;
 /**
  * Main Game Call.
  *
+ *
+ *   Linux/Mac:
+ *   $ CLASSPATH=jinput-2.0.9.jar:.
+ *   $ export CLASSPATH
+ *   $ javac Run.java
+ *   $ java Run
+ *
+ *   Windows:
+ *   set CLASSPATH=jinput-2.0.9.jar;.
+ *   javac Run.java
+ *   java Run
+ *
+ *
  * @author Harper Ford
  * @author Kamila Hoffmann-Derlacka
  * @version 1.1, March 2019.
@@ -14,49 +27,67 @@ public class Run {
 
   private static String OS = System.getProperty("os.name").toLowerCase();
 
+  static JFrame window;
+  static SelectMode se;
+  static SlashMode sl;
+  static StoreMode st;
+  static PlayMode p;
+  
+
   public static void main(String[] args){
-    JFrame window = new JFrame("GZ");
-    //SlashMode sl = new SlashMode();
-    //StoreMode st  = new StoreMode();
-    PlayMode p = new PlayMode("../testBundle");
+    JFrame window = new JFrame("Guitar Zero Game");
+    //sl = new SlashMode();
+    //se = new SelectMode();
+    st  = new StoreMode();
+    //p = new PlayMode("../testBundle");
     Dimension dims = new Dimension(1000,500);
+
     //Set the content to the drawings from the GamePanel object
     window.setPreferredSize(dims);
-    window.setContentPane(p);
+    window.setContentPane(st);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
     window.setVisible(true);
-    p.run();
+    //p.run();
   }
-  
+
   /*
    * Changes which MVC to display in the JFrame
    * @param option: Mode to change to
-   */
-  public void changeMode(String option){
-    JPanel mode;
+  */
+  public void changeMode(String option) {
+    JPanel mode = null;
 
-    /*
-    switch(option){
-      case "Slash": mode = sl;
-      break;
-      case "Store": mode = st;
-      break;
-      case "Select": mode = se;
-      break;
-      case "Play": mode = p;
-      break;
-      case "Tutorial": mode = t;
-      break;
-      default: window.close();
-      break;
+    switch (option) {
+      case "Slash":
+        mode = sl;
+        break;
+      case "Store":
+        mode = st;
+        break;
+      case "Select":
+        mode = se;
+        break;
+      case "Play":
+        mode = p;
+        break;
+      case "Tutorial":
+
+        System.out.println("Tutorial mode is still under progress...");
+        //mode = t;
+        break;
+      default:
+        //window.close();
+        break;
     }
 
     window.setContentPane(mode);
-    */
-
   }
-  
+
+
+
+
+
   public static char OSvalidator() {
     if (OS.indexOf("win") >= 0)
       return 'w';
