@@ -27,7 +27,7 @@ public class Note{
    */
   public Note(String notes){
     //Set X position
-    this.positions[0][0] = (1000/2) - blackNote.getWidth(null)*1.5;
+    //this.positions[0][0] = (1000/2) - blackNote.getWidth(null)*1.5;
     this.positions[1][0] = (1000/2) - blackNote.getWidth(null)/2;
     this.positions[2][0] = (1000/2) + blackNote.getWidth(null)/2;
     //Set object sprite to correct color

@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 
 
 /**
- * CarouselView.
+ * StoreModeView.
  *
  * @author  Pierrik Mellab
  * @author  Harper Ford (Javadoc)

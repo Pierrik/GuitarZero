@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -12,59 +13,36 @@ public class StoreMode {
   private static final String HOST = "localhost";
   private static final int    PORT = 8888;
 
-  /**
-   * Uploads a file to the server
-   * @param filePath: Location of the file to upload
-   * @param method: Upload method (UPLOAD_BUNDLE or UPLOAD_PREVIEW)
-   */
-  /*
-  public static void sendFileToServer(String filePath, String method){
-    MockClient client = new MockClient(HOST, PORT);
-    client.uploadFile(filePath, method);
-  }
-  */
+  // store settings
+  private static final String BUNDLES = System.getProperty("user.dir") + "/local_store/bundle_files/";
+  private static final String PREVIEWS = System.getProperty("user.dir") + "/local_store/preview_files/";
 
   public static void main(String args[]) {
+    MockClient client = new MockClient(HOST, PORT);
 
-    /*MockClient client = new MockClient(HOST, PORT);
-    Object fileNames = client.listDirectory();
-    System.out.println(fileNames.toString());
+    // Getting all available songs on the server
+    ArrayList<String> songNames = client.listDirectory();
 
-
-    for (String string:fileNames){
-      System.out.println(string);
-    }*/
-
-
-
+    // Downloading and unzipping all previews, and giving each title/cover a JLabel
     ArrayList<JLabel> menuOptions = new ArrayList<>();
 
-    // Create all menu option labels with their image icon and title
-    JLabel label1 = new JLabel(new ImageIcon("../assets/ExitLogo2.png"));
-    JLabel label2 = new JLabel(new ImageIcon("../assets/StoreLogo2.png"));
-    JLabel label3 = new JLabel(new ImageIcon("../assets/SelectLogo2.png"));
-    JLabel label4 = new JLabel(new ImageIcon("../assets/PlayLogo2.png"));
-    JLabel label5 = new JLabel(new ImageIcon("../assets/TutorialLogo2.png"));
-
-    label1.setText("Exit");
-    label2.setText("Store");
-    label3.setText("Select");
-    label4.setText("Play");
-    label5.setText("Tutorial");
-
-
-    // Add labels to arrayList
-    menuOptions.add(label1);
-    menuOptions.add(label2);
-    menuOptions.add(label3);
-    menuOptions.add(label4);
-    menuOptions.add(label5);
+    for (String song:songNames){
+      // Downloading preview and unzipping
+      client.downloadFile(song, "DOWNLOAD_PREVIEW");
+      // Reading in the cover image and song name, assigning to a JLabel and adding to ArrayList
+      File[] cover = new File(PREVIEWS + song).listFiles();
+      if (cover != null){
+        JLabel label = new JLabel(new ImageIcon(cover[0].getAbsolutePath()));
+        label.setText(song);
+        menuOptions.add(label);
+      }
+    }
 
     // Initialise the model, controller, view GUI classes
     StoreModeModel      model      = new StoreModeModel();
     StoreModeController controller = new StoreModeController( model );
     StoreModeView       view       = new StoreModeView(model, menuOptions);
-    view.setVisible( true );
+    view.setVisible(true);
     controller.pollGuitarForever();
 
   }

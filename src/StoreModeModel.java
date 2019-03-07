@@ -19,8 +19,8 @@ public class StoreModeModel {
 
 
   private static int totalCurrency;
-  final String HOST  = "localhost";
-  final int    PORT  = 8888;
+  final static String HOST  = "localhost";
+  final static int    PORT  = 8888;
 
   /**
    * Skeleton constructor for later use
@@ -30,8 +30,8 @@ public class StoreModeModel {
   }
 
   public static void main(String[] args){
-    StoreModeModel model = new StoreModeModel();
-    System.out.println(totalCurrency);
+    MockClient client = new MockClient(HOST, PORT);
+    client.downloadFile("Song Name(bundle).zip", "DOWNLOAD_BUNDLE");
   }
 
   /**
@@ -65,8 +65,7 @@ public class StoreModeModel {
 
     if (totalCurrency > 1 && !isInLocalDir(song) ) {
       totalCurrency --;
-      
-      // Downloading the bundle
+
       MockClient client = new MockClient(HOST, PORT);
       client.downloadFile(song, "DOWNLOAD_BUNDLE");
 
