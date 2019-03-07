@@ -13,7 +13,8 @@ import javax.swing.JLabel;
  *
  * @author John Mercer
  * @author Pierrik Mellab
- * @version 1.1, February 2019.
+ * @author Harper Ford
+ * @version 2.0, March 2019.
  *
  *   Linux/Mac:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
@@ -34,13 +35,13 @@ import javax.swing.JLabel;
  *   $ javac SlashMode.java
  *   $ java -Djava.library.path=. SlashMode
 */
-public class SlashMode {
+public class SlashMode extends JPanel{
 
 
     /**
      * Initialises the GUI classes for a courel with menu options specific to Slash Mode
      */
-    public static void main(String args[]) {
+    public SlashMode() {
 
         ArrayList<JLabel> menuOptions = new ArrayList<>();
 
@@ -67,11 +68,11 @@ public class SlashMode {
         menuOptions.add(label5);
 
         // Initialise the model, controller, view GUI classes
-        CarouselModel      model      = new CarouselModel();
-        CarouselController controller = new CarouselController( model );
+        //CarouselController controller = new CarouselController( model );
         CarouselView       view       = new CarouselView(menuOptions);
-        //view.setVisible( true );
-        controller.pollGuitarForever();
+        CarouselModel      model      = new CarouselModel(view);
+        this.add(view);
+      //controller.pollGuitarForever();
 
     }
 
