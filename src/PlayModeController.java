@@ -51,7 +51,7 @@ public class PlayModeController implements Runnable {
   /*
    * Poll forever, and altering model depending on buttons pressed
    */
-  public void pollForever(Controller ctrl) {
+  public static void pollForever(Controller ctrl) {
     Component[] allCmps    = ctrl.getComponents();
     float[]     vals       = new float[allCmps.length];
     int         previous1;
@@ -116,39 +116,39 @@ public class PlayModeController implements Runnable {
                   if (previous2 == WHITE2) {
                     if (previous3 == WHITE3) {
                       System.out.println("white one + white two + white three + strum");
-                      model.checkNote("222");
+                      //model.checkNote("222");
                     } else if (previous3 == BLACK3) {
                       System.out.println("white one + white two + black three + strum");
-                      model.checkNote("221");
+                      //model.checkNote("221");
                     } else {
                       System.out.println("white one + white two + strum");
-                      model.checkNote("220");
+                      //model.checkNote("220");
                     }
                   }
                   else if (previous2 == BLACK2) {
                     if (previous3 == WHITE3) {
                       System.out.println("white one + black two + white three + strum");
-                      model.checkNote("212");
+                      //model.checkNote("212");
                     } else if (previous3 == BLACK3) {
                       System.out.println("white one + black two + black three + strum");
-                      model.checkNote("211");
+                      //model.checkNote("211");
                     } else {
                       System.out.println("white one + black two + strum");
-                      model.checkNote("210");
+                      //model.checkNote("210");
                     }
                   }
                   else {
                     if (previous3 == WHITE3) {
                       System.out.println("white one + white three + strum");
-                      model.checkNote("202");
+                      //model.checkNote("202");
                     }
                     else if (previous3 == BLACK3) {
                       System.out.println("white one + black three + strum");
-                      model.checkNote("201");
+                      //model.checkNote("201");
                     }
                     else {
                       System.out.println("white one + strum");
-                      model.checkNote("200");
+                      //model.checkNote("200");
                     }
                   }
                 }
@@ -156,35 +156,35 @@ public class PlayModeController implements Runnable {
                   if (previous2 == WHITE2) {
                     if (previous3 == WHITE3) {
                       System.out.println("black one + white two + white three + strum");
-                      model.checkNote("122");
+                      //model.checkNote("122");
                     } else if (previous3 == BLACK3) {
                       System.out.println("black one + white two + black three + strum");
-                      model.checkNote("121");
+                      //model.checkNote("121");
                     } else {
                       System.out.println("black one + white two + strum");
-                      model.checkNote("120");
+                      //model.checkNote("120");
                     }
                   } else if (previous2 == BLACK2) {
                     if (previous3 == WHITE3) {
                       System.out.println("black one + black two + white three + strum");
-                      model.checkNote("112");
+                      //model.checkNote("112");
                     } else if (previous3 == BLACK3) {
                       System.out.println("black one + black two + black three + strum");
-                      model.checkNote("111");
+                      //model.checkNote("111");
                     } else {
                       System.out.println("black one + black two + strum");
-                      model.checkNote("110");
+                      //model.checkNote("110");
                     }
                   } else {
                     if (previous3 == WHITE3) {
                       System.out.println("black one + white three + strum");
-                      model.checkNote("120");
+                      //model.checkNote("120");
                     } else if (previous3 == BLACK3) {
                       System.out.println("black one + black three + strum");
-                      model.checkNote("101");
+                      //model.checkNote("101");
                     } else {
                       System.out.println("black one + strum");
-                      model.checkNote("100");
+                      //model.checkNote("100");
                     }
                   }
                 }
@@ -192,39 +192,39 @@ public class PlayModeController implements Runnable {
                   if (previous2 == WHITE2) {
                     if (previous3 == WHITE3) {
                       System.out.println("white two + white three + strum");
-                      model.checkNote("022");
+                      //model.checkNote("022");
                     } else if (previous3 == BLACK3) {
                       System.out.println("white two + black three + strum");
-                      model.checkNote("021");
+                      //model.checkNote("021");
                     } else {
                       System.out.println("white two + strum");
-                      model.checkNote("020");
+                      //model.checkNote("020");
                     }
                   }
                   else if (previous2 == BLACK2) {
                     if (previous3 == WHITE3) {
                       System.out.println("black two + white three + strum");
-                      model.checkNote("012");
+                      //model.checkNote("012");
                     } else if (previous3 == BLACK3) {
                       System.out.println("black two + black three + strum");
-                      model.checkNote("011");
+                      //model.checkNote("011");
                     } else {
                       System.out.println("black two + strum");
-                      model.checkNote("010");
+                      //model.checkNote("010");
                     }
                   }
                   else {
                     if (previous3 == WHITE3) {
                       System.out.println("white three + strum");
-                      model.checkNote("002");
+                      //model.checkNote("002");
                     }
                     else if (previous3 == BLACK3) {
                       System.out.println("black three + strum");
-                      model.checkNote("001");
+                      //model.checkNote("001");
                     }
                     else {
-                      System.out.println("nothing lol + strum");
-                      model.checkNote("000");
+                      System.out.println("nothing + strum");
+                      //model.checkNote("000");
                     }
                   }
                 }
@@ -247,8 +247,28 @@ public class PlayModeController implements Runnable {
    */
 
   // Main commented out as pollForever can't be referenced from static
-/*
+
   public static void main(String[] args) {
+
+    if (Run.OSvalidator() == 'm') {
+      BENDER_ROUND     = 13;
+      WHAMMY           = 17;
+    } else if (Run.OSvalidator() == 'u') {
+      BENDER_ROUND     = 17;
+      WHAMMY           = 16;
+    }
+
+    for ( Controller ctrl : ctrls ) {
+      if ( ctrl.getName().contains( GUITAR_HERO ) ) {
+        pollForever( ctrl );
+      }
+    }
+
+    System.out.println( GUITAR_HERO + " controller not found" );
+    System.exit( 1 );
+  }
+/*
+  public void pollGuitarForever() {
 
     if (Run.OSvalidator() == 'm') {
       BENDER_ROUND     = 13;
@@ -268,28 +288,8 @@ public class PlayModeController implements Runnable {
     System.exit( 1 );
   }*/
 
-  public void pollGuitarForever() {
-
-    if (Run.OSvalidator() == 'm') {
-      BENDER_ROUND     = 13;
-      WHAMMY           = 17;
-    } else if (Run.OSvalidator() == 'u') {
-      BENDER_ROUND     = 17;
-      WHAMMY           = 16;
-    }
-
-    for ( Controller ctrl : ctrls ) {
-      if ( ctrl.getName().contains( GUITAR_HERO ) ) {
-        pollForever( ctrl );
-      }
-    }
-
-    System.out.println( GUITAR_HERO + " controller not found" );
-    System.exit( 1 );
-  }
-
   @Override
   public void run() {
-    this.pollGuitarForever();
+    //this.pollGuitarForever();
   }
 }
