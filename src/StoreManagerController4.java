@@ -3,7 +3,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-/*
+/**
  * Controller.
  *
  * @author  Pierrik Mellab

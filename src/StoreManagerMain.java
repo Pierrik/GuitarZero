@@ -1,4 +1,4 @@
-/*
+/**
  * StoreManagerMain.
  *
  * @author  Pierrik Mellab

@@ -10,12 +10,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Store Manager.
+ * StoreManagerView.
  *
  * @author  Pierrik Mellab
- * @author  John Mercer
- * @author  Harper Ford (Javadoc)
- * @version 2.0, February 2019.
+ * @version 2.3, March 2019
  *
  */
 public class StoreManagerView extends JFrame {
@@ -29,9 +27,11 @@ public class StoreManagerView extends JFrame {
   static JTextField musicField = new JTextField(10);
 
   /**
-   * Setups up the JFrame
-   * @param storeManagerModel
-   * @param storeManagercontroller
+   * Sets up the JFrame.
+   * @param storeManagercontroller1: Title browse controller
+   * @param storeManagerController2: Cover browse controller
+   * @param storeManagerController3: Midi browse controller
+   * @param storeManagerController4: Save button controller
    */
   public StoreManagerView ( StoreManagerController1 storeManagercontroller1,
       StoreManagerController2 storeManagerController2,
@@ -43,7 +43,7 @@ public class StoreManagerView extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setSize(300, 200);
 
-    //Creating components to populate the frame
+    // Creating components to populate the frame
     JLabel titleLabel = new JLabel("Title:       ");
     JLabel coverArtLabel = new JLabel("Cover art:");
     JLabel musicLabel = new JLabel("Music:     ");
@@ -54,7 +54,7 @@ public class StoreManagerView extends JFrame {
     JButton musicBrowse = new JButton("Browse");
 
 
-    //Creating the three sub-top panels to the top panel
+    // Creating the three sub-top panels to the top panel
     JPanel topPanel = new JPanel(new BorderLayout());
 
     JPanel topFirstPanel = panelCreator(titleLabel, titleField, titleBrowse);
@@ -66,13 +66,13 @@ public class StoreManagerView extends JFrame {
     topPanel.add(BorderLayout.SOUTH, topThirdPanel);
 
 
-    //Creating the bottom panel and adding the 'save' button
+    // Creating the bottom panel and adding the 'save' button
     JPanel bottomPanel = new JPanel();
     JButton save = new JButton("Save");
     bottomPanel.add(save);
 
 
-    //Adding the main top and bottom panels to the frame
+    // Adding the main top and bottom panels to the frame
     getContentPane().add(BorderLayout.NORTH, topPanel);
     getContentPane().add(BorderLayout.SOUTH, bottomPanel);
 
@@ -98,6 +98,7 @@ public class StoreManagerView extends JFrame {
     panel.add(BorderLayout.LINE_END, button);
     return panel;
   }
+
 
   public static void setTitleTitle (String filePath) { titleField.setText(filePath); }
 

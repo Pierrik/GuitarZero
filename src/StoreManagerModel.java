@@ -11,13 +11,21 @@ import java.util.zip.ZipOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
+/**
+ * StoreManagerModel.
+ *
+ * @author Pierrik Mellab
+ * @author John Mercer
+ * @version 1.9, March 2019
+ *
+ */
 public class StoreManagerModel {
 
-  // server settings
+  // Server settings
   private static final String HOST = "localhost";
   private static final int    PORT = 8888;
 
-  // storing bundle files
+  // Storing bundle files
   private File titleFile = null;
   private File coverArtFile = null;
   private File musicFile = null;
@@ -146,6 +154,7 @@ public class StoreManagerModel {
     File file = new File(filePath);
     file.delete();
   }
+
 
   public void saveAction () {
       try {
