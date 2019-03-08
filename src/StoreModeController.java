@@ -62,8 +62,8 @@ public class StoreModeController implements Runnable {
             // zero-power button
             case 0 :
               if (val == BUTTON_THRESHOLD){
-                model.select();
                 System.out.println("Zero power pressed + currency decreased");
+                model.select();
               }
               break;
 
@@ -79,11 +79,11 @@ public class StoreModeController implements Runnable {
             // strum
             case 2 :
               if (val >= STRUM_THRESHOLD){
-                model.right();
                 System.out.println("Strum right");
+                model.right();
               } else if (val <= -STRUM_THRESHOLD){
-                model.left();
                 System.out.println("Strum left");
+                model.left();
               }
               break;
           }

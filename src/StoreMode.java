@@ -51,9 +51,9 @@ public class StoreMode extends JPanel {
     }
 
     // Initialise the model, controller, view GUI classes
-    StoreModeModel      model      = new StoreModeModel();
-    StoreModeController controller = new StoreModeController(model);
     CarouselView        view       = new CarouselView(menuOptions);
+    StoreModeModel      model      = new StoreModeModel(view);
+    StoreModeController controller = new StoreModeController(model);
     Thread controllerThread = new Thread(controller);
     controllerThread.start();
     this.add(view);

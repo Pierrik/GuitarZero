@@ -25,7 +25,8 @@ public class StoreModeModel {
   /**
    * Skeleton constructor for later use
    */
-  public StoreModeModel() {
+  public StoreModeModel(CarouselView view) {
+    this.view = view;
     this.totalCurrency = Currency.loadTotalCurrency();
   }
 
@@ -33,7 +34,6 @@ public class StoreModeModel {
    * Calls the rightMovement method in the carouselView file causing icons to shift right
    */
   public void right() {
-
     view.rightMovement();
   }
 
@@ -41,7 +41,6 @@ public class StoreModeModel {
    * Calls the leftMovement method in the carouselView file causing icons to shift left
    */
   public void left() {
-
     view.leftMovement();
   }
 
@@ -51,7 +50,6 @@ public class StoreModeModel {
    * choose a menu option
    */
   public void select() {
-
     buySong(view.chosenOption());
   }
 

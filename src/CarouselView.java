@@ -84,11 +84,8 @@ public class CarouselView extends JPanel {
    * Shifts the JLabels left, called from the CarouselModel object
    */
   public void leftMovement() {
-
     for (JLabel label : menuOptions) {
-
       for (int i = 0; i < carouselLength; i++) {
-
         if(i-1 < 5) {
           label.setVisible(true);
 

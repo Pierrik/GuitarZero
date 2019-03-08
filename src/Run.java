@@ -39,6 +39,7 @@ public class Run {
     window = new JFrame("Guitar Zero Game");
 
     Dimension dims = new Dimension(1000,500);
+
     sl = new SlashMode();
     window.setContentPane(sl);
 
@@ -67,9 +68,7 @@ public class Run {
         break;
 
       case "Store":
-        if (st == null) {
-          st = new StoreMode();
-        }
+        StoreMode st = new StoreMode();
         window.setContentPane(st);
         break;
 

@@ -24,7 +24,6 @@ public class CarouselModel {
    * Calls the rightMovement method in the carouselView file causing icons to shift right
    */
   public void right() {
-
     view.rightMovement();
   }
 
@@ -32,7 +31,6 @@ public class CarouselModel {
    * Calls the leftMovement method in the carouselView file causing icons to shift left
    */
   public void left() {
-
     view.leftMovement();
   }
 
