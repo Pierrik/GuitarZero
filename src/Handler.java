@@ -163,7 +163,7 @@ public class Handler implements Runnable {
    * Processes a listing request to the server.
    */
   public void processListing(DataOutputStream dataOut) {
-    File previewDir = new File(System.getProperty("user.dir") + "/preview_files/");
+    File previewDir = new File(System.getProperty("user.dir") + "\\preview_files\\");
     String[] previews = previewDir.list();
 
     synchronized (this) {
