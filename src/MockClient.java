@@ -1,12 +1,9 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.Collections;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -14,8 +11,7 @@ import java.util.zip.ZipInputStream;
  * MockClient.
  *
  * @author  John Mercer
- * @author  Harper Ford (Javadoc)
- * @version 2.01, February 2019.
+ * @version 2.09, February 2019.
  */
 public class MockClient {
   private String host;
@@ -29,32 +25,33 @@ public class MockClient {
   }
 
   /**
-   * Uploads the given bundle to the server
-   * @param fileName: The filepath of the file to upload
-   * @param method: Upload method (UPLOAD_BUNDLE or UPLOAD_PREVIEW)
+   * Uploads the given bundle to the server.
+   *
+   * @param fileName: The filepath of the file to upload.
+   * @param method: Upload method (UPLOAD_BUNDLE or UPLOAD_PREVIEW).
    */
   public void uploadFile(String fileName, String method){
     try {
       Socket sck = new Socket(this.host, this.port);
 
-      // instantiating byte array of correct size to store file
+      // Instantiating byte array of correct size to store file
       File file = new File(fileName);
       byte[] bytes = new byte[(int) file.length()];
 
-      // streams for reading/writing the file
+      // Streams for reading/writing the file
       DataInputStream dataIn = new DataInputStream(new FileInputStream(file));
       DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
 
-      // reading the file into the byte array
+      // Reading the file into the byte array
       dataIn.readFully(bytes, 0, bytes.length);
 
-      // writing the file to the socket output stream (from the byte array)
+      // Writing the file to the socket output stream (from the byte array)
       dataOut.writeUTF(method + "/" + fileName);
       dataOut.writeLong(file.length());
       dataOut.write(bytes, 0, bytes.length);
       dataOut.flush();
 
-      // cleaning up
+      // Cleaning up
       sck.close();
 
     } catch ( Exception exn ) {
@@ -63,13 +60,14 @@ public class MockClient {
   }
 
   /**
-   * Downloads the given file from the server, and unzips it in the corresponding directory
-   * @param fileName: The filepath of the file to download
-   * @param method: Download method (DOWNLOAD_BUNDLE or DOWNLOAD_PREVIEW)
+   * Downloads the given file from the server, and unzips it in the corresponding directory.
+   *
+   * @param fileName: The filepath of the file to download.
+   * @param method: Download method (DOWNLOAD_BUNDLE or DOWNLOAD_PREVIEW).
    */
   public void downloadFile(String fileName, String method){
     try {
-      // checking if local_store directory exists, and creates it if it doesn't yet
+      // Checking if local_store directory exists, and creates it if it doesn't yet
       String bundleDir = "../local_store/bundle_files/";
       String previewDir = "../local_store/preview_files/";
 
@@ -80,13 +78,13 @@ public class MockClient {
         Files.createDirectories(Paths.get(previewDir));
       }
 
-      // requesting to download the file
+      // Requesting to download the file
       Socket sck = new Socket(this.host, this.port);
       DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
       dataOut.writeUTF(method + "/" + fileName);
       dataOut.flush();
 
-      // attempting to receive the file
+      // Attempting to receive the file
       DataInputStream dataIn = new DataInputStream(sck.getInputStream());
       BufferedOutputStream fileOut;
       String zipPath;
@@ -114,7 +112,7 @@ public class MockClient {
         fileSize -= 1;
       }
 
-      // cleaning up
+      // Cleaning up
       fileOut.close();
       sck.close();
 
@@ -126,6 +124,7 @@ public class MockClient {
 
   /**
    * Deletes specified file.
+   *
    * @param filePath: File path of file to delete.
    */
   public static void deleteFile(String filePath){
@@ -139,7 +138,8 @@ public class MockClient {
 
   /**
    * Removes the parentheses and file extension from a bundle file name.
-   * e.g. "Song(bundle).zip" to "Song"
+   * e.g. "Song(bundle).zip" to "Song".
+   *
    * @param bundle: Bundle file name.
    * @return: Song name.
    */
@@ -149,7 +149,8 @@ public class MockClient {
 
   /**
    * Removes the parentheses and file extension from a preview file name.
-   * e.g. "Song(preview).zip" to "Song"
+   * e.g. "Song(preview).zip" to "Song".
+   *
    * @param preview: Preview file name.
    * @return: Song name.
    */
@@ -158,19 +159,21 @@ public class MockClient {
   }
 
   /**
-   * Unzips the contents of a specified .zip file to a specified destination directory
+   * Unzips the contents of a specified .zip file to a specified destination directory, and
+   * deletes the original .zip file afterwards.
+   *
    * @param zipFilePath: File path to zip file.
    * @param destDir: Destination directory.
    */
   public static void unzip(String zipFilePath, String destDir) {
-    // create output directory if it doesn't exist
+    // Create output directory if it doesn't exist
     File dir = new File(destDir);
     if(!dir.exists()) {
       dir.mkdirs();
     }
 
     try {
-      // unzipping and writing each entry to disk
+      // Unzipping and writing each entry to disk
       ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
       ZipEntry entry = zipIn.getNextEntry();
 
@@ -188,6 +191,8 @@ public class MockClient {
       }
       zipIn.closeEntry();
       zipIn.close();
+
+      // Deleting the remaining zip file
       deleteFile(zipFilePath);
 
     }
@@ -201,18 +206,19 @@ public class MockClient {
   }
 
   /**
-   * Requests a directory listing of the previews directory on the server
-   * @return ArrayList: ArrayList of filenames in previews directory (songs available to buy)
+   * Requests a directory listing of the previews directory on the server.
+   *
+   * @return ArrayList: ArrayList of filenames in previews directory (songs available to buy).
    */
   public ArrayList<String> listDirectory(){
     try{
-      // requesting the directory listing
+      // Requesting the directory listing
       Socket sck = new Socket(this.host, this.port);
       DataOutputStream out = new DataOutputStream(sck.getOutputStream());
       out.writeUTF("LIST_DIRECTORY");
       out.flush();
 
-      // attempting to receive the filenames and build arraylist
+      // Attempting to receive the filenames and build arraylist
       DataInputStream  dataIn  = new DataInputStream(sck.getInputStream());
       ArrayList<String> songNames = new ArrayList<>();
 
@@ -221,7 +227,7 @@ public class MockClient {
         songNames.add(songName);
       }
 
-      // cleaning up and returning arraylist of filenames
+      // Cleaning up and returning arraylist of filenames
       sck.close();
       return songNames;
 

@@ -7,12 +7,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * StoreModeModel
+ * StoreModeModel.
  *
  * @author  Pierrik Mellab
  * @author  Kamila Hoffmann-Derlacka
  * @author  John Mercer
- * @version 1.00, February 2019.
+ * @version 1.04, March 2019
  */
 
 public class StoreModeModel {

@@ -2,7 +2,7 @@ import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 /**
- * CarouselController.
+ * StoreModeController.
  *
  * @author  Kamila Hoffmann-Derlacka
  * @version 1.1, March 2019.

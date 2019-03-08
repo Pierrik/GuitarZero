@@ -7,21 +7,20 @@ import javax.swing.JPanel;
 /**
  * StoreMode.
  * @author John Mercer
- * @author Kamila Hoffmann-derlacka
- * @version 1.1, March 2019
+ * @version 2.13, March 2019
  */
 public class StoreMode extends JPanel {
 
-  // mvc attributes
+  // MVC attributes
   CarouselView view;
   StoreModeModel model;
   StoreModeController controller;
 
-  // server settings
+  // Server settings
   private static final String HOST = "localhost";
   private static final int    PORT = 8888;
 
-  // store settings
+  // Store settings
   private static final String BUNDLES = "../local_store/bundle_files/";
   private static final String PREVIEWS = "../local_store/preview_files/";
 
@@ -34,7 +33,7 @@ public class StoreMode extends JPanel {
     // Downloading and unzipping all previews, and giving each title/cover a JLabel
     ArrayList<JLabel> menuOptions = new ArrayList<>();
     for (String fileName : fileNames){
-      // Downloading and unzipping preview, then deleting zip
+      // Downloading and unzipping preview (and deleting zip after)
       client.downloadFile(fileName, "DOWNLOAD_PREVIEW");
       String songName = MockClient.getSongPreview(fileName);
       String previewDir = PREVIEWS + songName + "/";

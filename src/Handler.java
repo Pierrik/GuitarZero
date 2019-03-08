@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Handler.
  *
  * @author  John Mercer
- * @version 1.13, February 2019.
+ * @version 1.17, March 2019.
  */
 public class Handler implements Runnable {
 
@@ -25,23 +25,23 @@ public class Handler implements Runnable {
    */
   public void run() {
     try {
-      // client socket streams
+      // Client socket streams
       final DataInputStream dataIn = new DataInputStream(sck.getInputStream());
       final DataOutputStream dataOut = new DataOutputStream(sck.getOutputStream());
 
-      // parsing UTF - getting method
+      // Parsing UTF - getting method
       String header = dataIn.readUTF();
       String[] headers = header.split("/");
       String method = headers[0].toUpperCase();
       char methodType = method.charAt(0);
 
-      // getting file name (if uploading or downloading)
+      // Getting file name (if uploading or downloading)
       String fileName = "";
       if (methodType == 'U' || methodType == 'D') {
         fileName = headers[1];
       }
 
-      // processing request
+      // Processing request
       if (methodType == 'U') {
         long fileSize = dataIn.readLong();
         processUpload(method, dataIn, fileName, fileSize);
@@ -69,7 +69,7 @@ public class Handler implements Runnable {
    * @param fileSize: Size of file to upload (bytes).
    */
   public void processUpload(String method, DataInputStream dataIn, String fileName, long fileSize) {
-    // building file path string
+    // Building file path string
     String filePath = "";
     try {
       filePath = getFilePath(method, fileName);
@@ -78,13 +78,13 @@ public class Handler implements Runnable {
       System.exit(1);
     }
 
-    // processing the upload - synchronized to prevent 'connection abort: recv failed'
+    // Processing the upload - synchronized to prevent 'connection abort: recv failed'
     synchronized (this) {
       try {
-        // stream for file to be written to (local directory on server)
+        // Stream for file to be written to (local directory on server)
         BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(filePath));
 
-        // reading file in from dataIn and writing it to fileOut stream
+        // Reading file in from dataIn and writing it to fileOut stream
         int n;
         byte[] buf = new byte[BUFFER_SIZE];
         while (fileSize > 0
@@ -93,7 +93,7 @@ public class Handler implements Runnable {
           fileSize -= 1;
         }
 
-        // cleaning up
+        // Cleaning up
         fileOut.close();
 
       } catch (Exception exn) {
@@ -110,7 +110,7 @@ public class Handler implements Runnable {
    * @param fileName: Name of file to download.
    */
   public void processDownload(String method, DataOutputStream dataOut, String fileName) {
-    // building file path string
+    // Building file path string
     String filePath = "";
     try {
       filePath = getFilePath(method, fileName);
@@ -119,14 +119,14 @@ public class Handler implements Runnable {
       System.exit(1);
     }
 
-    // processing the download - synchronized to prevent 'connection abort: recv failed'
+    // Processing the download - synchronized to prevent 'connection abort: recv failed'
     synchronized (this) {
       try {
-        // reading file into byte array
+        // Reading file into byte array
         Path fileLocation = Paths.get(filePath);
         byte[] data = Files.readAllBytes(fileLocation);
 
-        // writing file from byte array to dataOut stream
+        // Writing file from byte array to dataOut stream
         dataOut.writeLong(data.length);
         dataOut.write(data, 0, data.length);
         dataOut.flush();
@@ -148,7 +148,7 @@ public class Handler implements Runnable {
    * @return: File path to requested file.
    */
   public static String getFilePath(String method, String fileName) throws InvalidMethodException {
-    // building file path string
+    // Building file path string
     String cd = System.getProperty("user.dir");
     if (method.equals("DOWNLOAD_BUNDLE") || method.equals("UPLOAD_BUNDLE")) {
       return cd + "/bundle_files/" + fileName;
@@ -161,21 +161,23 @@ public class Handler implements Runnable {
 
   /**
    * Processes a listing request to the server.
+   *
+   * @param dataOut: DataOutputStream to write directory listings to.
    */
   public void processListing(DataOutputStream dataOut) {
-    File previewDir = new File(System.getProperty("user.dir") + "\\preview_files\\");
+    File previewDir = new File(System.getProperty("user.dir") + "/preview_files/");
     String[] previews = previewDir.list();
 
     synchronized (this) {
       try {
-        // writing song names to textOut
+        // Writing song names to textOut
         for (String preview : previews) {
           dataOut.writeUTF(preview);
         }
         dataOut.writeUTF("END");
         dataOut.flush();
 
-        // cleaning up
+        // Cleaning up
         sck.close();
       } catch (Exception exn) {
         System.out.println(exn);
