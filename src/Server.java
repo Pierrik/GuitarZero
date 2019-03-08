@@ -16,7 +16,7 @@ public class Server {
 
   public static void main(String[] argv) {
     try {
-      // checking if directories exist on server-side before starting
+      // Checking if directories exist on server-side before starting
       String cd = System.getProperty("user.dir");
       String bundleDir = cd + "/bundle_files/";
       String previewDir = cd + "/preview_files/";
@@ -29,20 +29,20 @@ public class Server {
       }
 
 
-      // starting the server
+      // Starting the server
       final ServerSocket ssck = new ServerSocket(PORT);
       if (verbose) {
         System.out.println("Server started.\nListening for connections on port : " +
             PORT + " ...\n");
       }
 
-      // listening until user halts execution of server
+      // Listening until user halts execution of server
       while (true) {
-        // waiting for a client to connect
+        // Waiting for a client to connect
         final Socket sck = ssck.accept();
         if (verbose) {System.out.println("Connection opened. (" + new Date() + ")");}
 
-        // create dedicated thread to handle client connection
+        // Create dedicated thread to handle client connection
         Handler handler = new Handler(sck);
         Thread thread = new Thread(handler);
         thread.start();
