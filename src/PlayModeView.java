@@ -70,7 +70,7 @@ public class PlayModeView extends JPanel{
       notes.get(i).paintComponent(g);
 
       // If the note is in the region at the bottom of the screen
-      // ONLY FOR TESTING COLLECTION OF NOTES, WILL CHANGE WHEN FRET BOARD IS ADDED
+      // RANGE ONLY FOR TESTING COLLECTION OF NOTES, WILL CHANGE WHEN FRET BOARD IS ADDED
       if( notes.get(i).getY() > 350 && notes.get(i).getY() < 500 ) {
         currentNotePointer = notes.get(i).noteValue;
       }
