@@ -73,7 +73,7 @@ public class StoreModeModel {
    * Checks if the song is already in the local directory.
    */
   public static boolean isInLocalDir(String song) {
-    // checking if local_store directory exists, and creates it if it doesn't yet
+    // checking if local_store directory exists
     String cd = System.getProperty("user.dir");
     String bundleDir = cd + "/local_store/bundle_files/";
 
