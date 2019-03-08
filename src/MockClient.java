@@ -70,9 +70,8 @@ public class MockClient {
   public void downloadFile(String fileName, String method){
     try {
       // checking if local_store directory exists, and creates it if it doesn't yet
-      String cd = System.getProperty("user.dir");
-      String bundleDir = cd + "\\local_store\\bundle_files\\";
-      String previewDir = cd + "\\local_store\\preview_files\\";
+      String bundleDir = "..\\local_store\\bundle_files\\";
+      String previewDir = "..\\local_store\\preview_files\\";
 
       if (Files.notExists(Paths.get(bundleDir))) {
         Files.createDirectories(Paths.get(bundleDir));
@@ -90,17 +89,13 @@ public class MockClient {
       // attempting to receive the file
       DataInputStream dataIn = new DataInputStream(sck.getInputStream());
       BufferedOutputStream fileOut;
-      String basePath, zipPath, songName;
+      String zipPath;
 
       if (method.equals("DOWNLOAD_BUNDLE")) {
-        basePath = bundleDir;
         zipPath = bundleDir + fileName;
-        songName = getSongBundle(fileName);
       }
       else if (method.equals("DOWNLOAD_PREVIEW")) {
-        basePath = previewDir;
         zipPath = previewDir + fileName;
-        songName = getSongPreview(fileName);
       }
       else {
         sck.close();
@@ -230,8 +225,8 @@ public class MockClient {
       sck.close();
       return songNames;
 
-  } catch ( Exception exn ) {
-    System.out.println(exn); return null;
+    } catch ( Exception exn ) {
+      System.out.println(exn); return null;
     }
   }
 

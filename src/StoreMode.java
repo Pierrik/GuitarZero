@@ -12,6 +12,7 @@ import javax.swing.JPanel;
  */
 public class StoreMode extends JPanel {
 
+  // mvc attributes
   CarouselView view;
   StoreModeModel model;
   StoreModeController controller;
@@ -21,8 +22,8 @@ public class StoreMode extends JPanel {
   private static final int    PORT = 8888;
 
   // store settings
-  private static final String BUNDLES = System.getProperty("user.dir") + "/local_store/bundle_files/";
-  private static final String PREVIEWS = System.getProperty("user.dir") + "/local_store/preview_files/";
+  private static final String BUNDLES = "../local_store/bundle_files/";
+  private static final String PREVIEWS = "../local_store/preview_files/";
 
   public StoreMode() {
     MockClient client = new MockClient(HOST, PORT);
@@ -43,7 +44,6 @@ public class StoreMode extends JPanel {
       File[] previewContents = new File(previewDir).listFiles();
 
       for (File cover : previewContents){
-        System.out.println(previewDir + cover.getName());
         JLabel label = new JLabel(new ImageIcon(previewDir + cover.getName()));
         label.setText(songName);
         menuOptions.add(label);
