@@ -63,7 +63,11 @@ public class CarouselController implements Runnable {
             // zero-power button
             case 0 :
               if (val == BUTTON_THRESHOLD){
-                model.select();
+
+                String selectedMode = model.select();
+
+                Run.changeMode(selectedMode);
+
                 System.out.println("Zero power pressed");
               }
               break;
@@ -125,6 +129,7 @@ public class CarouselController implements Runnable {
   public void run() {
     this.pollGuitarForever();
   }
+
 /*
   public static void main(String[] args) {
     ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();

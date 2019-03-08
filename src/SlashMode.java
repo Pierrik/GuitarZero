@@ -73,8 +73,11 @@ public class SlashMode extends JPanel{
         CarouselView       view       = new CarouselView(menuOptions);
         CarouselModel      model      = new CarouselModel(view);
         CarouselController controller = new CarouselController( model );
+
         Thread controllerThread = new Thread(controller);
+
         controllerThread.start();
+
         this.add(view);
     }
 }

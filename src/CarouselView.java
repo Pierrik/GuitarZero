@@ -72,11 +72,10 @@ public class CarouselView extends JPanel {
 
       if (label.getX() == bounds.get(2).x) {
         optionTitle = label.getText();
+
         System.out.println(optionTitle);
       }
     }
-
-    System.out.println("CHOSEN HAS BEEN SELECTED");
 
     return optionTitle;
   }

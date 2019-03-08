@@ -21,6 +21,7 @@ import java.awt.*;
  *
  * @author Harper Ford
  * @author Kamila Hoffmann-Derlacka
+ * @author Pierrik Mellab
  * @version 1.1, March 2019.
 */
 public class Run {
@@ -28,64 +29,75 @@ public class Run {
   private static String OS = System.getProperty("os.name").toLowerCase();
 
   static JFrame window;
-  static SelectMode se;
-  static SlashMode sl;
-  static StoreMode st;
-  static PlayMode p;
+  static SelectMode se = null;
+  static SlashMode sl = null;
+  static StoreMode st = null;
+  static PlayMode p = null;
   
 
   public static void main(String[] args){
-    JFrame window = new JFrame("Guitar Zero Game");
-    //sl = new SlashMode();
-    //se = new SelectMode();
-    st  = new StoreMode();
-    //p = new PlayMode("../testBundle");
+    window = new JFrame("Guitar Zero Game");
+
     Dimension dims = new Dimension(1000,500);
+    sl = new SlashMode();
+    window.setContentPane(sl);
 
     //Set the content to the drawings from the GamePanel object
     window.setPreferredSize(dims);
-    window.setContentPane(st);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.pack();
     window.setVisible(true);
-    //p.run();
   }
 
   /*
    * Changes which MVC to display in the JFrame
    * @param option: Mode to change to
   */
-  public void changeMode(String option) {
+  public static void changeMode(String option) {
     JPanel mode = null;
 
     switch (option) {
-      case "Slash":
-        mode = sl;
-        break;
-      case "Store":
-        mode = st;
-        break;
-      case "Select":
-        mode = se;
-        break;
-      case "Play":
-        mode = p;
-        break;
-      case "Tutorial":
 
+      case "Slash":
+        if (sl == null) {
+          sl = new SlashMode();
+        }
+
+        window.setContentPane(sl);
+        break;
+
+      case "Store":
+        if (st == null) {
+          st = new StoreMode();
+        }
+        window.setContentPane(st);
+        break;
+
+      case "Select":
+        if (se == null) {
+          se = new SelectMode();
+        }
+        window.setContentPane(se);
+        break;
+
+      case "Play":
+        PlayMode d = new PlayMode("../testBundle");
+        window.setContentPane(d);
+
+        Dimension dim = new Dimension(999, 500);
+        window.setSize(dim);
+
+        d.run();
+        break;
+
+      case "Tutorial":
         System.out.println("Tutorial mode is still under progress...");
-        //mode = t;
         break;
       default:
         //window.close();
         break;
     }
-
-    window.setContentPane(mode);
   }
-
-
-
 
 
   public static char OSvalidator() {
