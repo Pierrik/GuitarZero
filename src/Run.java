@@ -74,7 +74,11 @@ public class Run {
 
       case "Select":
         if (se == null) {
-          se = new SelectMode();
+          try {
+            se = new SelectMode();
+          } catch (NoSongsException e){
+            e.printStackTrace();
+          }
         }
         window.setContentPane(se);
         break;
@@ -92,6 +96,11 @@ public class Run {
       case "Tutorial":
         System.out.println("Tutorial mode is still under progress...");
         break;
+
+      case "Exit":
+        System.out.println("Exiting.");
+        System.exit(0);
+
       default:
         //window.close();
         break;

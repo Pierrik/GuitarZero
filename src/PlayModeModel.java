@@ -75,6 +75,7 @@ public class PlayModeModel implements Runnable{
     loadNotesFile();
     this.currentNote = "";
     this.endOfSong = false;
+    setCoverPath();
   }
 
   public long getCurrentTick() {
@@ -183,6 +184,10 @@ public class PlayModeModel implements Runnable{
 
   }
 
+  public void setCoverPath () {
+    view.coverArtPath = this.coverArt.getPath();
+  }
+
   /**
    * loadNotesFile
    * Reads the notes file in the bundle and adds notes to a map
@@ -243,11 +248,42 @@ public class PlayModeModel implements Runnable{
       // Multiplier value doubles each time, e.g. 2, 4, 8, 16, 32, 64 etc.
       this.multiplier = (int) Math.pow( 2, this.streakCount/10 );
 
+      switch(this.multiplier){
+
+        case 2:
+          view.currentMultiplier = "../assets/times2Multiplier3.png";
+          break;
+
+        case 4:
+          view.currentMultiplier = "../assets/times4Multiplier3.png";
+          break;
+
+        case 8:
+          view.currentMultiplier = "../assets/times8Multiplier3.png";
+          break;
+
+        case 16:
+          view.currentMultiplier = "../assets/times16Multiplier3.png";
+          break;
+
+        case 32:
+          view.currentMultiplier = "../assets/times32Multiplier3.png";
+          break;
+
+        case 64:
+          view.currentMultiplier = "../assets/times64Multiplier3.png";
+          break;
+
+        default:
+
+      }
+
     }
 
     // When streak is 0, reset multiplier to 1
     else if( this.streakCount == 0 ) {
       this.multiplier = 1;
+      view.currentMultiplier = null;
     }
 
   }

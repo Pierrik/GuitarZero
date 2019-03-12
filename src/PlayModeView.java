@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -22,13 +23,20 @@ public class PlayModeView extends JPanel{
   static int backgroundFrameCount = 1;
   static int backgroundFrameDelay = 100;
 
+  String currentMultiplier;
+
   // Create BufferedImage array to store the background frames
   static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
+
+  String coverArtPath;
+
 
   // Used to check whether a note has passed the screen and points to the note that needs to be played
   boolean dropNote = false;
   boolean collected = true;
   String currentNotePointer;
+
+  //JLabel multiplierLabel;
 
 
   public PlayModeView(){
@@ -37,6 +45,11 @@ public class PlayModeView extends JPanel{
       for(int i = 0; i<backgroundFrameCount; i++){
         bg[i] = ImageIO.read(new File("../assets/bg" + i + ".bmp"));
       }
+
+
+
+      System.out.println("tester debug");
+
     }
     catch(Exception e){
       e.printStackTrace();
@@ -64,6 +77,23 @@ public class PlayModeView extends JPanel{
     //Draw the background animation frame depending on the current frame/10%(number of frames in the animation)
     g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0,null);
     int len = notes.size();
+
+    // Display cover art on screen
+    JLabel coverArtLabel = new JLabel(new ImageIcon(coverArtPath));
+    coverArtLabel.setBounds(50, 50, 150, 150);
+    add(coverArtLabel);
+
+    //Display multiplier on screen
+    JLabel  multiplierLabel = new JLabel(new ImageIcon(currentMultiplier));
+
+    Dimension multDim = new Dimension(100, 100);
+
+    multiplierLabel.setMaximumSize(multDim);
+
+    multiplierLabel.setSize(multDim);
+
+    multiplierLabel.setBounds(75, 225, 100, 100);
+    add(multiplierLabel);
 
     for(int i=0; i<len; i++){
       // Draw the note
