@@ -36,16 +36,19 @@ public class SelectMode extends JPanel {
   /**
    * Initialises the GUI classes for a carousel with menu options specific to Select Mode
    */
-  public SelectMode ()  {
+  public SelectMode() throws NoSongsException  {
 
     ArrayList<JLabel> menuOptions = new ArrayList<>();
 
     String cd = System.getProperty("user.dir");
     String bundleDirPath = "../local_store/bundle_files/";
 
-    System.out.println(bundleDirPath);
-
     File[] song_folders = new File(bundleDirPath).listFiles();
+
+    if (song_folders == null || song_folders.length == 0){
+      System.out.println("No songs in local store.");
+      throw new NoSongsException("No songs in local store");
+    }
 
     for (File song_folder : song_folders) {
 

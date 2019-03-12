@@ -72,7 +72,6 @@ public class CarouselView extends JPanel {
 
       if (label.getX() == bounds.get(2).x) {
         optionTitle = label.getText();
-
         System.out.println(optionTitle);
       }
     }
@@ -139,7 +138,7 @@ public class CarouselView extends JPanel {
     }
   }
 
-    public void initialiseBounds( int labelLength){
+  public void initialiseBounds( int labelLength){
       for (int i = 0; i <= labelLength; i++) {
           bounds.add(new Rectangle((i * 150)+30, 50, 140, 160));
       }
