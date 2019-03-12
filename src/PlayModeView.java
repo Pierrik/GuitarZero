@@ -23,6 +23,8 @@ public class PlayModeView extends JPanel{
   static int backgroundFrameCount = 1;
   static int backgroundFrameDelay = 100;
 
+  String currentMultiplier;
+
   // Create BufferedImage array to store the background frames
   static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
 
@@ -33,6 +35,8 @@ public class PlayModeView extends JPanel{
   boolean dropNote = false;
   boolean collected = true;
   String currentNotePointer;
+
+  //JLabel multiplierLabel;
 
 
   public PlayModeView(){
@@ -74,18 +78,22 @@ public class PlayModeView extends JPanel{
     g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0,null);
     int len = notes.size();
 
-
+    // Display cover art on screen
     JLabel coverArtLabel = new JLabel(new ImageIcon(coverArtPath));
-
-    System.out.println(coverArtPath);
-
-    Dimension dim = new Dimension(50, 50);
-    coverArtLabel.setSize(dim);
-
-    coverArtLabel.setVisible(true);
     coverArtLabel.setBounds(50, 50, 150, 150);
-
     add(coverArtLabel);
+
+    //Display multiplier on screen
+    JLabel  multiplierLabel = new JLabel(new ImageIcon(currentMultiplier));
+
+    Dimension multDim = new Dimension(100, 100);
+
+    multiplierLabel.setMaximumSize(multDim);
+
+    multiplierLabel.setSize(multDim);
+
+    multiplierLabel.setBounds(75, 225, 100, 100);
+    add(multiplierLabel);
 
     for(int i=0; i<len; i++){
       // Draw the note
