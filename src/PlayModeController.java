@@ -102,6 +102,7 @@ public class PlayModeController implements Runnable {
             } else if (i == ESCAPE) { // escape button
               if (val == BUTTON_THRESHOLD) {
                 System.out.println("escape");
+                Run.changeMode("Slash");
               }
             } else if (i == WHAMMY) { //whammy  16 in linux
               if (val >=BUTTON_THRESHOLD) {

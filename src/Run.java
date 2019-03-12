@@ -98,7 +98,7 @@ public class Run {
         break;
 
       case "Exit":
-        System.out.println("Exiting.");
+        System.out.println("Exiting..");
         System.exit(0);
 
       default:

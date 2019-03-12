@@ -31,6 +31,7 @@ public class PlayModeModel implements Runnable{
   private PlayModeView view;
   private long lastTick = 0;
   private int bpm;
+  private Thread songThread;
 
 
   @Override
@@ -49,6 +50,7 @@ public class PlayModeModel implements Runnable{
     this.currencyEarned = 0;
     this.score = 0;
     this.currentTick = 0;
+    this.songThread = null;
 
     try {
       this.notesFile = findNotesFile();
@@ -284,8 +286,8 @@ public class PlayModeModel implements Runnable{
 
     // Plays the MIDI song in a separate thread
     PlaySong playSong = new PlaySong(this.midiFile);
-    Thread playSongThread = new Thread(playSong);
-    playSongThread.start();
+    this.songThread = new Thread(playSong);
+    this.songThread.start();
 
     // While the song is still playing
     while(!playSong.endOfSong){
@@ -310,6 +312,17 @@ public class PlayModeModel implements Runnable{
       // OUTPUT END OF GAME MESSAGE ?? RETURN TO SLASH MODE?? WAIT FOR USER TO ESCAPE??
     }
 
+  }
+
+  /**
+   * stopSong
+   * Stops the thread playing the MIDI song. To be called after the exit button is pressed.
+   * @author: John Mercer
+   */
+  public void stopSong(){
+    if(this.songThread != null){
+      this.songThread.stop();
+    }
   }
 
   /**

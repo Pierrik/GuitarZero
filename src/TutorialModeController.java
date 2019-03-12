@@ -108,6 +108,7 @@ public class TutorialModeController {
           } else if (i == ESCAPE) { // escape button
             if (val == BUTTON_THRESHOLD) {
               System.out.println("escape");
+              Run.changeMode("Slash");
               // when the escape button is pressed, the game continues in Slash Mode
             }
           } else if (i == BENDER_CLICK) { //bender button click

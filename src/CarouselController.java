@@ -78,6 +78,7 @@ public class CarouselController implements Runnable {
               if (val >= BUTTON_THRESHOLD){
                 // stay in slash mode
                 System.out.println("Escape button pressed");
+                Run.changeMode("Slash");
               }
               break;
 

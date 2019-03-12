@@ -62,7 +62,7 @@ public class StoreModeController implements Runnable {
             // zero-power button
             case 0 :
               if (val == BUTTON_THRESHOLD){
-                System.out.println("Zero power pressed + currency decreased");
+                System.out.println("Zero power pressed");
                 model.select();
               }
               break;
@@ -71,8 +71,8 @@ public class StoreModeController implements Runnable {
             // escape button
             case 1 :
               if (val >= BUTTON_THRESHOLD){
-                // go back to slash mode
                 System.out.println("Escape button pressed");
+                Run.changeMode("Slash");
               }
               break;
 
