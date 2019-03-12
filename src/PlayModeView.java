@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -25,6 +26,9 @@ public class PlayModeView extends JPanel{
   // Create BufferedImage array to store the background frames
   static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
 
+  String coverArtPath;
+
+
   // Used to check whether a note has passed the screen and points to the note that needs to be played
   boolean dropNote = false;
   boolean collected = true;
@@ -37,6 +41,11 @@ public class PlayModeView extends JPanel{
       for(int i = 0; i<backgroundFrameCount; i++){
         bg[i] = ImageIO.read(new File("../assets/bg" + i + ".bmp"));
       }
+
+
+
+      System.out.println("tester debug");
+
     }
     catch(Exception e){
       e.printStackTrace();
@@ -64,6 +73,19 @@ public class PlayModeView extends JPanel{
     //Draw the background animation frame depending on the current frame/10%(number of frames in the animation)
     g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0,null);
     int len = notes.size();
+
+
+    JLabel coverArtLabel = new JLabel(new ImageIcon(coverArtPath));
+
+    System.out.println(coverArtPath);
+
+    Dimension dim = new Dimension(50, 50);
+    coverArtLabel.setSize(dim);
+
+    coverArtLabel.setVisible(true);
+    coverArtLabel.setBounds(50, 50, 150, 150);
+
+    add(coverArtLabel);
 
     for(int i=0; i<len; i++){
       // Draw the note
