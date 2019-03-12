@@ -75,6 +75,7 @@ public class PlayModeModel implements Runnable{
     loadNotesFile();
     this.currentNote = "";
     this.endOfSong = false;
+    setCoverPath();
   }
 
   public long getCurrentTick() {
@@ -181,6 +182,10 @@ public class PlayModeModel implements Runnable{
 
     }
 
+  }
+
+  public void setCoverPath () {
+    view.coverArtPath = this.coverArt.getPath();
   }
 
   /**
