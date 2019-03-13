@@ -28,8 +28,11 @@ public class MidiToNotes {
    * @return    The number of notes played by the instrument in the song
    */
 
-  final static int  FIRST_GUITAR = 24;
-  final static int  LAST_GUITAR  = 39;
+  final static int  FIRST_GUITAR     = 24;
+  final static int  LAST_GUITAR      = 39;
+  final static int  ZERO_POWER_TIME  = 10;
+  final static int  SECONDS          = 60;
+
 
   public static int getNotes ( Sequence seq , int instrumentNumber ){
     // Total notes played by the instrument
@@ -219,7 +222,6 @@ public class MidiToNotes {
   }
 
 
-
   public static MyResult zeroPower( Sequence seq, TreeMap<Long, String> notesMap) {
     long start;
     long end;
@@ -227,8 +229,8 @@ public class MidiToNotes {
 
     int bpm = Bpm.getBPM(seq);
     int ticksPerBeat = seq.getResolution();
-    int ticksPerSec = (bpm*ticksPerBeat)/60;
-    long range = 10 * ticksPerSec;
+    int ticksPerSec = (bpm*ticksPerBeat)/SECONDS;
+    long range = ZERO_POWER_TIME * ticksPerSec;
 
     for (Map.Entry<Long, String> entry : notesMap.entrySet()) {
       start = entry.getKey();
@@ -260,6 +262,8 @@ public class MidiToNotes {
       Sequence seq = MidiSystem.getSequence( new File ( midiFilePath ) );
       TreeMap<Long, String> map = createMap( seq, mostNotes(seq));
       MyResult ticks = zeroPower(seq, map);
+      boolean zeroStarted = false;
+      boolean zeroEnded = false;
 
       // Amount of ticks that occur for each beat of the song (Pulse Per Quarter note)
       int ticksPerBeat = seq.getResolution();
@@ -273,12 +277,17 @@ public class MidiToNotes {
         /* Only add note to file if it occurs on a beat
          * Filters notes out and makes the game easier to play
          */
-        int powerOnOff = 0;
         if (entry.getKey() % ticksPerBeat == 0) {
           // Add note to the note file
-          if (ticks.getFirst() <= entry.getKey() && ticks.getSecond() >= entry.getKey())
-            powerOnOff = 1;
-          out.println(entry.getKey() + "," + entry.getValue() + "," + powerOnOff);
+          if (ticks.getFirst() <= entry.getKey() && !zeroStarted) {
+            zeroStarted = true;
+            out.println(entry.getKey() + "," + entry.getValue() + ",1");
+          } else if (ticks.getSecond() <= entry.getKey() && !zeroEnded) {
+            zeroEnded = true;
+            out.println(entry.getKey() + "," + entry.getValue() + ",1");
+          } else {
+            out.println(entry.getKey() + "," + entry.getValue() + ",0");
+          }
         }
       }
       out.close();
@@ -287,8 +296,8 @@ public class MidiToNotes {
     }
   }
 
-  public static void main( String[] args ) {
-    writeFile("testBundle/AC_DC_-_Back_In_Black.mid");
+  public static void main(String[] args) {
+    writeFile("testBundle/Guns_n_Roses_-_Sweet_Child_O_Mine.mid");
   }
 
   public static final class MyResult {

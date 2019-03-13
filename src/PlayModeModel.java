@@ -42,7 +42,9 @@ public class PlayModeModel implements Runnable{
   JLabel multiplierLabel;
   JLabel currencyLabel;
   JLabel scoreLabel;
-
+  JLabel zeroPowerLabel;
+  public long startZeroPower;
+  public long endZeroPower;
 
 
   @Override
@@ -51,7 +53,7 @@ public class PlayModeModel implements Runnable{
     try{
     coverArtLabel = new JLabel(resizeCoverArt(findCoverArt()));
     coverArtLabel.setBounds(50, 50, 150, 150);
-    view.add(coverArtLabel);
+    this.view.add(coverArtLabel);
     }
     catch(Exception e){}
 
@@ -59,6 +61,11 @@ public class PlayModeModel implements Runnable{
     multiplierLabel.setBounds(75, 225, 100, 100);
     multiplierLabel.setVisible(false);
     this.view.add(multiplierLabel);
+
+    zeroPowerLabel = new JLabel(new ImageIcon("../assets/ZeroPowerShield.png"));
+    zeroPowerLabel.setBounds(0, 0, 174, 192);
+    zeroPowerLabel.setVisible(false);
+    this.view.add(zeroPowerLabel);
 
     currencyLabel = new JLabel(new ImageIcon("../assets/1Star.png"));
     currencyLabel.setBounds(175, 300, 140, 30);
@@ -238,10 +245,34 @@ public class PlayModeModel implements Runnable{
     try {
       BufferedReader br = new BufferedReader( new FileReader(this.notesFile));
       String line;
+      boolean hasStarted = false;
+      boolean hasEnded = false;
+
       while((line = br.readLine())!=null) {
         // Split notes file by comma, separating ticks and notes
         String str[] = line.split(",");
         this.notes.put(Long.parseLong(str[0]), str[1]);
+
+        if (Long.parseLong(str[2]) == 1) {
+          if (!hasStarted) {
+            startZeroPower = Long.parseLong(str[0]);
+            hasStarted = true;
+            try {
+              this.zeroPowerLabel.setVisible(true);
+            }
+            catch(Exception e) {
+              e.printStackTrace();
+            }
+            this.view.revalidate();
+            System.out.println("zero power enabled");
+          } else if (!hasEnded) {
+            endZeroPower = Long.parseLong(str[0]);
+            hasEnded = true;
+            this.zeroPowerLabel.setVisible(false);
+            this.view.revalidate();
+            System.out.println("zero power disabled");
+          }
+        }
       }
 
       br.close();
@@ -355,7 +386,7 @@ public class PlayModeModel implements Runnable{
           view.collected = true;
 
           // Testing
-          System.out.println("Note collected");
+          //System.out.println("Note collected");
           System.out.println(Integer.toString(score));
       }
 
@@ -373,7 +404,7 @@ public class PlayModeModel implements Runnable{
       view.collected = false;
 
       // Testing
-      System.out.println("Note Dropped");
+      //System.out.println("Note Dropped");
     }
   }
 
@@ -388,7 +419,6 @@ public class PlayModeModel implements Runnable{
     this.score += this.multiplier;
     updateCurrency(this.currencyEarned);
     scoreLabel.setText(Integer.toString(this.score));
-
   }
 
   /**
@@ -414,6 +444,7 @@ public class PlayModeModel implements Runnable{
         currency ++;
         String img = "..assets/"+Integer.toString(currency)+"Star.png";
         this.currencyLabel.setIcon(new ImageIcon(img));
+        this.currencyLabel.setVisible(true);
       }
     }
 

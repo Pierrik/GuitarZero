@@ -104,8 +104,11 @@ public class PlayModeController implements Runnable {
                 System.out.println("escape");
               }
             } else if (i == WHAMMY) { //whammy  16 in linux
-              if (val >=BUTTON_THRESHOLD) {
-                //action
+              if (val >= BUTTON_THRESHOLD) {
+                if (model.getCurrentTick() >= model.startZeroPower
+                    && model.getCurrentTick() <= model.endZeroPower) {
+                  System.out.println(model.getCurrentTick());
+                }
               }
             } else if (i == BENDER_CLICK) { // bender click
               if (val > 0) {
