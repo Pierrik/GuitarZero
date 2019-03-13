@@ -6,12 +6,17 @@ import java.lang.Math;
 import java.util.HashMap;
 import java.io.FilenameFilter;
 import java.lang.Thread;
-
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.Image;
+import java.awt.Color;
+import java.awt.*;
 /**
  * PlayModeModel
- * Version 3.1, February 2019
+ * Version 3.2, March 2019
  * @author Tom Mansfield
  * @author Harper Ford
+ * @author Kamila Hoffmann-Derlacka
  */
 
 public class PlayModeModel implements Runnable{
@@ -23,7 +28,7 @@ public class PlayModeModel implements Runnable{
   private int streakCount;
   private int totalCurrency;
   private int currencyEarned;
-  private int score;
+  private int score = 0;
   private String currentNote;
   private long currentTick;
   private HashMap<Long, String> notes;
@@ -31,77 +36,116 @@ public class PlayModeModel implements Runnable{
   private PlayModeView view;
   private long lastTick = 0;
   private int bpm;
-  private Thread songThread;
+
+  //JLabels
+  JLabel coverArtLabel;
+  JLabel multiplierLabel;
+  JLabel currencyLabel;
+  JLabel scoreLabel;
+  JLabel zeroPowerLabel;
+  public long startZeroPower;
+  public long endZeroPower;
 
 
   @Override
   public void run(){
+    //Setup JLabels
+    try{
+    coverArtLabel = new JLabel(resizeCoverArt(findCoverArt()));
+    coverArtLabel.setBounds(50, 50, 150, 150);
+    this.view.add(coverArtLabel);
+    }
+    catch(Exception e){}
+
+    multiplierLabel = new JLabel(new ImageIcon("../assets/times2Multiplier3.png"));
+    multiplierLabel.setBounds(75, 225, 100, 100);
+    multiplierLabel.setVisible(false);
+    this.view.add(multiplierLabel);
+
+    zeroPowerLabel = new JLabel(new ImageIcon("../assets/ZeroPowerShield.png"));
+    zeroPowerLabel.setBounds(0, 0, 174, 192);
+    zeroPowerLabel.setVisible(false);
+    this.view.add(zeroPowerLabel);
+
+    currencyLabel = new JLabel(new ImageIcon("../assets/1Star.png"));
+    currencyLabel.setBounds(175, 300, 140, 30);
+    currencyLabel.setVisible(false);
+    this.view.add(currencyLabel);
+
+    scoreLabel = new JLabel(Integer.toString(this.score));
+    scoreLabel.setFont(new Font("Serif", Font.BOLD, 32));
+    scoreLabel.setBounds(75,350, 100, 100);
+    scoreLabel.setForeground(Color.white);
+    this.view.add(scoreLabel);
+
+
+
     playSong();
   }
 
-  public PlayModeModel( String bundlePath, PlayModeView view ) {
-
-    // Set initial values of the game
-    this.view = view;
-    this.bundlePath = bundlePath;
-    this.multiplier = 1;
-    this.streakCount = 0;
-    this.totalCurrency = Currency.loadTotalCurrency();
-    this.currencyEarned = 0;
-    this.score = 0;
-    this.currentTick = 0;
-    this.songThread = null;
-
-    try {
-      this.notesFile = findNotesFile();
-    } catch (Exception e) {
-      e.printStackTrace();
-      // NEED TO GO BACK TO SLASH MODE
-    }
-
-    try {
-      this.midiFile = findMidiFile();
-    } catch (Exception e) {
-      e.printStackTrace();
-      // NEED TO GO BACK TO SLASH MODE
-    }
-
-    try {
-      this.coverArt = findCoverArt();
-    } catch (Exception e) {
-      e.printStackTrace();
-      // NEED TO GO BACK TO SLASH MODE
-    }
-
-    this.notes = new HashMap<>();
-    loadNotesFile();
-    this.currentNote = "";
-    this.endOfSong = false;
-    setCoverPath();
-    setViewCoverArt();
-
-  }
-
-  public long getCurrentTick() {
-    return this.currentTick;
+  //*region Accessors
+  public String getCurrentNote() {
+    return this.currentNote;
   }
 
   public HashMap<Long, String> getNotes() {
     return this.notes;
   }
 
+  public long getCurrentTick() {
+    return this.currentTick;
+  }
+
   public boolean isEndOfSong() {
-    return endOfSong;
+    return this.endOfSong;
   }
 
-  public String getCurrentNote() {
-    return this.currentNote;
-  }
+  /**
+   * setMultiplier
+   * Changes the value of the multiplier if streakCount is multiple of 10 or 0
+   * Does nothing if streak count not multiple of 10 or 0
+   */
+  public void setMultiplier(Integer count) {
 
-  public void setViewCoverArt() {
-    view.coverArt = this.coverArt;
-  }
+    // Each time streak is a multiple of 10, change the multiplier
+    if(count % 10 == 0 ) {
+      // Multiplier value doubles each time, e.g. 2, 4, 8, 16, 32, 64 etc.
+      String img;
+      switch((int) Math.pow(2, count/10)){
+        case 2:
+          img = "../assets/times2Multiplier3.png";
+          break;
 
+        case 4:
+          img = "../assets/times4Multiplier3.png";
+          break;
+
+        case 8:
+          img = "../assets/times8Multiplier3.png";
+          break;
+
+        case 16:
+          img = "../assets/times16Multiplier3.png";
+          break;
+
+        case 32:
+          img = "../assets/times32Multiplier3.png";
+          break;
+
+        case 64:
+          img = "../assets/times64Multiplier3.png";
+          break;
+
+        default:
+          img = "";
+      }
+      multiplierLabel.setIcon(new ImageIcon(img));
+
+    }
+  }
+  //*endregion
+
+  //*region Parse Zip
   /**
    * findNotesFile
    * @return the notes file in the bundle
@@ -192,14 +236,6 @@ public class PlayModeModel implements Runnable{
 
   }
 
-  public void setCoverPath () {
-    view.coverArtPath = this.coverArt.getPath();
-  }
-
-  public void setCurrencyImagePath (String path) {
-    view.currencyPath = path;
-  }
-
   /**
    * loadNotesFile
    * Reads the notes file in the bundle and adds notes to a map
@@ -209,10 +245,34 @@ public class PlayModeModel implements Runnable{
     try {
       BufferedReader br = new BufferedReader( new FileReader(this.notesFile));
       String line;
+      boolean hasStarted = false;
+      boolean hasEnded = false;
+
       while((line = br.readLine())!=null) {
         // Split notes file by comma, separating ticks and notes
         String str[] = line.split(",");
         this.notes.put(Long.parseLong(str[0]), str[1]);
+
+        if (Long.parseLong(str[2]) == 1) {
+          if (!hasStarted) {
+            startZeroPower = Long.parseLong(str[0]);
+            hasStarted = true;
+            try {
+              this.zeroPowerLabel.setVisible(true);
+            }
+            catch(Exception e) {
+              e.printStackTrace();
+            }
+            this.view.revalidate();
+            System.out.println("zero power enabled");
+          } else if (!hasEnded) {
+            endZeroPower = Long.parseLong(str[0]);
+            hasEnded = true;
+            this.zeroPowerLabel.setVisible(false);
+            this.view.revalidate();
+            System.out.println("zero power disabled");
+          }
+        }
       }
 
       br.close();
@@ -222,125 +282,38 @@ public class PlayModeModel implements Runnable{
     }
 
   }
+  //*endregion
 
-  /**
-   * collectNote
-   * Occurs when the user plays a correct note
-   * Updates the streakCount, Multiplier and currencyEarned if necessary
-   */
-  public void collectNote() {
+  //Constructor
+  public PlayModeModel( String bundlePath, PlayModeView view ) {
 
-    this.streakCount ++;
-    setMultiplier();
-    this.score += this.multiplier;
-    updateCurrency();
-    view.score = this.score;
-
-  }
-
-  /**
-   * dropNote
-   * Occurs when the user does not play a correct note or plays a note when no note should be played
-   * Resets the streakCount and multiplier
-   */
-  public void dropNote() {
+    // Set initial values of the game
+    this.view = view;
+    this.bundlePath = bundlePath;
+    this.multiplier = 1;
     this.streakCount = 0;
-    setMultiplier();
-  }
+    this.totalCurrency = Currency.loadTotalCurrency();
+    this.currencyEarned = 0;
+    this.score = 0;
+    this.currentTick = 0;
+    this.currentNote = "";
+    this.endOfSong = false;
 
-  /**
-   * setMultiplier
-   * Changes the value of the multiplier if streakCount is multiple of 10 or 0
-   * Does nothing if streak count not multiple of 10 or 0
-   */
-  public void setMultiplier() {
-
-    // Each time streak is a multiple of 10, change the multiplier
-    if( this.streakCount % 10 == 0 ) {
-
-      // Multiplier value doubles each time, e.g. 2, 4, 8, 16, 32, 64 etc.
-      this.multiplier = (int) Math.pow( 2, this.streakCount/10 );
-
-      switch(this.multiplier){
-
-        case 2:
-          view.currentMultiplier = "../assets/times2Multiplier3.png";
-          break;
-
-        case 4:
-          view.currentMultiplier = "../assets/times4Multiplier3.png";
-          break;
-
-        case 8:
-          view.currentMultiplier = "../assets/times8Multiplier3.png";
-          break;
-
-        case 16:
-          view.currentMultiplier = "../assets/times16Multiplier3.png";
-          break;
-
-        case 32:
-          view.currentMultiplier = "../assets/times32Multiplier3.png";
-          break;
-
-        case 64:
-          view.currentMultiplier = "../assets/times64Multiplier3.png";
-          break;
-
-        default:
-          view.currentMultiplier = "0";
-
-      }
-
+    try {
+      this.notesFile = findNotesFile();
+    } catch (Exception e) {
+      e.printStackTrace();
+      // NEED TO GO BACK TO SLASH MODE
     }
 
-    // When streak is 0, reset multiplier to 1
-    else if( this.streakCount == 0 ) {
-      this.multiplier = 1;
-      view.currentMultiplier = "0";
+    try {
+      this.midiFile = findMidiFile();
+    } catch (Exception e) {
+      e.printStackTrace();
+      // NEED TO GO BACK TO SLASH MODE
     }
-
-  }
-
-  /**
-   * updateCurrency
-   * Updates the current currency earned during the song
-   */
-  public void updateCurrency() {
-
-    // Can only earn a maximum currency value of 5 per game
-    if( this.currencyEarned < 5 ) {
-
-      // Currency is earned every time score is a multiple of 500
-      if( this.score % 2 == 0) {
-        this.currencyEarned ++;
-
-        switch(this.currencyEarned) {
-
-          case 1:
-            setCurrencyImagePath("../assets/1Star.png");
-            System.out.println("Currency = 1");
-            break;
-
-          case 2:
-            setCurrencyImagePath("../assets/2Star.png");
-            break;
-
-          case 3:
-            setCurrencyImagePath("../assets/3Star.png");
-            break;
-
-          case 4:
-            setCurrencyImagePath("../assets/4Star.png");
-            break;
-
-          case 5:
-            setCurrencyImagePath("../assets/5Star.png");
-            break;
-        }
-      }
-    }
-
+    this.notes = new HashMap<>();
+    loadNotesFile();
   }
 
   /**
@@ -352,15 +325,15 @@ public class PlayModeModel implements Runnable{
 
     // Plays the MIDI song in a separate thread
     PlaySong playSong = new PlaySong(this.midiFile);
-    this.songThread = new Thread(playSong);
-    this.songThread.start();
+    Thread playSongThread = new Thread(playSong);
+    playSongThread.start();
 
     // While the song is still playing
     while(!playSong.endOfSong){
 
       // Change the current tick and current note values
       currentTick = playSong.currentTick;
-      changeCurrentNote(currentTick);
+      this.currentNote = changeCurrentNote(currentTick);
 
       // If there is a not to be played and the note has not already been added to highway
       if(!currentNote.equals("000") && currentTick != lastTick){
@@ -381,27 +354,16 @@ public class PlayModeModel implements Runnable{
   }
 
   /**
-   * stopSong
-   * Stops the thread playing the MIDI song. To be called after the exit button is pressed.
-   * @author: John Mercer
-   */
-  public void stopSong(){
-    if(this.songThread != null){
-      this.songThread.stop();
-    }
-  }
-
-  /**
    * changeCurrentNote
    * Changes the current note to the note that should be played
    * @param tick the current tick
    */
-  public void changeCurrentNote(long tick) {
+  public String changeCurrentNote(long tick) {
     if(this.notes.get(Long.valueOf(tick))!=null){
-      this.currentNote = this.notes.get(Long.valueOf(tick));
+      return this.notes.get(Long.valueOf(tick));
     }
     else{
-      this.currentNote = "000";
+      return "000";
     }
   }
 
@@ -424,7 +386,7 @@ public class PlayModeModel implements Runnable{
           view.collected = true;
 
           // Testing
-          System.out.println("Note collected");
+          //System.out.println("Note collected");
           System.out.println(Integer.toString(score));
       }
 
@@ -442,8 +404,67 @@ public class PlayModeModel implements Runnable{
       view.collected = false;
 
       // Testing
-      System.out.println("Note Dropped");
+      //System.out.println("Note Dropped");
     }
+  }
+
+  /**
+   * collectNote
+   * Occurs when the user plays a correct note
+   * Updates the streakCount, Multiplier and currencyEarned if necessary
+   */
+  public void collectNote() {
+    this.streakCount ++;
+    setMultiplier(this.streakCount);
+    this.score += this.multiplier;
+    updateCurrency(this.currencyEarned);
+    scoreLabel.setText(Integer.toString(this.score));
+  }
+
+  /**
+   * dropNote
+   * Occurs when the user does not play a correct note or plays a note when no note should be played
+   * Resets the streakCount and multiplier
+   */
+  public void dropNote() {
+    this.streakCount = 0;
+    setMultiplier(streakCount);
+  }
+
+  /**
+   * updateCurrency
+   * Updates the current currency earned during the song
+   */
+  public void updateCurrency(int currency) {
+
+    // Can only earn a maximum currency value of 5 per game
+    if(currency< 5 ) {
+      // Currency is earned every time score is a multiple of 500
+      if(this.score % 2 == 0) {
+        currency ++;
+        String img = "..assets/"+Integer.toString(currency)+"Star.png";
+        this.currencyLabel.setIcon(new ImageIcon(img));
+        this.currencyLabel.setVisible(true);
+      }
+    }
+
+  }
+
+  public ImageIcon resizeCoverArt(File cA) {
+
+    System.out.println("resized image correctly");
+
+    Image image = null;
+
+    try {
+      image = ImageIO.read(cA);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    Image resizedImage = image.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
+
+    return new ImageIcon(resizedImage);
   }
 
 }

@@ -34,6 +34,7 @@ public class PlayMode extends JPanel implements Runnable{
    * The thread for Play Mode
    * Continuously repaints the screen and checks whether any notes have not been played
    */
+  @Override
   public void run() {
       Thread modelThread = new Thread(model);
       Thread controllerThread = new Thread(controller);
@@ -63,7 +64,7 @@ public class PlayMode extends JPanel implements Runnable{
           model.dropNote();
 
           // Testing
-          System.out.println("Note Dropped");
+          //System.out.println("Note Dropped");
 
           view.dropNote = false;
         }
