@@ -1,3 +1,4 @@
+import javax.sound.midi.Soundbank;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Dimension;
@@ -79,11 +80,11 @@ public class Run {
         if (se == null) {
           try {
             se = new SelectMode();
+            window.setContentPane(se);
           } catch (NoSongsException e){
             e.printStackTrace();
           }
         }
-        window.setContentPane(se);
         break;
 
       case "Play":
