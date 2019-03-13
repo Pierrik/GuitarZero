@@ -76,6 +76,8 @@ public class PlayModeModel implements Runnable{
     this.currentNote = "";
     this.endOfSong = false;
     setCoverPath();
+    setViewCoverArt();
+
   }
 
   public long getCurrentTick() {
@@ -92,6 +94,10 @@ public class PlayModeModel implements Runnable{
 
   public String getCurrentNote() {
     return this.currentNote;
+  }
+
+  public void setViewCoverArt() {
+    view.coverArt = this.coverArt;
   }
 
   /**
@@ -188,6 +194,10 @@ public class PlayModeModel implements Runnable{
     view.coverArtPath = this.coverArt.getPath();
   }
 
+  public void setCurrencyImagePath (String path) {
+    view.currencyPath = path;
+  }
+
   /**
    * loadNotesFile
    * Reads the notes file in the bundle and adds notes to a map
@@ -222,6 +232,7 @@ public class PlayModeModel implements Runnable{
     setMultiplier();
     this.score += this.multiplier;
     updateCurrency();
+    view.score = this.score;
 
   }
 
@@ -275,6 +286,7 @@ public class PlayModeModel implements Runnable{
           break;
 
         default:
+          view.currentMultiplier = "0";
 
       }
 
@@ -283,7 +295,7 @@ public class PlayModeModel implements Runnable{
     // When streak is 0, reset multiplier to 1
     else if( this.streakCount == 0 ) {
       this.multiplier = 1;
-      view.currentMultiplier = null;
+      view.currentMultiplier = "0";
     }
 
   }
@@ -295,13 +307,36 @@ public class PlayModeModel implements Runnable{
   public void updateCurrency() {
 
     // Can only earn a maximum currency value of 5 per game
-    if( currencyEarned < 5 ) {
+    if( this.currencyEarned < 5 ) {
 
       // Currency is earned every time score is a multiple of 500
-      if( score % 500 == 0) {
-        currencyEarned ++;
-      }
+      if( this.score % 2 == 0) {
+        this.currencyEarned ++;
 
+        switch(this.currencyEarned) {
+
+          case 1:
+            setCurrencyImagePath("../assets/1Star.png");
+            System.out.println("Currency = 1");
+            break;
+
+          case 2:
+            setCurrencyImagePath("../assets/2Star.png");
+            break;
+
+          case 3:
+            setCurrencyImagePath("../assets/3Star.png");
+            break;
+
+          case 4:
+            setCurrencyImagePath("../assets/4Star.png");
+            break;
+
+          case 5:
+            setCurrencyImagePath("../assets/5Star.png");
+            break;
+        }
+      }
     }
 
   }

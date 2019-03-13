@@ -45,10 +45,10 @@ public class Note{
   */
   public void paintComponent(Graphics g){
     for(int[] each : positions){
-      if(each[1] == 1){
+      if(each[1] == 2){
         g.drawImage(whiteNote,each[0], this.y, null);
       }
-      else if(each[1] == 2){
+      else if(each[1] == 1){
         g.drawImage(blackNote,each[0], this.y, null);
       }
       else{}
