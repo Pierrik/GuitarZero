@@ -40,10 +40,9 @@ public class Run {
 
     Dimension dims = new Dimension(1000,500);
 
-    p = new PlayMode("C:\\Users\\Kamila\\IdeaProjects\\GuitarHero\\testBundle");
-    window.setContentPane(p);
-    Thread pThread = new Thread(p);
-    pThread.start();
+    sl = new SlashMode();
+    window.setContentPane(sl);
+
     //Set the content to the drawings from the GamePanel object
     window.setPreferredSize(dims);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
