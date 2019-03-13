@@ -14,15 +14,13 @@ public class Bpm {
    */
   public static int getBPM(Sequence sequence){
     try {
-      //Open sequencer
-      Sequencer sequencer = MidiSystem.getSequencer();
-      sequencer.open();
 
       //Get sequence from file
       return(60000000 / getMicrosecondsPerQuarterNote(sequence));
     }catch (Exception e) {
     	e.printStackTrace();
 		}
+
 		return 0;
   }
 

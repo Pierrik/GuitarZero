@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.TreeMap;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
@@ -25,6 +27,10 @@ public class MidiToNotes {
    * @param instrumentNumber    The instrument number to search for total of notes played by
    * @return    The number of notes played by the instrument in the song
    */
+
+  final static int  FIRST_GUITAR = 24;
+  final static int  LAST_GUITAR  = 39;
+
   public static int getNotes ( Sequence seq , int instrumentNumber ){
     // Total notes played by the instrument
     int totalNotes = 0;
@@ -82,7 +88,7 @@ public class MidiToNotes {
      * Could filter through all instruments but would take longer to compute
      */
     try {
-      for(int i = 24; i < 39; i++) {
+      for(int i = FIRST_GUITAR; i < LAST_GUITAR; i++) {
         // Get the amount of notes the instrument plays in the song
         int notes = getNotes( seq, i );
         if ( notes > highestNotesPlayed ) {
@@ -169,9 +175,9 @@ public class MidiToNotes {
    * @param programNumber the program number of the instrument used on the track
    * @return a map of ticks and formatted notes
    */
-  public static Map<Long, String> createMap ( Sequence seq, int programNumber ) {
+  public static TreeMap<Long, String> createMap ( Sequence seq, int programNumber ) {
     // TreeMap stores the notes in order of ticks
-    Map<Long, String> m = new TreeMap<>();
+    TreeMap<Long, String> m = new TreeMap<>();
 
     Track trks[] = seq.getTracks();
 
@@ -212,6 +218,38 @@ public class MidiToNotes {
     return m;
   }
 
+
+
+  public static MyResult zeroPower( Sequence seq, TreeMap<Long, String> notesMap) {
+    long start;
+    long end;
+    Map<Long, Integer> noteCount = new TreeMap<>();
+
+    int bpm = Bpm.getBPM(seq);
+    int ticksPerBeat = seq.getResolution();
+    int ticksPerSec = (bpm*ticksPerBeat)/60;
+    long range = 10 * ticksPerSec;
+
+    for (Map.Entry<Long, String> entry : notesMap.entrySet()) {
+      start = entry.getKey();
+      end = start + range;
+      int count = 0;
+
+      for (long i = start; i <= end; i ++) {
+        String value = notesMap.get(i);
+        if ( value != null) {
+          count ++;
+        }
+      }
+      noteCount.put(start, count);
+    }
+
+    start = Collections.max(noteCount.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
+    end = notesMap.floorEntry(start+range).getKey();
+
+    return new MyResult(start, end);
+  }
+
   /**
    * Writes the converted notes from the MIDI file to a text file
    * Adds notes that occur on a beat to the file
@@ -220,7 +258,8 @@ public class MidiToNotes {
   public static void writeFile( String midiFilePath ) {
     try {
       Sequence seq = MidiSystem.getSequence( new File ( midiFilePath ) );
-      Map<Long, String> map = createMap( seq, mostNotes(seq));
+      TreeMap<Long, String> map = createMap( seq, mostNotes(seq));
+      MyResult ticks = zeroPower(seq, map);
 
       // Amount of ticks that occur for each beat of the song (Pulse Per Quarter note)
       int ticksPerBeat = seq.getResolution();
@@ -234,14 +273,39 @@ public class MidiToNotes {
         /* Only add note to file if it occurs on a beat
          * Filters notes out and makes the game easier to play
          */
+        int powerOnOff = 0;
         if (entry.getKey() % ticksPerBeat == 0) {
           // Add note to the note file
-          out.println(entry.getKey() + "," + entry.getValue());
+          if (ticks.getFirst() <= entry.getKey() && ticks.getSecond() >= entry.getKey())
+            powerOnOff = 1;
+          out.println(entry.getKey() + "," + entry.getValue() + "," + powerOnOff);
         }
       }
       out.close();
     } catch ( Exception e ) {
       e.printStackTrace();
+    }
+  }
+
+  public static void main( String[] args ) {
+    writeFile("testBundle/AC_DC_-_Back_In_Black.mid");
+  }
+
+  public static final class MyResult {
+    private final long first;
+    private final long second;
+
+    public MyResult(long first, long second) {
+      this.first = first;
+      this.second = second;
+    }
+
+    public long getFirst() {
+      return first;
+    }
+
+    public long getSecond() {
+      return second;
     }
   }
 
