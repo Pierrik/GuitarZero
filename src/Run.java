@@ -33,6 +33,8 @@ public class Run {
   static SlashMode sl = null;
   static StoreMode st = null;
   static PlayMode p = null;
+
+  static Thread playmode_thread;
   
 
   public static void main(String[] args){
@@ -91,7 +93,8 @@ public class Run {
         Dimension dim = new Dimension(999, 500);
         window.setSize(dim);
 
-        d.run();
+        Thread t = new Thread(d);
+        t.start();
         break;
 
       case "Tutorial":

@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.JPanel;
 import java.lang.Thread;
 /**
@@ -13,6 +14,8 @@ public class PlayMode extends JPanel implements Runnable{
     PlayModeView view;
     PlayModeModel model;
     PlayModeController controller;
+
+    AtomicBoolean playmode_running = new AtomicBoolean(false);
 
   /**
    * Sets up the Play Mode, Initialises Model, View and Controller
@@ -36,38 +39,40 @@ public class PlayMode extends JPanel implements Runnable{
    */
   @Override
   public void run() {
-      Thread modelThread = new Thread(model);
-      Thread controllerThread = new Thread(controller);
+    Thread modelThread = new Thread(model);
+    Thread controllerThread = new Thread(controller);
 
-      // Start the game
-      modelThread.start();
+    // Start the game
+    modelThread.start();
 
-      // Start the controller thread to run alongside the game
-      // Limit the speed of the frames
-      controllerThread.start();
-      long targetTime = 30;
-      while(true){
-        long s = System.nanoTime();
-        view.repaint();
-        long elapsed = System.nanoTime() - s;
+    // Start the controller thread to run alongside the game
+    // Limit the speed of the frames
+    controllerThread.start();
+    long targetTime = 30;
 
-        long wait = targetTime - elapsed / 1000000;
+    playmode_running.set(true);
+    while (playmode_running.get()) {
+      long s = System.nanoTime();
+      view.repaint();
+      long elapsed = System.nanoTime() - s;
 
-        try {
-          Thread.sleep(wait);
-        } catch (Exception o) {
-          o.printStackTrace();
-        }
+      long wait = targetTime - elapsed / 1000000;
 
-        // If a note has passed the screen without being played, drop the note
-        if(view.dropNote) {
-          model.dropNote();
+      try {
+        Thread.sleep(wait);
+      } catch (Exception o) {
+        o.printStackTrace();
+      }
 
-          // Testing
-          //System.out.println("Note Dropped");
+      // If a note has passed the screen without being played, drop the note
+      if (view.dropNote) {
+        model.dropNote();
 
-          view.dropNote = false;
-        }
+        // Testing
+        //System.out.println("Note Dropped");
+
+        view.dropNote = false;
       }
     }
+  }
 }

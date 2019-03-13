@@ -1,3 +1,4 @@
+import java.util.concurrent.atomic.AtomicBoolean;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
@@ -45,6 +46,8 @@ public class PlayModeController implements Runnable {
   static int          BENDER_ROUND = 13;
   static int          WHAMMY       = 14;
 
+  private final AtomicBoolean controller_running = new AtomicBoolean(false);
+
   public PlayModeController(PlayModeModel model){
     this.model = model;
   }
@@ -59,7 +62,8 @@ public class PlayModeController implements Runnable {
     int         previous2;
     int         previous3;
 
-    while (true) {
+    controller_running.set(true);
+    while(controller_running.get()) {
       if (ctrl.poll()) {
         for ( int i = 0; i < allCmps.length; i++ ) {
           vals[i] = allCmps[i].getPollData();
@@ -102,6 +106,7 @@ public class PlayModeController implements Runnable {
             } else if (i == ESCAPE) { // escape button
               if (val == BUTTON_THRESHOLD) {
                 System.out.println("escape");
+                this.model.songThreadObj.song_running.set(false);  // stopping the song running
                 Run.changeMode("Slash");
               }
             } else if (i == WHAMMY) { //whammy  16 in linux

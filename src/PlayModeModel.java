@@ -6,6 +6,7 @@ import java.lang.Math;
 import java.util.HashMap;
 import java.io.FilenameFilter;
 import java.lang.Thread;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.Image;
@@ -46,16 +47,19 @@ public class PlayModeModel implements Runnable{
   public long startZeroPower;
   public long endZeroPower;
 
+  public AtomicBoolean model_running = new AtomicBoolean(false);
+  public PlaySong songThreadObj;
+
 
   @Override
   public void run(){
     //Setup JLabels
-    try{
-    coverArtLabel = new JLabel(resizeCoverArt(findCoverArt()));
-    coverArtLabel.setBounds(50, 50, 150, 150);
-    this.view.add(coverArtLabel);
+    try {
+      coverArtLabel = new JLabel(resizeCoverArt(findCoverArt()));
+      coverArtLabel.setBounds(50, 50, 150, 150);
+      this.view.add(coverArtLabel);
+    } catch (Exception e) {
     }
-    catch(Exception e){}
 
     multiplierLabel = new JLabel(new ImageIcon("../assets/times2Multiplier3.png"));
     multiplierLabel.setBounds(75, 225, 100, 100);
@@ -74,11 +78,9 @@ public class PlayModeModel implements Runnable{
 
     scoreLabel = new JLabel(Integer.toString(this.score));
     scoreLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    scoreLabel.setBounds(75,350, 100, 100);
+    scoreLabel.setBounds(75, 350, 100, 100);
     scoreLabel.setForeground(Color.white);
     this.view.add(scoreLabel);
-
-
 
     playSong();
   }
@@ -257,19 +259,19 @@ public class PlayModeModel implements Runnable{
           if (!hasStarted) {
             startZeroPower = Long.parseLong(str[0]);
             hasStarted = true;
-            try {
-              this.zeroPowerLabel.setVisible(true);
-            }
-            catch(Exception e) {
-              e.printStackTrace();
-            }
-            this.view.revalidate();
+//            try {
+//              this.zeroPowerLabel.setVisible(true);
+//            }
+//            catch(Exception e) {
+//              e.printStackTrace();
+//            }
+//            this.view.revalidate();
             System.out.println("zero power enabled");
           } else if (!hasEnded) {
             endZeroPower = Long.parseLong(str[0]);
             hasEnded = true;
-            this.zeroPowerLabel.setVisible(false);
-            this.view.revalidate();
+//            this.zeroPowerLabel.setVisible(false);
+//            this.view.revalidate();
             System.out.println("zero power disabled");
           }
         }
@@ -324,15 +326,15 @@ public class PlayModeModel implements Runnable{
   public void playSong() {
 
     // Plays the MIDI song in a separate thread
-    PlaySong playSong = new PlaySong(this.midiFile);
-    Thread playSongThread = new Thread(playSong);
+    this.songThreadObj = new PlaySong(this.midiFile);
+    Thread playSongThread = new Thread(this.songThreadObj);
     playSongThread.start();
 
     // While the song is still playing
-    while(!playSong.endOfSong){
+    while(!this.songThreadObj.endOfSong){
 
       // Change the current tick and current note values
-      currentTick = playSong.currentTick;
+      currentTick = this.songThreadObj.currentTick;
       this.currentNote = changeCurrentNote(currentTick);
 
       // If there is a not to be played and the note has not already been added to highway
@@ -347,7 +349,7 @@ public class PlayModeModel implements Runnable{
       }
     }
 
-    if(playSong.endOfSong) {
+    if(this.songThreadObj.endOfSong) {
       // OUTPUT END OF GAME MESSAGE ?? RETURN TO SLASH MODE?? WAIT FOR USER TO ESCAPE??
     }
 
