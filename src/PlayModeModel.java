@@ -122,7 +122,7 @@ public class PlayModeModel implements Runnable{
       String img;
       //this.multiplierLabel.setVisible(true);
       this.multiplier = (int) Math.pow(2, this.streakCount/10);
-      switch(this.streakCount){
+      switch(this.multiplier){
         case 2:
           img = "../assets/times2Multiplier3.png";
           break;

@@ -63,17 +63,6 @@ public class PlayModeView extends JPanel{
     }
   }
 
-  /*public void setJLabel(int index, String attribute) {
-    switch(attribute) {
-      case "text":
-        break;
-
-      case "icon":
-        break;
-    }
-
- }*/
-
   public void setCoverArtLabel(File coverFile) {
     Image image = null;
 
