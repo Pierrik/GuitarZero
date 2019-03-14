@@ -100,10 +100,19 @@ public class PlayModeView extends JPanel{
 
   // Sets a blank multiplier label when the multiplier is 1
   public void setMultiplierLabel() {
-    multiplierLabel = new JLabel(new ImageIcon("../assets/times2Multiplier3.png"));
+    multiplierLabel = new JLabel(new ImageIcon());
     multiplierLabel.setBounds(75, 225, 100, 100);
     multiplierLabel.setVisible(false);
     add(multiplierLabel);
+  }
+
+  public void changeMultiplierLabel(String path) {
+    /*remove(multiplierLabel);
+    multiplierLabel = new JLabel(new ImageIcon(path));
+    //multiplierLabel.setIcon(new ImageIcon(path));
+    multiplierLabel.setVisible(true);
+    add(multiplierLabel);*/
+    multiplierLabel.setIcon(new ImageIcon(path));
   }
 
 
@@ -121,6 +130,30 @@ public class PlayModeView extends JPanel{
     add(currencyLabel);
   }
 
+  public void setScoreLabel(Integer score) {
+    scoreLabel = new JLabel(Integer.toString(score));
+    scoreLabel.setFont(new Font("Serif", Font.BOLD, 32));
+    scoreLabel.setBounds(75,350, 100, 100);
+    scoreLabel.setForeground(Color.white);
+    scoreLabel.setVisible(true);
+    add(scoreLabel);
+  }
+
+  public void resetScoreLabel(Integer score) {
+    scoreLabel.setText(Integer.toString(score));
+  }
+
+  public void setStreakLabel() {
+    streakLabel = new JLabel("Streak:  " + Integer.toString(0));
+    streakLabel.setFont(new Font("Serif", Font.BOLD, 32));
+    streakLabel.setBounds(75,450, 100, 100);
+    streakLabel.setForeground(Color.white);
+    add(streakLabel);
+  }
+
+  public void resetStreakLabel(Integer streak) {
+    streakLabel.setText("Streak:  " + Integer.toString(streak));
+  }
 
 
 

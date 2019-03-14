@@ -6,11 +6,8 @@ import java.lang.Math;
 import java.util.HashMap;
 import java.io.FilenameFilter;
 import java.lang.Thread;
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.Image;
-import java.awt.Color;
-import java.awt.*;
+
+
 /**
  * PlayModeModel
  * Version 3.2, March 2019
@@ -39,14 +36,6 @@ public class PlayModeModel implements Runnable{
   private String noteToPlay;
 
   PlaySong playSong;
-
-  //JLabels
-  JLabel coverArtLabel;
-  JLabel multiplierLabel;
-  JLabel currencyLabel;
-  JLabel scoreLabel;
-  JLabel streakLabel;
-
 
   //Constructor
   public PlayModeModel( String bundlePath, PlayModeView view ) {
@@ -92,20 +81,9 @@ public class PlayModeModel implements Runnable{
     //Setup JLabels
     view.setCoverArtLabel(this.coverArt);
     view.setMultiplierLabel();
-
     view.setCurrencyLabel();
-
-    scoreLabel = new JLabel(Integer.toString(this.score));
-    scoreLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    scoreLabel.setBounds(75,350, 100, 100);
-    scoreLabel.setForeground(Color.white);
-    this.view.add(scoreLabel);
-
-    streakLabel = new JLabel("Streak:  " + Integer.toString(this.streakCount));
-    streakLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    streakLabel.setBounds(75,450, 100, 100);
-    streakLabel.setForeground(Color.white);
-    this.view.add(streakLabel);
+    view.setScoreLabel(this.score);
+    view.setStreakLabel();
 
     playSong();
   }
@@ -144,7 +122,7 @@ public class PlayModeModel implements Runnable{
       String img;
       //this.multiplierLabel.setVisible(true);
       this.multiplier = (int) Math.pow(2, this.streakCount/10);
-      switch(this.multiplier){
+      switch(this.streakCount){
         case 2:
           img = "../assets/times2Multiplier3.png";
           break;
@@ -170,11 +148,10 @@ public class PlayModeModel implements Runnable{
           break;
 
         default:
-          //this.multiplierLabel.setVisible(false);
+          view.setMultiplierLabel();
           img = "";
       }
-      //this.multiplierLabel.setIcon(new ImageIcon(img));
-      view.setMultiplierLabel(img);
+      view.changeMultiplierLabel(img);
     }
   }
   //*endregion
@@ -348,7 +325,7 @@ public class PlayModeModel implements Runnable{
    */
   public void checkNote(String guitarNote) {
 
-    boolean noteCollected = false;
+    //boolean noteCollected = false;
 
     try {
 
@@ -357,6 +334,7 @@ public class PlayModeModel implements Runnable{
           collectNote();
           view.notes.get(0).collect();
           System.out.println(Integer.toString(score));
+          //System.out.println(this.streakCount);
       }
       else{
         dropNote();
@@ -371,10 +349,10 @@ public class PlayModeModel implements Runnable{
     }
 
     // User has not pressed the right note or attempted to play a note when none should be played
-    if ( !noteCollected ) {
+    /*if ( !noteCollected ) {
       dropNote();
       view.collected = false;
-    }
+    }*/
   }
 
   /**
@@ -384,11 +362,12 @@ public class PlayModeModel implements Runnable{
    */
   public void collectNote() {
     this.streakCount ++;
-    streakLabel.setText("Streak:  " + Integer.toString(this.streakCount));
+    System.out.println(this.streakCount);
+    view.resetStreakLabel(this.streakCount);
     setMultiplier();
     this.score += this.multiplier;
     updateCurrency();
-    scoreLabel.setText(Integer.toString(this.score));
+    view.resetScoreLabel(this.score);
 
   }
 
@@ -399,8 +378,9 @@ public class PlayModeModel implements Runnable{
    */
   public void dropNote() {
     this.streakCount = 0;
-    streakLabel.setText("Streak:  " + Integer.toString(this.streakCount));
+    view.resetStreakLabel(this.streakCount);
     setMultiplier();
+    view.setMultiplierLabel();
   }
 
   /**
@@ -421,21 +401,6 @@ public class PlayModeModel implements Runnable{
       }
     }
 
-  }
-
-  public ImageIcon resizeCoverArt(File cA) {
-
-    Image image = null;
-
-    try {
-      image = ImageIO.read(cA);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    Image resizedImage = image.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
-
-    return new ImageIcon(resizedImage);
   }
 
 }
