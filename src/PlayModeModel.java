@@ -28,7 +28,7 @@ public class PlayModeModel implements Runnable{
   private int streakCount;
   private int totalCurrency;
   private int currencyEarned;
-  private int score = 0;
+  private int score;
   private String currentNote;
   private long currentTick;
   private HashMap<Long, String> notes;
@@ -43,7 +43,40 @@ public class PlayModeModel implements Runnable{
   JLabel multiplierLabel;
   JLabel currencyLabel;
   JLabel scoreLabel;
+  JLabel streakLabel;
 
+
+  //Constructor
+  public PlayModeModel( String bundlePath, PlayModeView view ) {
+
+    // Set initial values of the game
+    this.view = view;
+    this.bundlePath = bundlePath;
+    this.multiplier = 1;
+    this.streakCount = 0;
+    this.totalCurrency = Currency.loadTotalCurrency();
+    this.currencyEarned = 0;
+    this.score = 0;
+    this.currentTick = 0;
+    this.currentNote = "";
+    this.endOfSong = false;
+
+    try {
+      this.notesFile = findNotesFile();
+    } catch (Exception e) {
+      e.printStackTrace();
+      // NEED TO GO BACK TO SLASH MODE
+    }
+
+    try {
+      this.midiFile = findMidiFile();
+    } catch (Exception e) {
+      e.printStackTrace();
+      // NEED TO GO BACK TO SLASH MODE
+    }
+    this.notes = new HashMap<>();
+    loadNotesFile();
+  }
 
 
   @Override
@@ -71,6 +104,12 @@ public class PlayModeModel implements Runnable{
     scoreLabel.setBounds(75,350, 100, 100);
     scoreLabel.setForeground(Color.white);
     this.view.add(scoreLabel);
+
+    streakLabel = new JLabel("Streak:  " + Integer.toString(this.streakCount));
+    streakLabel.setFont(new Font("Serif", Font.BOLD, 32));
+    streakLabel.setBounds(75,450, 100, 100);
+    streakLabel.setForeground(Color.white);
+    this.view.add(streakLabel);
 
     playSong();
   }
@@ -101,13 +140,15 @@ public class PlayModeModel implements Runnable{
    * Changes the value of the multiplier if streakCount is multiple of 10 or 0
    * Does nothing if streak count not multiple of 10 or 0
    */
-  public void setMultiplier(Integer count) {
+  public void setMultiplier() {
 
     // Each time streak is a multiple of 10, change the multiplier
-    if(count % 10 == 0 ) {
+    if(this.streakCount % 10 == 0 ) {
       // Multiplier value doubles each time, e.g. 2, 4, 8, 16, 32, 64 etc.
       String img;
-      switch((int) Math.pow(2, count/10)){
+      this.multiplierLabel.setVisible(true);
+      this.multiplier = (int) Math.pow(2, this.streakCount/10);
+      switch(this.multiplier){
         case 2:
           img = "../assets/times2Multiplier3.png";
           break;
@@ -133,9 +174,11 @@ public class PlayModeModel implements Runnable{
           break;
 
         default:
+          this.multiplierLabel.setVisible(false);
           img = "";
       }
-      multiplierLabel.setIcon(new ImageIcon(img));
+      this.multiplierLabel.setIcon(new ImageIcon(img));
+      this.score += this.multiplier;
 
     }
   }
@@ -250,37 +293,6 @@ public class PlayModeModel implements Runnable{
   }
   //*endregion
 
-  //Constructor
-  public PlayModeModel( String bundlePath, PlayModeView view ) {
-
-    // Set initial values of the game
-    this.view = view;
-    this.bundlePath = bundlePath;
-    this.multiplier = 1;
-    this.streakCount = 0;
-    this.totalCurrency = Currency.loadTotalCurrency();
-    this.currencyEarned = 0;
-    this.score = 0;
-    this.currentTick = 0;
-    this.currentNote = "";
-    this.endOfSong = false;
-
-    try {
-      this.notesFile = findNotesFile();
-    } catch (Exception e) {
-      e.printStackTrace();
-      // NEED TO GO BACK TO SLASH MODE
-    }
-
-    try {
-      this.midiFile = findMidiFile();
-    } catch (Exception e) {
-      e.printStackTrace();
-      // NEED TO GO BACK TO SLASH MODE
-    }
-    this.notes = new HashMap<>();
-    loadNotesFile();
-  }
 
   /**
    * playSong
@@ -305,7 +317,7 @@ public class PlayModeModel implements Runnable{
       if(!currentNote.equals("000") && currentTick != lastTick){
 
         // Add the note to the highway
-        Note note = new Note(currentNote);
+        Note note = new Note(currentNote, this);
         view.addNote(note);
 
         // Note for the current tick has been added
@@ -377,9 +389,10 @@ public class PlayModeModel implements Runnable{
    */
   public void collectNote() {
     this.streakCount ++;
-    setMultiplier(this.streakCount);
-    this.score += this.multiplier;
-    updateCurrency(this.currencyEarned);
+    streakLabel.setText("Streak:  " + Integer.toString(this.streakCount));
+    setMultiplier();
+    //this.score += this.multiplier;
+    updateCurrency();
     scoreLabel.setText(Integer.toString(this.score));
 
   }
@@ -391,22 +404,24 @@ public class PlayModeModel implements Runnable{
    */
   public void dropNote() {
     this.streakCount = 0;
-    setMultiplier(streakCount);
+    streakLabel.setText("Streak:  " + Integer.toString(this.streakCount));
+    setMultiplier();
   }
 
   /**
    * updateCurrency
    * Updates the current currency earned during the song
    */
-  public void updateCurrency(int currency) {
+  public void updateCurrency() {
 
     // Can only earn a maximum currency value of 5 per game
-    if(currency< 5 ) {
+    if(this.currencyEarned < 5 ) {
       // Currency is earned every time score is a multiple of 500
-      if(this.score % 2 == 0) {
-        currency ++;
-        String img = "..assets/"+Integer.toString(currency)+"Star.png";
+      if(this.score % 500 == 0) {
+        this.currencyEarned ++;
+        String img = "..assets/"+Integer.toString(this.currencyEarned)+"Star.png";
         this.currencyLabel.setIcon(new ImageIcon(img));
+        this.currencyLabel.setVisible(true);
       }
     }
 

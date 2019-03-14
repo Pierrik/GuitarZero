@@ -66,7 +66,7 @@ public class Note{
     this.collected = true;
   }
 
-  private incY(int v){
+  private void incY(int v){
     this.y += v;
     if(this.y>350 && this.y<500 && !collected){
       model.setNoteToPlay(this.noteValue);

@@ -106,17 +106,17 @@ public class PlayModeController implements Runnable {
             } else if (i == ESCAPE) { // escape button
               if (val == BUTTON_THRESHOLD) {
                 System.out.println("escape");
-                this.model.songThreadObj.song_running.set(false);  // stopping the song running
+                //this.model.songThreadObj.song_running.set(false);  // stopping the song running
                 Run.changeMode("Slash");
               }
-            } else if (i == WHAMMY) { //whammy  16 in linux
+            } /*else if (i == WHAMMY) { //whammy  16 in linux
               if (val >= BUTTON_THRESHOLD) {
                 if (model.getCurrentTick() >= model.startZeroPower
                     && model.getCurrentTick() <= model.endZeroPower) {
                   System.out.println(model.getCurrentTick());
                 }
               }
-            } else if (i == BENDER_CLICK) { // bender click
+            }*/ else if (i == BENDER_CLICK) { // bender click
               if (val > 0) {
                 // action
               }

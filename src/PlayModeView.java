@@ -83,7 +83,9 @@ public class PlayModeView extends JPanel{
       if(notes.get(i).getY() > 500 || notes.get(i).collected)
         notes.remove(i);
       }
-    }
+
     frame++;
+    }
+
   }
-}
+
