@@ -39,8 +39,18 @@ public class PlayModeView extends JPanel{
   boolean collected = true;
   String currentNotePointer;
 
+  JLabel coverArtLabel;
+  JLabel multiplierLabel;
+  JLabel currencyLabel;
+  JLabel scoreLabel;
+  JLabel streakLabel;
+
+
+
+
   public PlayModeView(){
     frame = 0;
+
     try{
       for(int i = 0; i<backgroundFrameCount; i++){
         bg[i] = ImageIO.read(new File("../assets/bg" + i + ".bmp"));
@@ -51,6 +61,37 @@ public class PlayModeView extends JPanel{
     catch(Exception e){
       e.printStackTrace();
     }
+  }
+
+  /*public void setJLabel(int index, String attribute) {
+    switch(attribute) {
+      case "text":
+        break;
+
+      case "icon":
+        break;
+    }
+
+ }*/
+
+  public void setCoverArtLabel(File coverFile) {
+    Image image = null;
+
+    try {
+      image = ImageIO.read(coverFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    Image resizedImage = image.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
+
+    coverArtLabel = new JLabel(new ImageIcon(resizedImage));
+    coverArtLabel.setBounds(50, 50, 150, 150);
+    add(coverArtLabel);
+  }
+
+  public void setMultiplierLabel() {
+
   }
 
   /**

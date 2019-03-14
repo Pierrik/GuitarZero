@@ -74,6 +74,12 @@ public class PlayModeModel implements Runnable{
       e.printStackTrace();
       // NEED TO GO BACK TO SLASH MODE
     }
+
+    try {
+      this.coverArt = findCoverArt();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     this.notes = new HashMap<>();
     loadNotesFile();
   }
@@ -82,12 +88,7 @@ public class PlayModeModel implements Runnable{
   @Override
   public void run(){
     //Setup JLabels
-    try{
-    coverArtLabel = new JLabel(resizeCoverArt(findCoverArt()));
-    coverArtLabel.setBounds(50, 50, 150, 150);
-    view.add(coverArtLabel);
-    }
-    catch(Exception e){}
+    view.setCoverArtLabel(this.coverArt);
 
     multiplierLabel = new JLabel(new ImageIcon("../assets/times2Multiplier3.png"));
     multiplierLabel.setBounds(75, 225, 100, 100);
@@ -178,8 +179,6 @@ public class PlayModeModel implements Runnable{
           img = "";
       }
       this.multiplierLabel.setIcon(new ImageIcon(img));
-      this.score += this.multiplier;
-
     }
   }
   //*endregion
@@ -391,7 +390,7 @@ public class PlayModeModel implements Runnable{
     this.streakCount ++;
     streakLabel.setText("Streak:  " + Integer.toString(this.streakCount));
     setMultiplier();
-    //this.score += this.multiplier;
+    this.score += this.multiplier;
     updateCurrency();
     scoreLabel.setText(Integer.toString(this.score));
 
@@ -428,8 +427,6 @@ public class PlayModeModel implements Runnable{
   }
 
   public ImageIcon resizeCoverArt(File cA) {
-
-    System.out.println("resized image correctly");
 
     Image image = null;
 
