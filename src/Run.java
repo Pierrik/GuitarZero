@@ -34,8 +34,6 @@ public class Run {
   static SlashMode sl = null;
   static StoreMode st = null;
   static PlayMode p = null;
-
-  static Thread playmode_thread;
   
 
   public static void main(String[] args){

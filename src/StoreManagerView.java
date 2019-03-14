@@ -33,10 +33,10 @@ public class StoreManagerView extends JFrame {
    * @param storeManagerController3: Midi browse controller
    * @param storeManagerController4: Save button controller
    */
-  public StoreManagerView ( StoreManagerController1 storeManagercontroller1,
-      StoreManagerController2 storeManagerController2,
-      StoreManagerController3 storeManagerController3,
-      StoreManagerController4 storeManagerController4) {
+  public StoreManagerView ( StoreManagerController titleButton,
+      StoreManagerController coverArtButton,
+      StoreManagerController songButton,
+      StoreManagerController saveButton) {
 
     setTitle("Store Manager");
 
@@ -77,10 +77,10 @@ public class StoreManagerView extends JFrame {
     getContentPane().add(BorderLayout.SOUTH, bottomPanel);
 
 
-    titleBrowse.addActionListener(storeManagercontroller1);
-    coverArtBrowse.addActionListener(storeManagerController2);
-    musicBrowse.addActionListener(storeManagerController3);
-    save.addActionListener(storeManagerController4);
+    titleBrowse.addActionListener(titleButton);
+    coverArtBrowse.addActionListener(coverArtButton);
+    musicBrowse.addActionListener(songButton);
+    save.addActionListener(saveButton);
 
   }
 

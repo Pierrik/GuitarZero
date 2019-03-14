@@ -42,7 +42,7 @@ public class SlashMode extends JPanel{
     CarouselController controller;
 
     /**
-     * Initialises the GUI classes for a courel with menu options specific to Slash Mode
+     * Initialises the GUI classes for a carousel with menu options specific to Slash Mode
      */
     public SlashMode() {
         ArrayList<JLabel> menuOptions = new ArrayList<>();
