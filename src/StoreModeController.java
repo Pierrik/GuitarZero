@@ -72,7 +72,7 @@ public class StoreModeController implements Runnable {
             case 1 :
               if (val >= BUTTON_THRESHOLD){
                 System.out.println("Escape button pressed");
-                Run.changeMode("Slash");
+                Run.changeMode(Mode.SLASH);
               }
               break;
 

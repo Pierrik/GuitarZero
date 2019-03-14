@@ -34,6 +34,8 @@ public class Run {
   static SlashMode sl = null;
   static StoreMode st = null;
   static PlayMode p = null;
+
+  static String currentBundleDir = "../testBundle";
   
 
   public static void main(String[] args){
@@ -56,12 +58,12 @@ public class Run {
    * Changes which MVC to display in the JFrame
    * @param option: Mode to change to
   */
-  public static void changeMode(String option) {
+  public static void changeMode(Mode option) {
     JPanel mode = null;
 
     switch (option) {
 
-      case "Slash":
+      case SLASH:
         if (sl == null) {
           sl = new SlashMode();
         }
@@ -69,12 +71,12 @@ public class Run {
         window.setContentPane(sl);
         break;
 
-      case "Store":
+      case STORE:
         StoreMode st = new StoreMode();
         window.setContentPane(st);
         break;
 
-      case "Select":
+      case SELECT:
         if (se == null) {
           try {
             se = new SelectMode();
@@ -85,8 +87,8 @@ public class Run {
         }
         break;
 
-      case "Play":
-        PlayMode d = new PlayMode("../testBundle");
+      case PLAY:
+        PlayMode d = new PlayMode(currentBundleDir);
         window.setContentPane(d);
 
         Dimension dim = new Dimension(999, 500);
@@ -96,11 +98,11 @@ public class Run {
         t.start();
         break;
 
-      case "Tutorial":
+      case TUTORIAL:
         System.out.println("Tutorial mode is still under progress...");
         break;
 
-      case "Exit":
+      case EXIT:
         System.out.println("Exiting..");
         System.exit(0);
 

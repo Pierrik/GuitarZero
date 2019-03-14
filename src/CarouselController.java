@@ -27,6 +27,7 @@ public class CarouselController implements Runnable {
   CarouselModel         model;
   ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
   Controller[]          ctrls = cenv.getControllers();
+  Mode                  mode;
 
   final static int    BUTTONS          = 3;
   final static double BUTTON_THRESHOLD = 1.0;
@@ -38,8 +39,9 @@ public class CarouselController implements Runnable {
   static int    STRUM            = 16;
 
 
-  public CarouselController(CarouselModel model){
+  public CarouselController(CarouselModel model, Mode mode){
     this.model = model;
+    this.mode = mode;
   }
 
   /*
@@ -63,10 +65,18 @@ public class CarouselController implements Runnable {
             // zero-power button
             case 0 :
               if (val == BUTTON_THRESHOLD){
+                switch (this.mode){
+                  case SLASH:
+                    String selectedMode = model.select();
+                    Run.changeMode(Mode.valueOf(selectedMode));
+                    System.out.println("Zero power pressed");
+                    break;
 
-                String selectedMode = model.select();
-                Run.changeMode(selectedMode);
-                System.out.println("Zero power pressed");
+                  case SELECT:
+                    String selectedSong = model.select();
+                    Run.currentBundleDir = "../bundle_files/" + selectedSong + "/";
+                    Run.changeMode(Mode.SLASH);
+                }
               }
               break;
 
@@ -76,7 +86,7 @@ public class CarouselController implements Runnable {
               if (val >= BUTTON_THRESHOLD){
                 // stay in slash mode
                 System.out.println("Escape button pressed");
-                Run.changeMode("Slash");
+                Run.changeMode(Mode.SLASH);
               }
               break;
 

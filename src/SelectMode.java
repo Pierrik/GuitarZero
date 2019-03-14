@@ -80,7 +80,7 @@ public class SelectMode extends JPanel {
     // Initialise the model, controller, view GUI classes
     CarouselView       view       = new CarouselView( menuOptions );
     CarouselModel      model      = new CarouselModel( view );
-    CarouselController controller = new CarouselController( model );
+    CarouselController controller = new CarouselController( model , Mode.SELECT);
     Thread controllerThread = new Thread(controller);
     controllerThread.start();
     this.add(view);

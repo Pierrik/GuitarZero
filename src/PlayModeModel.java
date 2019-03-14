@@ -38,6 +38,8 @@ public class PlayModeModel implements Runnable{
   private int bpm;
   private String noteToPlay;
 
+  PlaySong playSong;
+
   //JLabels
   JLabel coverArtLabel;
   JLabel multiplierLabel;
@@ -302,8 +304,8 @@ public class PlayModeModel implements Runnable{
   public void playSong() {
 
     // Plays the MIDI song in a separate thread
-    PlaySong playSong = new PlaySong(this.midiFile);
-    Thread playSongThread = new Thread(playSong);
+    this.playSong = new PlaySong(this.midiFile);
+    Thread playSongThread = new Thread(this.playSong);
     playSongThread.start();
 
     // While the song is still playing
