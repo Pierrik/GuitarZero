@@ -106,8 +106,8 @@ public class PlayModeController implements Runnable {
             } else if (i == ESCAPE) { // escape button
               if (val == BUTTON_THRESHOLD) {
                 System.out.println("escape");
-                //this.model.songThreadObj.song_running.set(false);  // stopping the song running
-                Run.changeMode("Slash");
+                this.model.playSong.song_running.set(false);  // stopping the song running
+                Run.changeMode(Mode.SLASH);
               }
             } /*else if (i == WHAMMY) { //whammy  16 in linux
               if (val >= BUTTON_THRESHOLD) {

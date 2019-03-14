@@ -55,11 +55,11 @@ public class SlashMode extends JPanel{
         JLabel label4 = new JLabel(new ImageIcon("../assets/PlayLogo3.png"));
         JLabel label5 = new JLabel(new ImageIcon("../assets/TutorialLogo3.png"));
 
-        label1.setText("Exit");
-        label2.setText("Store");
-        label3.setText("Select");
-        label4.setText("Play");
-        label5.setText("Tutorial");
+        label1.setText("EXIT");
+        label2.setText("STORE");
+        label3.setText("SELECT");
+        label4.setText("PLAY");
+        label5.setText("TUTORIAL");
 
 
         // Add labels to arrayList
@@ -72,7 +72,7 @@ public class SlashMode extends JPanel{
         // Initialise the model, controller, view GUI classes
         CarouselView       view       = new CarouselView(menuOptions);
         CarouselModel      model      = new CarouselModel(view);
-        CarouselController controller = new CarouselController( model );
+        CarouselController controller = new CarouselController( model, Mode.SLASH );
 
         Thread controllerThread = new Thread(controller);
 
