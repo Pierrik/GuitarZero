@@ -65,9 +65,7 @@ public class CarouselController implements Runnable {
               if (val == BUTTON_THRESHOLD){
 
                 String selectedMode = model.select();
-
                 Run.changeMode(selectedMode);
-
                 System.out.println("Zero power pressed");
               }
               break;

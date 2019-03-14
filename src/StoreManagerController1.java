@@ -6,22 +6,47 @@ import java.io.File;
  * Controller.
  *
  * @author  Pierrik Mellab
+ * @author  John Mercer
  * @version 2.00, January 2019.
  */
-class StoreManagerController1 implements ActionListener {
+class StoreManagerController implements ActionListener {
   private StoreManagerModel storeManagerModel;
   private StoreManagerView  storeManagerView;
+  private StoreManagerButton button;
 
-  public StoreManagerController1 ( StoreManagerModel storeManagerModel ) {
+  public StoreManagerController ( StoreManagerModel storeManagerModel, StoreManagerButton button ) {
     this.storeManagerModel = storeManagerModel;
     this.storeManagerView  = storeManagerView;
+    this.button = button;
   }
 
   public void actionPerformed( ActionEvent ev ) {
-    File file = StoreManagerModel.fileFinder();
-    String filePath = file.getPath();
+    switch (this.button) {
+      case TITLE:
+        File titleFile = StoreManagerModel.fileFinder();
+        String titlePath = titleFile.getPath();
+        storeManagerModel.setTitleFile(titleFile);
+        storeManagerView.setTitleTitle(titlePath);
+        break;
 
-    storeManagerModel.setTitleFile(file);
-    storeManagerView.setTitleTitle(filePath);
+      case COVER:
+        File coverFile = StoreManagerModel.fileFinder();
+        String coverPath = coverFile.getPath();
+        storeManagerModel.setCoverArtFile(coverFile);
+        storeManagerView.setCoverArtTitle(coverPath);
+        break;
+
+      case SONG:
+        File songFile = StoreManagerModel.fileFinder();
+        String songPath = songFile.getPath();
+        storeManagerModel.setMusicFile(songFile);
+        storeManagerView.setMusicTitle(songPath);
+        break;
+
+      case SAVE:
+        storeManagerModel.saveAction();
+        break;
+    }
+
   }
 }
