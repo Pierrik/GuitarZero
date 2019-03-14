@@ -90,9 +90,41 @@ public class PlayModeView extends JPanel{
     add(coverArtLabel);
   }
 
-  public void setMultiplierLabel() {
-
+  // Sets a multiplier label
+  public void setMultiplierLabel(String path) {
+    multiplierLabel = new JLabel(new ImageIcon(path));
+    multiplierLabel.setBounds(75, 225, 100, 100);
+    multiplierLabel.setVisible(true);
+    add(multiplierLabel);
   }
+
+  // Sets a blank multiplier label when the multiplier is 1
+  public void setMultiplierLabel() {
+    multiplierLabel = new JLabel(new ImageIcon("../assets/times2Multiplier3.png"));
+    multiplierLabel.setBounds(75, 225, 100, 100);
+    multiplierLabel.setVisible(false);
+    add(multiplierLabel);
+  }
+
+
+  public void setCurrencyLabel() {
+    currencyLabel = new JLabel(new ImageIcon());
+    currencyLabel.setBounds(175, 300, 140, 30);
+    currencyLabel.setVisible(false);
+    add(currencyLabel);
+  }
+
+  public void setCurrencyLabel(String path) {
+    currencyLabel = new JLabel(new ImageIcon(path));
+    currencyLabel.setBounds(175, 300, 140, 30);
+    currencyLabel.setVisible(true);
+    add(currencyLabel);
+  }
+
+
+
+
+
 
   /**
    * addNote

@@ -91,16 +91,9 @@ public class PlayModeModel implements Runnable{
   public void run(){
     //Setup JLabels
     view.setCoverArtLabel(this.coverArt);
+    view.setMultiplierLabel();
 
-    multiplierLabel = new JLabel(new ImageIcon("../assets/times2Multiplier3.png"));
-    multiplierLabel.setBounds(75, 225, 100, 100);
-    multiplierLabel.setVisible(false);
-    this.view.add(multiplierLabel);
-
-    currencyLabel = new JLabel(new ImageIcon("../assets/1Star.png"));
-    currencyLabel.setBounds(175, 300, 140, 30);
-    currencyLabel.setVisible(false);
-    this.view.add(currencyLabel);
+    view.setCurrencyLabel();
 
     scoreLabel = new JLabel(Integer.toString(this.score));
     scoreLabel.setFont(new Font("Serif", Font.BOLD, 32));
@@ -149,7 +142,7 @@ public class PlayModeModel implements Runnable{
     if(this.streakCount % 10 == 0 ) {
       // Multiplier value doubles each time, e.g. 2, 4, 8, 16, 32, 64 etc.
       String img;
-      this.multiplierLabel.setVisible(true);
+      //this.multiplierLabel.setVisible(true);
       this.multiplier = (int) Math.pow(2, this.streakCount/10);
       switch(this.multiplier){
         case 2:
@@ -177,10 +170,11 @@ public class PlayModeModel implements Runnable{
           break;
 
         default:
-          this.multiplierLabel.setVisible(false);
+          //this.multiplierLabel.setVisible(false);
           img = "";
       }
-      this.multiplierLabel.setIcon(new ImageIcon(img));
+      //this.multiplierLabel.setIcon(new ImageIcon(img));
+      view.setMultiplierLabel(img);
     }
   }
   //*endregion
@@ -421,8 +415,9 @@ public class PlayModeModel implements Runnable{
       if(this.score % 500 == 0) {
         this.currencyEarned ++;
         String img = "..assets/"+Integer.toString(this.currencyEarned)+"Star.png";
-        this.currencyLabel.setIcon(new ImageIcon(img));
-        this.currencyLabel.setVisible(true);
+        //this.currencyLabel.setIcon(new ImageIcon(img));
+        //this.currencyLabel.setVisible(true);
+        view.setCurrencyLabel(img);
       }
     }
 
