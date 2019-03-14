@@ -34,6 +34,8 @@ public class PlayModeModel implements Runnable{
   private long lastTick = 0;
   private int bpm;
   private String noteToPlay;
+  public long startZeroPower;
+  public long endZeroPower;
 
   PlaySong playSong;
 
@@ -84,6 +86,7 @@ public class PlayModeModel implements Runnable{
     view.setCurrencyLabel();
     view.setScoreLabel(this.score);
     view.setStreakLabel();
+    view.setZeroPowerLabelInit("../assets/ZeroPowerShield.png");
 
     playSong();
   }
@@ -250,10 +253,25 @@ public class PlayModeModel implements Runnable{
     try {
       BufferedReader br = new BufferedReader( new FileReader(this.notesFile));
       String line;
+      boolean hasStarted = false;
+      boolean hasEnded = false;
+
       while((line = br.readLine())!=null) {
         // Split notes file by comma, separating ticks and notes
         String str[] = line.split(",");
         this.notes.put(Long.parseLong(str[0]), str[1]);
+
+        if (Long.parseLong(str[2]) == 1) {
+
+          if (!hasStarted) {
+            startZeroPower = Long.parseLong(str[0]);
+            hasStarted = true;
+          }
+          else if (!hasEnded) {
+            endZeroPower = Long.parseLong(str[0]);
+            hasEnded = true;
+          }
+        }
       }
 
       br.close();
@@ -277,6 +295,8 @@ public class PlayModeModel implements Runnable{
     this.playSong = new PlaySong(this.midiFile);
     Thread playSongThread = new Thread(this.playSong);
     playSongThread.start();
+    boolean hasZeroStarted = false;
+    boolean hasZeroEnded = false;
 
     // While the song is still playing
     while(!playSong.endOfSong){
@@ -284,6 +304,16 @@ public class PlayModeModel implements Runnable{
       // Change the current tick and current note values
       currentTick = playSong.currentTick;
       this.currentNote = changeCurrentNote(currentTick);
+
+      if (!hasZeroStarted && currentTick >= startZeroPower) {
+        view.setZeroPowerLabelVisible();
+        hasZeroStarted = true;
+        //this.view.revalidate();
+      } else if (!hasZeroEnded && currentTick >= endZeroPower) {
+        view.setZeroPowerLabelFalse();
+        hasZeroEnded = true;
+        //this.view.revalidate();
+      }
 
       // If there is a not to be played and the note has not already been added to highway
       if(!currentNote.equals("000") && currentTick != lastTick){
@@ -331,10 +361,10 @@ public class PlayModeModel implements Runnable{
 
       // Checks if the user has pressed the note that is at the bottom of the screen
       if(this.noteToPlay.equals(guitarNote) && !view.notes.get(0).collected){
-          collectNote();
-          view.notes.get(0).collect();
-          System.out.println(Integer.toString(score));
-          //System.out.println(this.streakCount);
+        collectNote();
+        view.notes.get(0).collect();
+        System.out.println(Integer.toString(score));
+        //System.out.println(this.streakCount);
       }
       else{
         dropNote();

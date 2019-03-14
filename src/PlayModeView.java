@@ -44,6 +44,7 @@ public class PlayModeView extends JPanel{
   JLabel currencyLabel;
   JLabel scoreLabel;
   JLabel streakLabel;
+  JLabel zeroPowerLabel;
 
 
 
@@ -117,6 +118,22 @@ public class PlayModeView extends JPanel{
     currencyLabel.setBounds(175, 300, 140, 30);
     currencyLabel.setVisible(true);
     add(currencyLabel);
+  }
+
+  public void setZeroPowerLabelInit(String path) {
+    zeroPowerLabel = new JLabel(new ImageIcon(path));
+    zeroPowerLabel.setBounds(0, 0, 174, 192);
+    //zeroPowerLabel.setVisible(false);
+    //add(zeroPowerLabel);
+  }
+
+  public void setZeroPowerLabelVisible() {
+    zeroPowerLabel.setVisible(true);
+    add(zeroPowerLabel);
+  }
+
+  public void setZeroPowerLabelFalse() {
+    zeroPowerLabel.setVisible(false);
   }
 
   public void setScoreLabel(Integer score) {
