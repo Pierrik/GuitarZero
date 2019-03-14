@@ -109,14 +109,14 @@ public class PlayModeController implements Runnable {
                 this.model.playSong.song_running.set(false);  // stopping the song running
                 Run.changeMode(Mode.SLASH);
               }
-            } /*else if (i == WHAMMY) { //whammy  16 in linux
+            } else if (i == WHAMMY) { //whammy  16 in linux
               if (val >= BUTTON_THRESHOLD) {
                 if (model.getCurrentTick() >= model.startZeroPower
                     && model.getCurrentTick() <= model.endZeroPower) {
                   System.out.println(model.getCurrentTick());
                 }
               }
-            }*/ else if (i == BENDER_CLICK) { // bender click
+            } else if (i == BENDER_CLICK) { // bender click
               if (val > 0) {
                 // action
               }
