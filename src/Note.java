@@ -22,12 +22,14 @@ public class Note{
   String noteValue;
   int[][] positions = new int[3][2];
   boolean collected = false;
+  PlayModeModel model;
 
   public int getY(){ return this.y; }
   /**
    *
    */
-  public Note(String notes){
+  public Note(String notes, PlayModeModel model){
+    this.model = model;
     //Set X position
     this.positions[0][0] = (1000/2) - blackNote.getWidth(null)*2;
     this.positions[1][0] = (1000/2) - blackNote.getWidth(null)/2;
@@ -54,9 +56,23 @@ public class Note{
       else{}
     }
 
-    y += velocity;
+    incY(velocity);
     //Set X position
     this.positions[0][0] -= Math.ceil(0.4);
     this.positions[2][0] += Math.ceil(0.4);
+  }
+
+  public void collect(){
+    this.collected = true;
+  }
+
+  private incY(int v){
+    this.y += v;
+    if(this.y>350 && this.y<500 && !collected){
+      model.setNoteToPlay(this.noteValue);
+    }
+    else if(this.y > 500){
+      model.dropNote();
+    }
   }
 }

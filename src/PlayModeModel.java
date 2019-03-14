@@ -6,7 +6,6 @@ import java.lang.Math;
 import java.util.HashMap;
 import java.io.FilenameFilter;
 import java.lang.Thread;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.Image;
@@ -37,39 +36,30 @@ public class PlayModeModel implements Runnable{
   private PlayModeView view;
   private long lastTick = 0;
   private int bpm;
+  private String noteToPlay;
 
   //JLabels
   JLabel coverArtLabel;
   JLabel multiplierLabel;
   JLabel currencyLabel;
   JLabel scoreLabel;
-  JLabel zeroPowerLabel;
-  public long startZeroPower;
-  public long endZeroPower;
 
-  public AtomicBoolean model_running = new AtomicBoolean(false);
-  public PlaySong songThreadObj;
 
 
   @Override
   public void run(){
     //Setup JLabels
-    try {
-      coverArtLabel = new JLabel(resizeCoverArt(findCoverArt()));
-      coverArtLabel.setBounds(50, 50, 150, 150);
-      this.view.add(coverArtLabel);
-    } catch (Exception e) {
+    try{
+    coverArtLabel = new JLabel(resizeCoverArt(findCoverArt()));
+    coverArtLabel.setBounds(50, 50, 150, 150);
+    view.add(coverArtLabel);
     }
+    catch(Exception e){}
 
     multiplierLabel = new JLabel(new ImageIcon("../assets/times2Multiplier3.png"));
     multiplierLabel.setBounds(75, 225, 100, 100);
     multiplierLabel.setVisible(false);
     this.view.add(multiplierLabel);
-
-    zeroPowerLabel = new JLabel(new ImageIcon("../assets/ZeroPowerShield.png"));
-    zeroPowerLabel.setBounds(0, 0, 174, 192);
-    zeroPowerLabel.setVisible(false);
-    this.view.add(zeroPowerLabel);
 
     currencyLabel = new JLabel(new ImageIcon("../assets/1Star.png"));
     currencyLabel.setBounds(175, 300, 140, 30);
@@ -78,7 +68,7 @@ public class PlayModeModel implements Runnable{
 
     scoreLabel = new JLabel(Integer.toString(this.score));
     scoreLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    scoreLabel.setBounds(75, 350, 100, 100);
+    scoreLabel.setBounds(75,350, 100, 100);
     scoreLabel.setForeground(Color.white);
     this.view.add(scoreLabel);
 
@@ -86,6 +76,10 @@ public class PlayModeModel implements Runnable{
   }
 
   //*region Accessors
+  public void setNoteToPlay(String n){
+    this.noteToPlay = n;
+  }
+
   public String getCurrentNote() {
     return this.currentNote;
   }
@@ -194,18 +188,12 @@ public class PlayModeModel implements Runnable{
         return name.endsWith(".mid");
       }
     });
-
     if ( files.length > 0 ) {
-
       // Returns first occurrence of MIDI file, should only be one
       return files[0];
-
     } else {
-
       throw new Exception("No MIDI File In Bundle");
-
     }
-
   }
 
   /**
@@ -247,34 +235,10 @@ public class PlayModeModel implements Runnable{
     try {
       BufferedReader br = new BufferedReader( new FileReader(this.notesFile));
       String line;
-      boolean hasStarted = false;
-      boolean hasEnded = false;
-
       while((line = br.readLine())!=null) {
         // Split notes file by comma, separating ticks and notes
         String str[] = line.split(",");
         this.notes.put(Long.parseLong(str[0]), str[1]);
-
-        if (Long.parseLong(str[2]) == 1) {
-          if (!hasStarted) {
-            startZeroPower = Long.parseLong(str[0]);
-            hasStarted = true;
-//            try {
-//              this.zeroPowerLabel.setVisible(true);
-//            }
-//            catch(Exception e) {
-//              e.printStackTrace();
-//            }
-//            this.view.revalidate();
-            System.out.println("zero power enabled");
-          } else if (!hasEnded) {
-            endZeroPower = Long.parseLong(str[0]);
-            hasEnded = true;
-//            this.zeroPowerLabel.setVisible(false);
-//            this.view.revalidate();
-            System.out.println("zero power disabled");
-          }
-        }
       }
 
       br.close();
@@ -326,15 +290,15 @@ public class PlayModeModel implements Runnable{
   public void playSong() {
 
     // Plays the MIDI song in a separate thread
-    this.songThreadObj = new PlaySong(this.midiFile);
-    Thread playSongThread = new Thread(this.songThreadObj);
+    PlaySong playSong = new PlaySong(this.midiFile);
+    Thread playSongThread = new Thread(playSong);
     playSongThread.start();
 
     // While the song is still playing
-    while(!this.songThreadObj.endOfSong){
+    while(!playSong.endOfSong){
 
       // Change the current tick and current note values
-      currentTick = this.songThreadObj.currentTick;
+      currentTick = playSong.currentTick;
       this.currentNote = changeCurrentNote(currentTick);
 
       // If there is a not to be played and the note has not already been added to highway
@@ -349,7 +313,7 @@ public class PlayModeModel implements Runnable{
       }
     }
 
-    if(this.songThreadObj.endOfSong) {
+    if(playSong.endOfSong) {
       // OUTPUT END OF GAME MESSAGE ?? RETURN TO SLASH MODE?? WAIT FOR USER TO ESCAPE??
     }
 
@@ -382,14 +346,13 @@ public class PlayModeModel implements Runnable{
     try {
 
       // Checks if the user has pressed the note that is at the bottom of the screen
-      if(view.currentNotePointer.equals(guitarNote)){
+      if(this.noteToPlay.equals(guitarNote) && !view.notes.get(0).collected){
           collectNote();
-          noteCollected = true;
-          view.collected = true;
-
-          // Testing
-          //System.out.println("Note collected");
+          view.notes.get(0).collect();
           System.out.println(Integer.toString(score));
+      }
+      else{
+        dropNote();
       }
 
     } catch (Exception e) {
@@ -404,9 +367,6 @@ public class PlayModeModel implements Runnable{
     if ( !noteCollected ) {
       dropNote();
       view.collected = false;
-
-      // Testing
-      //System.out.println("Note Dropped");
     }
   }
 
@@ -421,6 +381,7 @@ public class PlayModeModel implements Runnable{
     this.score += this.multiplier;
     updateCurrency(this.currencyEarned);
     scoreLabel.setText(Integer.toString(this.score));
+
   }
 
   /**
@@ -446,7 +407,6 @@ public class PlayModeModel implements Runnable{
         currency ++;
         String img = "..assets/"+Integer.toString(currency)+"Star.png";
         this.currencyLabel.setIcon(new ImageIcon(img));
-        this.currencyLabel.setVisible(true);
       }
     }
 

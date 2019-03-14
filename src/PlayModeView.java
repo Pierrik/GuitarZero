@@ -75,30 +75,13 @@ public class PlayModeView extends JPanel{
     g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0,null);
     int len = notes.size();
 
-    for(int i=0; i<len; i++){
+    for(int i=len-1; i>-1; i--){
       // Draw the note
       notes.get(i).paintComponent(g);
 
-      // If the note is in the region at the bottom of the screen
-      // RANGE ONLY FOR TESTING COLLECTION OF NOTES, WILL CHANGE WHEN FRET BOARD IS ADDED
-      if( notes.get(i).getY() > 350 && notes.get(i).getY() < 500 ) {
-        currentNotePointer = notes.get(i).noteValue;
-      }
-
-      // If the note has passed the screen
-      if(notes.get(i).getY() > 500){
-        if(!collected) {
-          // Note has not been played
-          dropNote = true;
-        }
-        // Reset pointer, stop user from collecting same note multiple times
-        currentNotePointer="";
-
         // Remove from the notes ArrayList as no longer needed
+      if(notes.get(i).getY() > 500 || notes.get(i).collected)
         notes.remove(i);
-        i--;
-        len--;
-        collected = false;
       }
     }
     frame++;
