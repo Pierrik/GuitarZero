@@ -74,7 +74,7 @@ public class CarouselController implements Runnable {
 
                   case SELECT:
                     String selectedSong = model.select();
-                    Run.currentBundleDir = "../bundle_files/" + selectedSong + "/";
+                    Run.currentBundleDir = "../local_store/bundle_files/" + selectedSong;
                     Run.changeMode(Mode.SLASH);
                 }
               }
