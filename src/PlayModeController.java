@@ -145,39 +145,30 @@ public class PlayModeController implements Runnable {
      if (previous1 == WHITE1) {
         if (previous2 == WHITE2) {
           if (previous3 == WHITE3) {
-            System.out.println("white one + white two + white three + strum");
             model.checkNote("222");
           } else if (previous3 == BLACK3) {
-            System.out.println("white one + white two + black three + strum");
             model.checkNote("221");
           } else {
-            System.out.println("white one + white two + strum");
             model.checkNote("220");
           }
         }
         else if (previous2 == BLACK2) {
           if (previous3 == WHITE3) {
-            System.out.println("white one + black two + white three + strum");
             model.checkNote("212");
           } else if (previous3 == BLACK3) {
-            System.out.println("white one + black two + black three + strum");
             model.checkNote("211");
           } else {
-            System.out.println("white one + black two + strum");
             model.checkNote("210");
           }
         }
         else {
           if (previous3 == WHITE3) {
-            System.out.println("white one + white three + strum");
             model.checkNote("202");
           }
           else if (previous3 == BLACK3) {
-            System.out.println("white one + black three + strum");
             model.checkNote("201");
           }
           else {
-            System.out.println("white one + strum");
             model.checkNote("200");
           }
         }
@@ -185,35 +176,26 @@ public class PlayModeController implements Runnable {
       else if (previous1 == BLACK1) {
         if (previous2 == WHITE2) {
           if (previous3 == WHITE3) {
-            System.out.println("black one + white two + white three + strum");
             model.checkNote("122");
           } else if (previous3 == BLACK3) {
-            System.out.println("black one + white two + black three + strum");
             model.checkNote("121");
           } else {
-            System.out.println("black one + white two + strum");
             model.checkNote("120");
           }
         } else if (previous2 == BLACK2) {
           if (previous3 == WHITE3) {
-            System.out.println("black one + black two + white three + strum");
             model.checkNote("112");
           } else if (previous3 == BLACK3) {
-            System.out.println("black one + black two + black three + strum");
             model.checkNote("111");
           } else {
-            System.out.println("black one + black two + strum");
             model.checkNote("110");
           }
         } else {
           if (previous3 == WHITE3) {
-            System.out.println("black one + white three + strum");
             model.checkNote("120");
           } else if (previous3 == BLACK3) {
-            System.out.println("black one + black three + strum");
             model.checkNote("101");
           } else {
-            System.out.println("black one + strum");
             model.checkNote("100");
           }
         }
@@ -221,39 +203,30 @@ public class PlayModeController implements Runnable {
       else {
         if (previous2 == WHITE2) {
           if (previous3 == WHITE3) {
-            System.out.println("white two + white three + strum");
             model.checkNote("022");
           } else if (previous3 == BLACK3) {
-            System.out.println("white two + black three + strum");
             model.checkNote("021");
           } else {
-            System.out.println("white two + strum");
             model.checkNote("020");
           }
         }
         else if (previous2 == BLACK2) {
           if (previous3 == WHITE3) {
-            System.out.println("black two + white three + strum");
             model.checkNote("012");
           } else if (previous3 == BLACK3) {
-            System.out.println("black two + black three + strum");
             model.checkNote("011");
           } else {
-            System.out.println("black two + strum");
             model.checkNote("010");
           }
         }
         else {
           if (previous3 == WHITE3) {
-            System.out.println("white three + strum");
             model.checkNote("002");
           }
           else if (previous3 == BLACK3) {
-            System.out.println("black three + strum");
             model.checkNote("001");
           }
           else {
-            System.out.println("nothing + strum");
             model.checkNote("000");
           }
         }

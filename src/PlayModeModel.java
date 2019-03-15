@@ -361,8 +361,6 @@ public class PlayModeModel implements Runnable{
       if(this.noteToPlay.equals(guitarNote) && !view.notes.get(0).collected){
         collectNote();
         view.notes.get(0).collect();
-        System.out.println(Integer.toString(score));
-        //System.out.println(this.streakCount);
       }
       else{
         dropNote();
@@ -390,7 +388,6 @@ public class PlayModeModel implements Runnable{
    */
   public void collectNote() {
     this.streakCount ++;
-    System.out.println(this.streakCount);
     view.resetStreakLabel(this.streakCount);
     setMultiplier();
     this.score += this.multiplier;
