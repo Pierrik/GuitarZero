@@ -62,6 +62,8 @@ public class PlayModeView extends JPanel{
     catch(Exception e){
       e.printStackTrace();
     }
+
+    this.setLayout(null);
   }
 
   public void setCoverArtLabel(File coverFile) {
@@ -122,7 +124,7 @@ public class PlayModeView extends JPanel{
 
   public void setZeroPowerLabelInit(String path) {
     zeroPowerLabel = new JLabel(new ImageIcon(path));
-    zeroPowerLabel.setBounds(0, 0, 174, 192);
+    zeroPowerLabel.setBounds(726, 125, 174, 192);
     //zeroPowerLabel.setVisible(false);
     //add(zeroPowerLabel);
   }
@@ -152,7 +154,7 @@ public class PlayModeView extends JPanel{
   public void setStreakLabel() {
     streakLabel = new JLabel("Streak:  " + Integer.toString(0));
     streakLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    streakLabel.setBounds(75,450, 100, 100);
+    streakLabel.setBounds(400,0, 200, 200);
     streakLabel.setForeground(Color.white);
     add(streakLabel);
   }
@@ -186,6 +188,13 @@ public class PlayModeView extends JPanel{
     //Draw the background animation frame depending on the current frame/10%(number of frames in the animation)
     g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0,null);
     int len = notes.size();
+
+    /*scoreLabel.setBounds(75,350, 100, 100);
+    streakLabel.setBounds(75,450, 100, 100);
+    zeroPowerLabel.setBounds(0, 0, 174, 192);
+    coverArtLabel.setBounds(50, 50, 150, 150);
+    multiplierLabel.setBounds(75, 225, 100, 100);*/
+
 
     for(int i=len-1; i>-1; i--){
       // Draw the note

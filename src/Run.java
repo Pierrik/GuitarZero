@@ -43,7 +43,7 @@ public class Run {
 
     Dimension dims = new Dimension(1000,500);
 
-    p = new PlayMode("C:\\Users\\Kamila\\IdeaProjects\\GuitarHero\\testBundle");
+    p = new PlayMode("../testBundle");
     window.setContentPane(p);
     Thread pThread = new Thread(p);
     pThread.start();
