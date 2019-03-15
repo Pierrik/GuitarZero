@@ -80,9 +80,7 @@ public class SlashMode extends JPanel{
     }
 
     Thread controllerThread = new Thread(controller);
-
     controllerThread.start();
-
     this.add(view);
   }
 }

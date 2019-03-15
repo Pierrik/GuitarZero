@@ -75,7 +75,7 @@ public class CarouselController implements Runnable {
                     System.out.println("Zero power pressed - SLASH");
                     String selectedMode = model.select();
                     Run.changeMode(Mode.valueOf(selectedMode));
-                    //controllerOn.set(false);    // interrupting current controller thread
+                    controllerOn.set(false);    // interrupting current controller thread
                     break;
 
                   case SELECT:
@@ -83,7 +83,7 @@ public class CarouselController implements Runnable {
                     //Run.changeMode(Mode.SELECT);
                     String selectedSong = model.select();
                     Run.currentBundleDir = "../bundle_files/" + selectedSong + "/";
-                    //controllerOn.set(false);
+                    controllerOn.set(false);
                     break;
                 }
                 try {
@@ -152,8 +152,10 @@ public class CarouselController implements Runnable {
       }
     }
 
+    /*
     System.out.println(GUITAR_HERO + " controller not found");
     System.exit(1);
+    */
   }
 
   @Override
