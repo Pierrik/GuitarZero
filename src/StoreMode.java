@@ -53,6 +53,11 @@ public class StoreMode extends JPanel {
     CarouselView        view       = new CarouselView(menuOptions);
     StoreModeModel      model      = new StoreModeModel(view);
     StoreModeController controller = new StoreModeController(model);
+    try {
+      Thread.sleep(200);
+    } catch (InterruptedException e){
+      e.printStackTrace();
+    }
     Thread controllerThread = new Thread(controller);
     controllerThread.start();
     this.add(view);
