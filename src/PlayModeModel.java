@@ -87,6 +87,7 @@ public class PlayModeModel implements Runnable{
     view.setScoreLabel(this.score);
     view.setStreakLabel();
     view.setZeroPowerLabelInit("../assets/ZeroPowerShield.png");
+    view.noteInit();
 
     playSong();
   }
@@ -393,7 +394,7 @@ public class PlayModeModel implements Runnable{
     this.score += this.multiplier;
     updateCurrency();
     view.resetScoreLabel(this.score);
-
+    //view.noteCollected(true);
   }
 
   /**
@@ -425,5 +426,15 @@ public class PlayModeModel implements Runnable{
     }
 
   }
+
+  public void displayNoteOn(int pressedButton) {
+    view.noteDisplay(true, pressedButton);
+  }
+
+  public void resetAll() {
+    view.noteDisplay(false, 6);
+    //view.noteCollected(false, 6);
+  }
+
 
 }

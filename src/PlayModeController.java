@@ -65,6 +65,8 @@ public class PlayModeController implements Runnable {
     controller_running.set(true);
     while(controller_running.get()) {
       if (ctrl.poll()) {
+
+        model.resetAll();
         for ( int i = 0; i < allCmps.length; i++ ) {
           vals[i] = allCmps[i].getPollData();
         }
@@ -78,26 +80,32 @@ public class PlayModeController implements Runnable {
             if (i == WHITE1) {
               if (val == BUTTON_THRESHOLD){
                 previous1 = i;
+                model.displayNoteOn(WHITE1);
               }
             } else if ( i == BLACK1) {
               if (val == BUTTON_THRESHOLD){
                 previous1 = i;
+                model.displayNoteOn(BLACK1);
               }
             } else if (i == BLACK2) {
               if (val == BUTTON_THRESHOLD){
                 previous2 = i;
+                model.displayNoteOn(BLACK2);
               }
             } else if (i == BLACK3) {
               if (val == BUTTON_THRESHOLD){
                 previous3 = i;
+                model.displayNoteOn(BLACK3);
               }
             } else if (i == WHITE2) {
               if (val == BUTTON_THRESHOLD){
                 previous2 = i;
+                model.displayNoteOn(WHITE2);
               }
             } else if (i == WHITE3) {
               if (val == BUTTON_THRESHOLD){
                 previous3 = i;
+                model.displayNoteOn(WHITE3);
               }
             } else if (i == ZERO_POWER) {
               if (val == BUTTON_THRESHOLD) {
