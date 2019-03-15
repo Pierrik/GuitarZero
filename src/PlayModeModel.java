@@ -420,11 +420,10 @@ public class PlayModeModel implements Runnable{
     // Can only earn a maximum currency value of 5 per game
     if(this.currencyEarned < 5 ) {
       // Currency is earned every time score is a multiple of 500
-      if(this.score % 2 == 0) {
+      if(this.score % 500 == 0) {
         this.currencyEarned ++;
         String img = "../assets/"+Integer.toString(this.currencyEarned)+"Star.png";
         view.changeCurrencyLabel(img);
-        System.out.println("Currency = " + this.currencyEarned);
       }
     }
 

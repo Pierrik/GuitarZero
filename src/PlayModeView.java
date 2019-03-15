@@ -99,11 +99,6 @@ public class PlayModeView extends JPanel{
   }
 
   public void changeMultiplierLabel(String path) {
-    /*remove(multiplierLabel);
-    multiplierLabel = new JLabel(new ImageIcon(path));
-    //multiplierLabel.setIcon(new ImageIcon(path));
-    multiplierLabel.setVisible(true);
-    add(multiplierLabel);*/
     multiplierLabel.setIcon(new ImageIcon(path));
     multiplierLabel.setVisible(true);
   }
@@ -119,7 +114,6 @@ public class PlayModeView extends JPanel{
   public void changeCurrencyLabel(String path) {
     currencyLabel.setIcon(new ImageIcon(path));
     currencyLabel.setVisible(true);
-    System.out.println("Currency label changed");
   }
 
   public void setZeroPowerLabelInit(String path) {
