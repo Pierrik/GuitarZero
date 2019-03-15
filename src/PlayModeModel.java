@@ -308,11 +308,9 @@ public class PlayModeModel implements Runnable{
       if (!hasZeroStarted && currentTick >= startZeroPower) {
         view.setZeroPowerLabelVisible();
         hasZeroStarted = true;
-        //this.view.revalidate();
       } else if (!hasZeroEnded && currentTick >= endZeroPower) {
         view.setZeroPowerLabelFalse();
         hasZeroEnded = true;
-        //this.view.revalidate();
       }
 
       // If there is a not to be played and the note has not already been added to highway
