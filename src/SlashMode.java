@@ -73,6 +73,11 @@ public class SlashMode extends JPanel{
     CarouselView       view       = new CarouselView(menuOptions);
     CarouselModel      model      = new CarouselModel(view);
     CarouselController controller = new CarouselController( model, Mode.SLASH );
+    try {
+      Thread.sleep(200);
+    } catch (InterruptedException e){
+      e.printStackTrace();
+    }
 
     Thread controllerThread = new Thread(controller);
 

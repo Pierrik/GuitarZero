@@ -1,4 +1,5 @@
 import java.sql.SQLOutput;
+import java.util.concurrent.atomic.AtomicBoolean;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
@@ -39,6 +40,8 @@ public class CarouselController implements Runnable {
   // variables that change for different operating systems, default: windows
   static int    STRUM            = 16;
 
+  AtomicBoolean controllerOn = new AtomicBoolean(false);
+
 
   public CarouselController(CarouselModel model, Mode mode){
     this.model = model;
@@ -53,7 +56,8 @@ public class CarouselController implements Runnable {
     float[]     vals       = new float[BUTTONS];
     Component[] activeCmps = {allCmps[ZERO_POWER], allCmps[ESCAPE], allCmps[STRUM]};
 
-    while (true) {
+    controllerOn.set(true);
+    while (controllerOn.get()) {
       if (ctrl.poll()) {
         for ( int i = 0; i < BUTTONS; i++ ) {
           vals[i] = activeCmps[i].getPollData();
@@ -71,6 +75,7 @@ public class CarouselController implements Runnable {
                     System.out.println("Zero power pressed - SLASH");
                     String selectedMode = model.select();
                     Run.changeMode(Mode.valueOf(selectedMode));
+                    //controllerOn.set(false);    // interrupting current controller thread
                     break;
 
                   case SELECT:
@@ -78,6 +83,7 @@ public class CarouselController implements Runnable {
                     //Run.changeMode(Mode.SELECT);
                     String selectedSong = model.select();
                     Run.currentBundleDir = "../bundle_files/" + selectedSong + "/";
+                    //controllerOn.set(false);
                     break;
                 }
                 try {
