@@ -25,7 +25,8 @@ public class PlayMode extends JPanel implements Runnable{
 
         // Initialise the model, controller, view GUI classes
         view = new PlayModeView();
-        view.setPreferredSize(new Dimension(1000,500));
+        //view.setPreferredSize(new Dimension(1000,500));
+        view.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
         model = new PlayModeModel(bundlePath, view);
         controller = new PlayModeController(model);
         this.add(view);
@@ -65,14 +66,7 @@ public class PlayMode extends JPanel implements Runnable{
       }
 
       // If a note has passed the screen without being played, drop the note
-      if (view.dropNote) {
-        model.dropNote();
 
-        // Testing
-        //System.out.println("Note Dropped");
-
-        view.dropNote = false;
-      }
     }
   }
 }

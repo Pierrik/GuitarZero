@@ -12,12 +12,13 @@ import java.awt.*;
 */
 public class Note{
   //Load note sprites
+  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   Image blackNote = new ImageIcon("../assets/BlackNote.png").getImage();
   Image whiteNote = new ImageIcon("../assets/WhiteNote.png").getImage();
   Image sprite;
   //Setup position/speed variables
   int velocity = 4;
-  int y = 250;
+  int y = (int)(0.5*screenSize.height);
   int x;
   String noteValue;
   int[][] positions = new int[3][2];
@@ -31,9 +32,9 @@ public class Note{
   public Note(String notes, PlayModeModel model){
     this.model = model;
     //Set X position
-    this.positions[0][0] = (1000/2) - blackNote.getWidth(null)*2;
-    this.positions[1][0] = (1000/2) - blackNote.getWidth(null)/2;
-    this.positions[2][0] = (1000/2) + blackNote.getWidth(null)/2;
+    this.positions[0][0] = (screenSize.width/2) - blackNote.getWidth(null)*2;
+    this.positions[1][0] = (screenSize.width/2) - blackNote.getWidth(null)/2;
+    this.positions[2][0] = (screenSize.width/2) + blackNote.getWidth(null)/2;
     //Set object sprite to correct color
     this.positions[0][1] = Character.getNumericValue(notes.charAt(0));
     this.positions[1][1] = Character.getNumericValue(notes.charAt(1));
@@ -68,10 +69,10 @@ public class Note{
 
   private void incY(int v){
     this.y += v;
-    if(this.y>350 && this.y<500 && !collected){
+    if(this.y>(int)(0.5*screenSize.getHeight()) && y< (int)(0.82 * screenSize.getHeight()) && !this.collected){
       model.setNoteToPlay(this.noteValue);
     }
-    else if(this.y > 500){
+    else if(this.y > (int)(0.82 * screenSize.getHeight()) && !this.collected){
       model.dropNote();
     }
   }

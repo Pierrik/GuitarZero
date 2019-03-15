@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.io.IOException;
 import javax.swing.*;
 import java.awt.Graphics;
@@ -39,6 +40,8 @@ public class PlayModeView extends JPanel{
   boolean collected = true;
   String currentNotePointer;
 
+  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
   JLabel coverArtLabel;
   JLabel multiplierLabel;
   JLabel currencyLabel;
@@ -54,7 +57,7 @@ public class PlayModeView extends JPanel{
 
     try{
       for(int i = 0; i<backgroundFrameCount; i++){
-        bg[i] = ImageIO.read(new File("../assets/bg" + i + ".bmp"));
+        bg[i] = ImageIO.read(new File("../assets/Done/Highway.bmp"));
       }
 
 
@@ -78,14 +81,14 @@ public class PlayModeView extends JPanel{
     Image resizedImage = image.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
 
     coverArtLabel = new JLabel(new ImageIcon(resizedImage));
-    coverArtLabel.setBounds(50, 50, 150, 150);
+    coverArtLabel.setBounds((int)(0.2*screenSize.width), (int)(0.1*screenSize.height), 150, 150);
     add(coverArtLabel);
   }
 
   // Sets a multiplier label
   public void setMultiplierLabel(String path) {
     multiplierLabel = new JLabel(new ImageIcon(path));
-    multiplierLabel.setBounds(75, 225, 100, 100);
+    multiplierLabel.setBounds((int)(0.15*screenSize.width), (int)(0.45*screenSize.height), 100, 100);
     multiplierLabel.setVisible(true);
     add(multiplierLabel);
   }
@@ -93,7 +96,7 @@ public class PlayModeView extends JPanel{
   // Sets a blank multiplier label when the multiplier is 1
   public void setMultiplierLabel() {
     multiplierLabel = new JLabel(new ImageIcon());
-    multiplierLabel.setBounds(75, 225, 100, 100);
+    multiplierLabel.setBounds((int)(0.15*screenSize.width), (int)(0.45*screenSize.height), 100, 100);
     multiplierLabel.setVisible(false);
     add(multiplierLabel);
   }
@@ -106,7 +109,7 @@ public class PlayModeView extends JPanel{
 
   public void setCurrencyLabel() {
     currencyLabel = new JLabel(new ImageIcon());
-    currencyLabel.setBounds(175, 385, 140, 30);
+    currencyLabel.setBounds((int)(0.35*screenSize.width), (int)(0.77*screenSize.height), 140, 30);
     currencyLabel.setVisible(false);
     add(currencyLabel);
   }
@@ -118,7 +121,7 @@ public class PlayModeView extends JPanel{
 
   public void setZeroPowerLabelInit(String path) {
     zeroPowerLabel = new JLabel(new ImageIcon(path));
-    zeroPowerLabel.setBounds(726, 125, 174, 192);
+    zeroPowerLabel.setBounds((int)(0.726*screenSize.width), (int)(0.25*screenSize.height), 174, 192);
     //zeroPowerLabel.setVisible(false);
     //add(zeroPowerLabel);
   }
@@ -135,7 +138,7 @@ public class PlayModeView extends JPanel{
   public void setScoreLabel(Integer score) {
     scoreLabel = new JLabel("Score: " + Integer.toString(score));
     scoreLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    scoreLabel.setBounds(25,350, 200, 100);
+    scoreLabel.setBounds((int)(0.05*screenSize.width),(int)(0.7*screenSize.height), 200, 100);
     scoreLabel.setForeground(Color.white);
     scoreLabel.setVisible(true);
     add(scoreLabel);
@@ -148,7 +151,7 @@ public class PlayModeView extends JPanel{
   public void setStreakLabel() {
     streakLabel = new JLabel("Streak:  " + Integer.toString(0));
     streakLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    streakLabel.setBounds(400,0, 200, 200);
+    streakLabel.setBounds((int)(0.45*screenSize.width),(int)(0.2*screenSize.getHeight()), 200, 200);
     streakLabel.setForeground(Color.white);
     add(streakLabel);
   }
@@ -195,7 +198,7 @@ public class PlayModeView extends JPanel{
       notes.get(i).paintComponent(g);
 
         // Remove from the notes ArrayList as no longer needed
-      if(notes.get(i).getY() > 500 || notes.get(i).collected)
+      if(notes.get(i).getY() > (int)(0.82 * screenSize.getHeight()) || notes.get(i).collected)
         notes.remove(i);
       }
 
