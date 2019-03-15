@@ -105,21 +105,21 @@ public class PlayModeView extends JPanel{
     multiplierLabel.setVisible(true);
     add(multiplierLabel);*/
     multiplierLabel.setIcon(new ImageIcon(path));
+    multiplierLabel.setVisible(true);
   }
 
 
   public void setCurrencyLabel() {
     currencyLabel = new JLabel(new ImageIcon());
-    currencyLabel.setBounds(175, 300, 140, 30);
+    currencyLabel.setBounds(175, 385, 140, 30);
     currencyLabel.setVisible(false);
     add(currencyLabel);
   }
 
-  public void setCurrencyLabel(String path) {
-    currencyLabel = new JLabel(new ImageIcon(path));
-    currencyLabel.setBounds(175, 300, 140, 30);
+  public void changeCurrencyLabel(String path) {
+    currencyLabel.setIcon(new ImageIcon(path));
     currencyLabel.setVisible(true);
-    add(currencyLabel);
+    System.out.println("Currency label changed");
   }
 
   public void setZeroPowerLabelInit(String path) {
@@ -139,16 +139,16 @@ public class PlayModeView extends JPanel{
   }
 
   public void setScoreLabel(Integer score) {
-    scoreLabel = new JLabel(Integer.toString(score));
+    scoreLabel = new JLabel("Score: " + Integer.toString(score));
     scoreLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    scoreLabel.setBounds(75,350, 100, 100);
+    scoreLabel.setBounds(25,350, 200, 100);
     scoreLabel.setForeground(Color.white);
     scoreLabel.setVisible(true);
     add(scoreLabel);
   }
 
   public void resetScoreLabel(Integer score) {
-    scoreLabel.setText(Integer.toString(score));
+    scoreLabel.setText("Score: " + Integer.toString(score));
   }
 
   public void setStreakLabel() {
