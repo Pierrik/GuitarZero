@@ -6,11 +6,8 @@ import java.lang.Math;
 import java.util.HashMap;
 import java.io.FilenameFilter;
 import java.lang.Thread;
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.Image;
-import java.awt.Color;
-import java.awt.*;
+
+
 /**
  * PlayModeModel
  * Version 3.2, March 2019
@@ -37,16 +34,10 @@ public class PlayModeModel implements Runnable{
   private long lastTick = 0;
   private int bpm;
   private String noteToPlay;
+  public long startZeroPower;
+  public long endZeroPower;
 
   PlaySong playSong;
-
-  //JLabels
-  JLabel coverArtLabel;
-  JLabel multiplierLabel;
-  JLabel currencyLabel;
-  JLabel scoreLabel;
-  JLabel streakLabel;
-
 
   //Constructor
   public PlayModeModel( String bundlePath, PlayModeView view ) {
@@ -76,6 +67,12 @@ public class PlayModeModel implements Runnable{
       e.printStackTrace();
       // NEED TO GO BACK TO SLASH MODE
     }
+
+    try {
+      this.coverArt = findCoverArt();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     this.notes = new HashMap<>();
     loadNotesFile();
   }
@@ -84,34 +81,12 @@ public class PlayModeModel implements Runnable{
   @Override
   public void run(){
     //Setup JLabels
-    try{
-      coverArtLabel = new JLabel(resizeCoverArt(findCoverArt()));
-      coverArtLabel.setBounds(50, 50, 150, 150);
-      view.add(coverArtLabel);
-    }
-    catch(Exception e){}
-
-    multiplierLabel = new JLabel(new ImageIcon("../assets/times2Multiplier3.png"));
-    multiplierLabel.setBounds(75, 225, 100, 100);
-    multiplierLabel.setVisible(false);
-    this.view.add(multiplierLabel);
-
-    currencyLabel = new JLabel(new ImageIcon("../assets/1Star.png"));
-    currencyLabel.setBounds(175, 300, 140, 30);
-    currencyLabel.setVisible(false);
-    this.view.add(currencyLabel);
-
-    scoreLabel = new JLabel(Integer.toString(this.score));
-    scoreLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    scoreLabel.setBounds(75,350, 100, 100);
-    scoreLabel.setForeground(Color.white);
-    this.view.add(scoreLabel);
-
-    streakLabel = new JLabel("Streak:  " + Integer.toString(this.streakCount));
-    streakLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    streakLabel.setBounds(75,450, 100, 100);
-    streakLabel.setForeground(Color.white);
-    this.view.add(streakLabel);
+    view.setCoverArtLabel(this.coverArt);
+    view.setMultiplierLabel();
+    view.setCurrencyLabel();
+    view.setScoreLabel(this.score);
+    view.setStreakLabel();
+    view.setZeroPowerLabelInit("../assets/ZeroPowerShield.png");
 
     playSong();
   }
@@ -148,7 +123,7 @@ public class PlayModeModel implements Runnable{
     if(this.streakCount % 10 == 0 ) {
       // Multiplier value doubles each time, e.g. 2, 4, 8, 16, 32, 64 etc.
       String img;
-      this.multiplierLabel.setVisible(true);
+      //this.multiplierLabel.setVisible(true);
       this.multiplier = (int) Math.pow(2, this.streakCount/10);
       switch(this.multiplier){
         case 2:
@@ -176,12 +151,10 @@ public class PlayModeModel implements Runnable{
           break;
 
         default:
-          this.multiplierLabel.setVisible(false);
+         view.changeMultiplierLabel(null);
           img = "";
       }
-      this.multiplierLabel.setIcon(new ImageIcon(img));
-      this.score += this.multiplier;
-
+      view.changeMultiplierLabel(img);
     }
   }
   //*endregion
@@ -280,10 +253,25 @@ public class PlayModeModel implements Runnable{
     try {
       BufferedReader br = new BufferedReader( new FileReader(this.notesFile));
       String line;
+      boolean hasStarted = false;
+      boolean hasEnded = false;
+
       while((line = br.readLine())!=null) {
         // Split notes file by comma, separating ticks and notes
         String str[] = line.split(",");
         this.notes.put(Long.parseLong(str[0]), str[1]);
+
+        if (Long.parseLong(str[2]) == 1) {
+
+          if (!hasStarted) {
+            startZeroPower = Long.parseLong(str[0]);
+            hasStarted = true;
+          }
+          else if (!hasEnded) {
+            endZeroPower = Long.parseLong(str[0]);
+            hasEnded = true;
+          }
+        }
       }
 
       br.close();
@@ -307,6 +295,8 @@ public class PlayModeModel implements Runnable{
     this.playSong = new PlaySong(this.midiFile);
     Thread playSongThread = new Thread(this.playSong);
     playSongThread.start();
+    boolean hasZeroStarted = false;
+    boolean hasZeroEnded = false;
 
     // While the song is still playing
     while(!playSong.endOfSong){
@@ -314,6 +304,14 @@ public class PlayModeModel implements Runnable{
       // Change the current tick and current note values
       currentTick = playSong.currentTick;
       this.currentNote = changeCurrentNote(currentTick);
+
+      if (!hasZeroStarted && currentTick >= startZeroPower) {
+        view.setZeroPowerLabelVisible();
+        hasZeroStarted = true;
+      } else if (!hasZeroEnded && currentTick >= endZeroPower) {
+        view.setZeroPowerLabelFalse();
+        hasZeroEnded = true;
+      }
 
       // If there is a not to be played and the note has not already been added to highway
       if(!currentNote.equals("000") && currentTick != lastTick){
@@ -355,7 +353,7 @@ public class PlayModeModel implements Runnable{
    */
   public void checkNote(String guitarNote) {
 
-    boolean noteCollected = false;
+    //boolean noteCollected = false;
 
     try {
 
@@ -363,7 +361,6 @@ public class PlayModeModel implements Runnable{
       if(this.noteToPlay.equals(guitarNote) && !view.notes.get(0).collected){
         collectNote();
         view.notes.get(0).collect();
-        System.out.println(Integer.toString(score));
       }
       else{
         dropNote();
@@ -378,10 +375,10 @@ public class PlayModeModel implements Runnable{
     }
 
     // User has not pressed the right note or attempted to play a note when none should be played
-    if ( !noteCollected ) {
+    /*if ( !noteCollected ) {
       dropNote();
       view.collected = false;
-    }
+    }*/
   }
 
   /**
@@ -391,11 +388,11 @@ public class PlayModeModel implements Runnable{
    */
   public void collectNote() {
     this.streakCount ++;
-    streakLabel.setText("Streak:  " + Integer.toString(this.streakCount));
+    view.resetStreakLabel(this.streakCount);
     setMultiplier();
-    //this.score += this.multiplier;
+    this.score += this.multiplier;
     updateCurrency();
-    scoreLabel.setText(Integer.toString(this.score));
+    view.resetScoreLabel(this.score);
 
   }
 
@@ -406,8 +403,9 @@ public class PlayModeModel implements Runnable{
    */
   public void dropNote() {
     this.streakCount = 0;
-    streakLabel.setText("Streak:  " + Integer.toString(this.streakCount));
+    view.resetStreakLabel(this.streakCount);
     setMultiplier();
+    view.setMultiplierLabel();
   }
 
   /**
@@ -421,29 +419,11 @@ public class PlayModeModel implements Runnable{
       // Currency is earned every time score is a multiple of 500
       if(this.score % 500 == 0) {
         this.currencyEarned ++;
-        String img = "..assets/"+Integer.toString(this.currencyEarned)+"Star.png";
-        this.currencyLabel.setIcon(new ImageIcon(img));
-        this.currencyLabel.setVisible(true);
+        String img = "../assets/"+Integer.toString(this.currencyEarned)+"Star.png";
+        view.changeCurrencyLabel(img);
       }
     }
 
-  }
-
-  public ImageIcon resizeCoverArt(File cA) {
-
-    System.out.println("resized image correctly");
-
-    Image image = null;
-
-    try {
-      image = ImageIO.read(cA);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    Image resizedImage = image.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
-
-    return new ImageIcon(resizedImage);
   }
 
 }

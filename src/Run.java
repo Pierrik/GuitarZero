@@ -43,9 +43,10 @@ public class Run {
 
     Dimension dims = new Dimension(1000,500);
 
-    sl = new SlashMode();
-    window.setContentPane(sl);
-
+    p = new PlayMode("../testBundle");
+    window.setContentPane(p);
+    Thread pThread = new Thread(p);
+    pThread.start();
     //Set the content to the drawings from the GamePanel object
     window.setPreferredSize(dims);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
