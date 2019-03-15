@@ -34,50 +34,50 @@ import javax.swing.JLabel;
  *   $ export CLASSPATH
  *   $ javac SlashMode.java
  *   $ java -Djava.library.path=. SlashMode
-*/
+ */
 public class SlashMode extends JPanel{
 
-    CarouselView view;
-    CarouselModel model;
-    CarouselController controller;
+  CarouselView view;
+  CarouselModel model;
+  CarouselController controller;
 
-    /**
-     * Initialises the GUI classes for a carousel with menu options specific to Slash Mode
-     */
-    public SlashMode() {
-        ArrayList<JLabel> menuOptions = new ArrayList<>();
-
-
-        // Create all menu option labels with their image icon and title
-        JLabel label1 = new JLabel(new ImageIcon("../assets/ExitLogo3.png"));
-        JLabel label2 = new JLabel(new ImageIcon("../assets/StoreLogo3.png"));
-        JLabel label3 = new JLabel(new ImageIcon("../assets/SelectLogo3.png"));
-        JLabel label4 = new JLabel(new ImageIcon("../assets/PlayLogo3.png"));
-        JLabel label5 = new JLabel(new ImageIcon("../assets/TutorialLogo3.png"));
-
-        label1.setText("EXIT");
-        label2.setText("STORE");
-        label3.setText("SELECT");
-        label4.setText("PLAY");
-        label5.setText("TUTORIAL");
+  /**
+   * Initialises the GUI classes for a carousel with menu options specific to Slash Mode
+   */
+  public SlashMode() {
+    ArrayList<JLabel> menuOptions = new ArrayList<>();
 
 
-        // Add labels to arrayList
-        menuOptions.add(label1);
-        menuOptions.add(label2);
-        menuOptions.add(label3);
-        menuOptions.add(label4);
-        menuOptions.add(label5);
+    // Create all menu option labels with their image icon and title
+    JLabel label1 = new JLabel(new ImageIcon("../assets/ExitLogo3.png"));
+    JLabel label2 = new JLabel(new ImageIcon("../assets/StoreLogo3.png"));
+    JLabel label3 = new JLabel(new ImageIcon("../assets/SelectLogo3.png"));
+    JLabel label4 = new JLabel(new ImageIcon("../assets/PlayLogo3.png"));
+    JLabel label5 = new JLabel(new ImageIcon("../assets/TutorialLogo3.png"));
 
-        // Initialise the model, controller, view GUI classes
-        CarouselView       view       = new CarouselView(menuOptions);
-        CarouselModel      model      = new CarouselModel(view);
-        CarouselController controller = new CarouselController( model, Mode.SLASH );
+    label1.setText("EXIT");
+    label2.setText("STORE");
+    label3.setText("SELECT");
+    label4.setText("PLAY");
+    label5.setText("TUTORIAL");
 
-        Thread controllerThread = new Thread(controller);
 
-        controllerThread.start();
+    // Add labels to arrayList
+    menuOptions.add(label1);
+    menuOptions.add(label2);
+    menuOptions.add(label3);
+    menuOptions.add(label4);
+    menuOptions.add(label5);
 
-        this.add(view);
-    }
+    // Initialise the model, controller, view GUI classes
+    CarouselView       view       = new CarouselView(menuOptions);
+    CarouselModel      model      = new CarouselModel(view);
+    CarouselController controller = new CarouselController( model, Mode.SLASH );
+
+    Thread controllerThread = new Thread(controller);
+
+    controllerThread.start();
+
+    this.add(view);
+  }
 }

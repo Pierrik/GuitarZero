@@ -75,41 +75,41 @@ public class PlayModeController implements Runnable {
         for ( int i = 0; i < allCmps.length; i++ ) {
           float val = vals[i];
 
-            if (i == WHITE1) {
-              if (val == BUTTON_THRESHOLD){
-                previous1 = i;
-              }
-            } else if ( i == BLACK1) {
-              if (val == BUTTON_THRESHOLD){
-                previous1 = i;
-              }
-            } else if (i == BLACK2) {
-              if (val == BUTTON_THRESHOLD){
-                previous2 = i;
-              }
-            } else if (i == BLACK3) {
-              if (val == BUTTON_THRESHOLD){
-                previous3 = i;
-              }
-            } else if (i == WHITE2) {
-              if (val == BUTTON_THRESHOLD){
-                previous2 = i;
-              }
-            } else if (i == WHITE3) {
-              if (val == BUTTON_THRESHOLD){
-                previous3 = i;
-              }
-            } else if (i == ZERO_POWER) {
-              if (val == BUTTON_THRESHOLD) {
-                //model.select();
-              }
-            } else if (i == ESCAPE) { // escape button
-              if (val == BUTTON_THRESHOLD) {
-                System.out.println("escape");
-                this.model.playSong.song_running.set(false);  // stopping the song running
-                Run.changeMode(Mode.SLASH);
-              }
-            } /*else if (i == WHAMMY) { //whammy  16 in linux
+          if (i == WHITE1) {
+            if (val == BUTTON_THRESHOLD){
+              previous1 = i;
+            }
+          } else if ( i == BLACK1) {
+            if (val == BUTTON_THRESHOLD){
+              previous1 = i;
+            }
+          } else if (i == BLACK2) {
+            if (val == BUTTON_THRESHOLD){
+              previous2 = i;
+            }
+          } else if (i == BLACK3) {
+            if (val == BUTTON_THRESHOLD){
+              previous3 = i;
+            }
+          } else if (i == WHITE2) {
+            if (val == BUTTON_THRESHOLD){
+              previous2 = i;
+            }
+          } else if (i == WHITE3) {
+            if (val == BUTTON_THRESHOLD){
+              previous3 = i;
+            }
+          } else if (i == ZERO_POWER) {
+            if (val == BUTTON_THRESHOLD) {
+              //model.select();
+            }
+          } else if (i == ESCAPE) { // escape button
+            if (val == BUTTON_THRESHOLD) {
+              System.out.println("escape");
+              this.model.playSong.song_running.set(false);  // stopping the song running
+              Run.changeMode(Mode.SLASH);
+            }
+          } /*else if (i == WHAMMY) { //whammy  16 in linux
               if (val >= BUTTON_THRESHOLD) {
                 if (model.getCurrentTick() >= model.startZeroPower
                     && model.getCurrentTick() <= model.endZeroPower) {
@@ -117,128 +117,128 @@ public class PlayModeController implements Runnable {
                 }
               }
             }*/ else if (i == BENDER_CLICK) { // bender click
-              if (val > 0) {
-                // action
-              }
-            } else if (i == BENDER_ROUND) { //bender round linux 17
-              if (val > 0){
-                if (previous1 == WHITE1) {
-                  if (previous2 == WHITE2) {
-                    if (previous3 == WHITE3) {
-                      System.out.println("white one + white two + white three + strum");
-                      model.checkNote("222");
-                    } else if (previous3 == BLACK3) {
-                      System.out.println("white one + white two + black three + strum");
-                      model.checkNote("221");
-                    } else {
-                      System.out.println("white one + white two + strum");
-                      model.checkNote("220");
-                    }
-                  }
-                  else if (previous2 == BLACK2) {
-                    if (previous3 == WHITE3) {
-                      System.out.println("white one + black two + white three + strum");
-                      model.checkNote("212");
-                    } else if (previous3 == BLACK3) {
-                      System.out.println("white one + black two + black three + strum");
-                      model.checkNote("211");
-                    } else {
-                      System.out.println("white one + black two + strum");
-                      model.checkNote("210");
-                    }
-                  }
-                  else {
-                    if (previous3 == WHITE3) {
-                      System.out.println("white one + white three + strum");
-                      model.checkNote("202");
-                    }
-                    else if (previous3 == BLACK3) {
-                      System.out.println("white one + black three + strum");
-                      model.checkNote("201");
-                    }
-                    else {
-                      System.out.println("white one + strum");
-                      model.checkNote("200");
-                    }
+            if (val > 0) {
+              // action
+            }
+          } else if (i == BENDER_ROUND) { //bender round linux 17
+            if (val > 0){
+              if (previous1 == WHITE1) {
+                if (previous2 == WHITE2) {
+                  if (previous3 == WHITE3) {
+                    System.out.println("white one + white two + white three + strum");
+                    model.checkNote("222");
+                  } else if (previous3 == BLACK3) {
+                    System.out.println("white one + white two + black three + strum");
+                    model.checkNote("221");
+                  } else {
+                    System.out.println("white one + white two + strum");
+                    model.checkNote("220");
                   }
                 }
-                else if (previous1 == BLACK1) {
-                  if (previous2 == WHITE2) {
-                    if (previous3 == WHITE3) {
-                      System.out.println("black one + white two + white three + strum");
-                      model.checkNote("122");
-                    } else if (previous3 == BLACK3) {
-                      System.out.println("black one + white two + black three + strum");
-                      model.checkNote("121");
-                    } else {
-                      System.out.println("black one + white two + strum");
-                      model.checkNote("120");
-                    }
-                  } else if (previous2 == BLACK2) {
-                    if (previous3 == WHITE3) {
-                      System.out.println("black one + black two + white three + strum");
-                      model.checkNote("112");
-                    } else if (previous3 == BLACK3) {
-                      System.out.println("black one + black two + black three + strum");
-                      model.checkNote("111");
-                    } else {
-                      System.out.println("black one + black two + strum");
-                      model.checkNote("110");
-                    }
+                else if (previous2 == BLACK2) {
+                  if (previous3 == WHITE3) {
+                    System.out.println("white one + black two + white three + strum");
+                    model.checkNote("212");
+                  } else if (previous3 == BLACK3) {
+                    System.out.println("white one + black two + black three + strum");
+                    model.checkNote("211");
                   } else {
-                    if (previous3 == WHITE3) {
-                      System.out.println("black one + white three + strum");
-                      model.checkNote("120");
-                    } else if (previous3 == BLACK3) {
-                      System.out.println("black one + black three + strum");
-                      model.checkNote("101");
-                    } else {
-                      System.out.println("black one + strum");
-                      model.checkNote("100");
-                    }
+                    System.out.println("white one + black two + strum");
+                    model.checkNote("210");
                   }
                 }
                 else {
-                  if (previous2 == WHITE2) {
-                    if (previous3 == WHITE3) {
-                      System.out.println("white two + white three + strum");
-                      model.checkNote("022");
-                    } else if (previous3 == BLACK3) {
-                      System.out.println("white two + black three + strum");
-                      model.checkNote("021");
-                    } else {
-                      System.out.println("white two + strum");
-                      model.checkNote("020");
-                    }
+                  if (previous3 == WHITE3) {
+                    System.out.println("white one + white three + strum");
+                    model.checkNote("202");
                   }
-                  else if (previous2 == BLACK2) {
-                    if (previous3 == WHITE3) {
-                      System.out.println("black two + white three + strum");
-                      model.checkNote("012");
-                    } else if (previous3 == BLACK3) {
-                      System.out.println("black two + black three + strum");
-                      model.checkNote("011");
-                    } else {
-                      System.out.println("black two + strum");
-                      model.checkNote("010");
-                    }
+                  else if (previous3 == BLACK3) {
+                    System.out.println("white one + black three + strum");
+                    model.checkNote("201");
                   }
                   else {
-                    if (previous3 == WHITE3) {
-                      System.out.println("white three + strum");
-                      model.checkNote("002");
-                    }
-                    else if (previous3 == BLACK3) {
-                      System.out.println("black three + strum");
-                      model.checkNote("001");
-                    }
-                    else {
-                      System.out.println("nothing + strum");
-                      model.checkNote("000");
-                    }
+                    System.out.println("white one + strum");
+                    model.checkNote("200");
                   }
                 }
               }
+              else if (previous1 == BLACK1) {
+                if (previous2 == WHITE2) {
+                  if (previous3 == WHITE3) {
+                    System.out.println("black one + white two + white three + strum");
+                    model.checkNote("122");
+                  } else if (previous3 == BLACK3) {
+                    System.out.println("black one + white two + black three + strum");
+                    model.checkNote("121");
+                  } else {
+                    System.out.println("black one + white two + strum");
+                    model.checkNote("120");
+                  }
+                } else if (previous2 == BLACK2) {
+                  if (previous3 == WHITE3) {
+                    System.out.println("black one + black two + white three + strum");
+                    model.checkNote("112");
+                  } else if (previous3 == BLACK3) {
+                    System.out.println("black one + black two + black three + strum");
+                    model.checkNote("111");
+                  } else {
+                    System.out.println("black one + black two + strum");
+                    model.checkNote("110");
+                  }
+                } else {
+                  if (previous3 == WHITE3) {
+                    System.out.println("black one + white three + strum");
+                    model.checkNote("120");
+                  } else if (previous3 == BLACK3) {
+                    System.out.println("black one + black three + strum");
+                    model.checkNote("101");
+                  } else {
+                    System.out.println("black one + strum");
+                    model.checkNote("100");
+                  }
+                }
+              }
+              else {
+                if (previous2 == WHITE2) {
+                  if (previous3 == WHITE3) {
+                    System.out.println("white two + white three + strum");
+                    model.checkNote("022");
+                  } else if (previous3 == BLACK3) {
+                    System.out.println("white two + black three + strum");
+                    model.checkNote("021");
+                  } else {
+                    System.out.println("white two + strum");
+                    model.checkNote("020");
+                  }
+                }
+                else if (previous2 == BLACK2) {
+                  if (previous3 == WHITE3) {
+                    System.out.println("black two + white three + strum");
+                    model.checkNote("012");
+                  } else if (previous3 == BLACK3) {
+                    System.out.println("black two + black three + strum");
+                    model.checkNote("011");
+                  } else {
+                    System.out.println("black two + strum");
+                    model.checkNote("010");
+                  }
+                }
+                else {
+                  if (previous3 == WHITE3) {
+                    System.out.println("white three + strum");
+                    model.checkNote("002");
+                  }
+                  else if (previous3 == BLACK3) {
+                    System.out.println("black three + strum");
+                    model.checkNote("001");
+                  }
+                  else {
+                    System.out.println("nothing + strum");
+                    model.checkNote("000");
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -259,7 +259,6 @@ public class PlayModeController implements Runnable {
   // Main commented out as pollForever can't be referenced from static
 
   /*public static void main(String[] args) {
-
     if (Run.OSvalidator() == 'm') {
       BENDER_ROUND     = 13;
       WHAMMY           = 17;
@@ -267,13 +266,11 @@ public class PlayModeController implements Runnable {
       BENDER_ROUND     = 17;
       WHAMMY           = 16;
     }
-
     for ( Controller ctrl : ctrls ) {
       if ( ctrl.getName().contains( GUITAR_HERO ) ) {
         pollForever( ctrl );
       }
     }
-
     System.out.println( GUITAR_HERO + " controller not found" );
     System.exit( 1 );
   }*/

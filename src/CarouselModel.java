@@ -41,7 +41,7 @@ public class CarouselModel {
    */
   public String select() {
 
-    System.out.println(view.chosenOption());
+    //System.out.println(view.chosenOption());
     return view.chosenOption();
   }
 

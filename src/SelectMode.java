@@ -88,7 +88,7 @@ public class SelectMode extends JPanel {
 
 
 
-   private String getExtension (String fileName) {
+  private String getExtension (String fileName) {
 
     String extension = "";
 

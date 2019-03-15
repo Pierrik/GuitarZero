@@ -85,9 +85,9 @@ public class PlayModeModel implements Runnable{
   public void run(){
     //Setup JLabels
     try{
-    coverArtLabel = new JLabel(resizeCoverArt(findCoverArt()));
-    coverArtLabel.setBounds(50, 50, 150, 150);
-    view.add(coverArtLabel);
+      coverArtLabel = new JLabel(resizeCoverArt(findCoverArt()));
+      coverArtLabel.setBounds(50, 50, 150, 150);
+      view.add(coverArtLabel);
     }
     catch(Exception e){}
 
@@ -361,9 +361,9 @@ public class PlayModeModel implements Runnable{
 
       // Checks if the user has pressed the note that is at the bottom of the screen
       if(this.noteToPlay.equals(guitarNote) && !view.notes.get(0).collected){
-          collectNote();
-          view.notes.get(0).collect();
-          System.out.println(Integer.toString(score));
+        collectNote();
+        view.notes.get(0).collect();
+        System.out.println(Integer.toString(score));
       }
       else{
         dropNote();

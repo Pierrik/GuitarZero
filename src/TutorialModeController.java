@@ -52,7 +52,7 @@ public class TutorialModeController {
   static int          WHAMMY       = 14;
 
   //public TutorialModeController(TutorialModeModel model){
-    //this.model = model;
+  //this.model = model;
   //}
 
   /*

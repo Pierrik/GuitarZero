@@ -24,7 +24,7 @@ import java.awt.*;
  * @author Kamila Hoffmann-Derlacka
  * @author Pierrik Mellab
  * @version 1.1, March 2019.
-*/
+ */
 public class Run {
 
   private static String OS = System.getProperty("os.name").toLowerCase();
@@ -36,7 +36,7 @@ public class Run {
   static PlayMode p = null;
 
   static String currentBundleDir = "../testBundle";
-  
+
 
   public static void main(String[] args){
     window = new JFrame("Guitar Zero Game");
@@ -57,42 +57,38 @@ public class Run {
   /*
    * Changes which MVC to display in the JFrame
    * @param option: Mode to change to
-  */
+   */
   public static void changeMode(Mode option) {
     JPanel mode = null;
 
     switch (option) {
 
       case SLASH:
-        if (sl == null) {
-          sl = new SlashMode();
-        }
-
+        sl = new SlashMode();
         window.setContentPane(sl);
+        window.setVisible(true);
         break;
 
       case STORE:
         StoreMode st = new StoreMode();
         window.setContentPane(st);
+        window.setVisible(true);
         break;
 
       case SELECT:
-        if (se == null) {
           try {
             se = new SelectMode();
-            window.setContentPane(se);
           } catch (NoSongsException e){
             e.printStackTrace();
           }
-        }
+        window.setContentPane(se);
+        window.setVisible(true);
         break;
 
       case PLAY:
         PlayMode d = new PlayMode(currentBundleDir);
         window.setContentPane(d);
-
-        Dimension dim = new Dimension(999, 500);
-        window.setSize(dim);
+        window.setVisible(true);
 
         Thread t = new Thread(d);
         t.start();
@@ -100,6 +96,7 @@ public class Run {
 
       case TUTORIAL:
         System.out.println("Tutorial mode is still under progress...");
+        window.setVisible(true);
         break;
 
       case EXIT:
