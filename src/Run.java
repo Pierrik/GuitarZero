@@ -42,18 +42,18 @@ public class Run {
   public static void main(String[] args){
     window = new JFrame("Guitar Zero Game");
 
-    Dimension dims = new Dimension(1000,500);
+    Dimension dims = new Dimension(1920,1080);
 
     sl = new SlashMode();
     window.setContentPane(sl);
 
     //Set the content to the drawings from the GamePanel object
-    //window.setPreferredSize(dims);
+    window.setPreferredSize(dims);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    window.setUndecorated(true);
+    //window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    //window.setUndecorated(true);
     window.pack();
-    //window.setResizable(false);
+    window.setResizable(false);
     window.setVisible(true);
   }
 
