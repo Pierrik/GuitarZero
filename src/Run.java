@@ -42,7 +42,7 @@ public class Run {
   public static void main(String[] args){
     window = new JFrame("Guitar Zero Game");
 
-    Dimension dims = new Dimension(1920,1080);
+    Dimension dims = new Dimension(1000,563);
 
     sl = new SlashMode();
     window.setContentPane(sl);
