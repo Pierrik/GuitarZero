@@ -86,10 +86,10 @@ public class PlayModeView extends JPanel{
       e.printStackTrace();
     }
 
-    Image resizedImage = image.getScaledInstance(150, 150, Image.SCALE_DEFAULT);
+    Image resizedImage = image.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
 
     coverArtLabel = new JLabel(new ImageIcon(resizedImage));
-    coverArtLabel.setBounds((int)(0.2*width), (int)(0.1*height), 150, 150);
+    coverArtLabel.setBounds((int)(0.05*width), (int)(0.05*height), 200, 200);
     add(coverArtLabel);
   }
 
@@ -159,7 +159,7 @@ public class PlayModeView extends JPanel{
   public void setStreakLabel() {
     streakLabel = new JLabel("Streak:  " + Integer.toString(0));
     streakLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    streakLabel.setBounds((int)(0.45*width),(int)(0.2*height), 200, 200);
+    streakLabel.setBounds((int)(0.45*width),(int)(0.05*height), 200, 200);
     streakLabel.setForeground(Color.white);
     add(streakLabel);
   }
@@ -172,67 +172,67 @@ public class PlayModeView extends JPanel{
 
     // WHITE1 - 0 in controller
     noteLabel = new JLabel(new ImageIcon("../assets/Done/WhiteCollectLeft.png"));
-    noteLabel.setBounds(100, 200, 100, 100);
+    noteLabel.setBounds(300, 350, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[0] = noteLabel;
 
     noteCollected = new JLabel(new ImageIcon("../assets/Done/WhiteLeft.png"));
-    noteCollected.setBounds(100, 200, 100, 100);
+    noteCollected.setBounds(300, 350, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[0] = noteCollected;
 
     //BLACK1 - 1 in controller
     noteLabel = new JLabel(new ImageIcon("../assets/Done/BlackCollectLeft.png"));
-    noteLabel.setBounds(100, 200, 100, 100);
+    noteLabel.setBounds(300, 350, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[1] = noteLabel;
 
     noteCollected = new JLabel(new ImageIcon("../assets/Done/BlackLeft.png"));
-    noteCollected.setBounds(100, 200, 100, 100);
+    noteCollected.setBounds(300, 350, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[1] = noteCollected;
 
     //BLACK2 - 2 in controller
     noteLabel = new JLabel(new ImageIcon("../assets/Done/BlackCollectMiddle.png"));
-    noteLabel.setBounds(200, 200, 100, 100);
+    noteLabel.setBounds(450, 350, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[2] = noteLabel;
 
     noteCollected = new JLabel(new ImageIcon("../assets/Done/BlackMiddle.png"));
-    noteCollected.setBounds(200, 200, 100, 100);
+    noteCollected.setBounds(450, 350, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[2] = noteCollected;
 
     //BLACK3 - 3 in controller
     noteLabel = new JLabel(new ImageIcon("../assets/Done/BlackCollectRight.png"));
-    noteLabel.setBounds(300, 200, 100, 100);
+    noteLabel.setBounds(575, 350, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[3] = noteLabel;
 
     noteCollected = new JLabel(new ImageIcon("../assets/Done/BlackRight.png"));
-    noteCollected.setBounds(300, 200, 100, 100);
+    noteCollected.setBounds(575, 350, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[3] = noteCollected;
 
     //WHITE2 - 4 in controller
     noteLabel = new JLabel(new ImageIcon("../assets/Done/WhiteCollectMiddle.png"));
-    noteLabel.setBounds(200, 200, 100, 100);
+    noteLabel.setBounds(450, 350, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[4] = noteLabel;
 
     noteCollected = new JLabel(new ImageIcon("../assets/Done/WhiteMiddle.png"));
-    noteCollected.setBounds(200, 200, 100, 100);
+    noteCollected.setBounds(450, 350, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[4] = noteCollected;
 
     //WHITE3 - 5 in controller
     noteLabel = new JLabel(new ImageIcon("../assets/Done/WhiteCollectRight.png"));
-    noteLabel.setBounds(300, 200, 100, 100);
+    noteLabel.setBounds(575, 350, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[5] = noteLabel;
 
     noteCollected = new JLabel(new ImageIcon("../assets/Done/WhiteRight.png"));
-    noteCollected.setBounds(300, 200, 100, 100);
+    noteCollected.setBounds(575, 350, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[5] = noteCollected;
 
