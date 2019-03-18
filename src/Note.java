@@ -76,6 +76,7 @@ public class Note{
     this.y += v;
     if(this.y>(int)(0.5*563) && y< (int)(0.82 * 563) && !this.collected){
       model.setNoteToPlay(this.noteValue);
+      System.out.println(this.noteValue);
     }
     else if(this.y > (int)(0.82 * 563) && !this.collected){
       model.dropNote();
