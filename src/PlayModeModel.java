@@ -174,7 +174,9 @@ public class PlayModeModel implements Runnable{
    */
   public File findNotesFile() throws Exception {
 
+    System.out.println(this.bundlePath);
     File bundle = new File(this.bundlePath);
+    System.out.println(bundle.getName());
 
     // Find text files in the directory
     File[] files = bundle.listFiles(new FilenameFilter() {
@@ -267,6 +269,9 @@ public class PlayModeModel implements Runnable{
         // Split notes file by comma, separating ticks and notes
         String str[] = line.split(",");
         this.notes.put(Long.parseLong(str[0]), str[1]);
+
+        for (String string:str){
+          System.out.println(string);}
 
         if (Long.parseLong(str[2]) == 1) {
 
