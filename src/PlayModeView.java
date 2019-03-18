@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.nio.Buffer;
 import javax.swing.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -64,20 +65,23 @@ public class PlayModeView extends JPanel{
     try {
       highway = ImageIO.read(new File("../assets/Done/Highway.bmp"));
       highway.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-    } catch (IOException e) {
+      for(int i = 0; i<backgroundFrameCount; i++){
+        bg[i] = (BufferedImage)highway;
+      }
+    } catch (Exception e) {
       e.printStackTrace();
     }
 
-    try{
+    /*try{
       for(int i = 0; i<backgroundFrameCount; i++){
-        bg[i] = ImageIO.read(new File("../assets/Done/Highway.bmp"));
+        bg[i] = ImageIO.read(new File(highway));
       }
 
 
     }
     catch(Exception e){
       e.printStackTrace();
-    }
+    }*/
 
     this.setLayout(null);
   }
