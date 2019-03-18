@@ -33,8 +33,8 @@ public class PlayModeView extends JPanel{
   static int backgroundFrameCount = 1;
   static int backgroundFrameDelay = 100;
 
-  int width = 1920;
-  int height = 1080;
+  int width = 1000;
+  int height = 563;
 
   // Create BufferedImage array to store the background frames
   static BufferedImage[] bg = new BufferedImage[backgroundFrameCount];
@@ -286,7 +286,7 @@ public class PlayModeView extends JPanel{
 
     super.paintComponent(g);
     //Draw the background animation frame depending on the current frame/10%(number of frames in the animation)
-    g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0,null);
+    g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0, null);
     int len = notes.size();
 
     /*scoreLabel.setBounds(75,350, 100, 100);
