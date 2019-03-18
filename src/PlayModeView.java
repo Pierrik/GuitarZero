@@ -262,16 +262,16 @@ public class PlayModeView extends JPanel{
     }
   }
 
-//  public void noteCollected(boolean display, int pressedButton) {
-//    if (display) {
-//      activeNotes[pressedButton].setVisible(true);
-//    } else {
-//      if(noteLabel != null) {
-//        for (int i = 0; i < pressedButton; i++)
-//          activeNotes[i].setVisible(false);
-//      }
-//    }
-//  }
+  public void noteCollected(boolean display, int pressedButton) {
+    if (display) {
+      collectedNotes[pressedButton].setVisible(true);
+    } else {
+      if(noteCollected != null) {
+        for (int i = 0; i < pressedButton; i++)
+          collectedNotes[i].setVisible(false);
+      }
+    }
+  }
 
 
 
