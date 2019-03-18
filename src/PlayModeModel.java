@@ -400,6 +400,7 @@ public class PlayModeModel implements Runnable{
     setMultiplier();
     this.score += this.multiplier;
     updateCurrency();
+    view.resetScoreLabel(this.score);
   }
 
   /**

@@ -47,8 +47,8 @@ public class Note{
   Override function to draw sprite at position x,y
   */
   public void paintComponent(Graphics g){
-    Image resizedImage = null;
     for(int[] each : positions){
+      Image resizedImage = null;
       if(each[1] == 2){
         resizedImage = whiteNote;
       }
