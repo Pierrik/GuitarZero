@@ -50,9 +50,9 @@ public class StoreMode extends JPanel {
     }
 
     // Initialise the model, controller, view GUI classes
-    CarouselView        view       = new CarouselView(menuOptions);
-    StoreModeModel      model      = new StoreModeModel(view);
-    StoreModeController controller = new StoreModeController(model);
+    CarouselView       view        = new CarouselView(menuOptions);
+    CarouselModel      model       = new CarouselModel(view);
+    CarouselController controller  = new CarouselController(model, Mode.STORE);
     try {
       Thread.sleep(200);
     } catch (InterruptedException e){

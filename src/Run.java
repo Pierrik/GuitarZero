@@ -51,7 +51,7 @@ public class Run {
     //window.setPreferredSize(dims);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    window.setUndecorated(true);
+    window.setUndecorated(false);
     window.pack();
     //window.setResizable(false);
     window.setVisible(true);

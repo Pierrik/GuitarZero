@@ -63,7 +63,7 @@ public class SelectMode extends JPanel {
 
         for (File song_file : song_files) {
 
-          if (getExtension(song_file.getName()).equals("png") || getExtension(song_file.getName()).equals("PNG")) {
+          if (getExtension(song_file.getName()).equalsIgnoreCase("png")) {
             albumCover = song_file;
           }
 
