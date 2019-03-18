@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class CarouselModel {
   CarouselView view;
   private static int totalCurrency;
+  final static String BUNDLES = "../local_store/bundle_files/";
   final static String HOST  = "localhost";
   final static int    PORT  = 8888;
 
@@ -24,7 +25,7 @@ public class CarouselModel {
    */
   public CarouselModel(CarouselView view) {
     this.view = view;
-    this.totalCurrency = Currency.loadTotalCurrency();
+    this.totalCurrency = 5; //Currency.loadTotalCurrency();
   }
 
   /**
@@ -55,13 +56,17 @@ public class CarouselModel {
   /**
    * Downloads a song to local directory.
    */
-  public void buySong(String song) {
+  public void buySong(String songName) {
 
-    if (totalCurrency > 1 && !isInLocalDir(song)) {
+    String bundleName = songName + "(bundle).zip";
+
+    if (totalCurrency > 1 && !isInLocalDir(songName)) {
       totalCurrency --;
 
       MockClient client = new MockClient(HOST, PORT);
-      client.downloadFile(song, "DOWNLOAD_BUNDLE");
+      client.downloadFile(bundleName, "DOWNLOAD_BUNDLE");
+      String bundlesDir = BUNDLES + songName + "/";
+      MockClient.unzip(BUNDLES + bundleName, bundlesDir);
 
     } else {
       // make them know they dont have enough money to buy a song (make the '0' in GUI bigger for a 2 secs maybe??)

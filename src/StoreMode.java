@@ -21,7 +21,6 @@ public class StoreMode extends JPanel {
   private static final int    PORT = 8888;
 
   // Store settings
-  private static final String BUNDLES = "../local_store/bundle_files/";
   private static final String PREVIEWS = "../local_store/preview_files/";
 
   public StoreMode() {

@@ -73,25 +73,24 @@ public class CarouselController implements Runnable {
                 switch (this.mode) {
                   case SLASH:
                     System.out.println("Zero power pressed - SLASH");
+                    controllerOn.set(false);    // interrupting current controller thread
                     String selectedMode = model.select();
                     Run.changeMode(Mode.valueOf(selectedMode));
-                    controllerOn.set(false);    // interrupting current controller thread
                     break;
 
                   case SELECT:
                     System.out.println("Zero power pressed - SELECT");
-                    //Run.changeMode(Mode.SELECT);
+                    controllerOn.set(false);
                     String selectedSong = model.select();
                     Run.currentBundleDir = "../local_store/bundle_files/" + selectedSong + "/";
-                    controllerOn.set(false);
                     Run.changeMode(Mode.SLASH);
                     break;
 
                   case STORE:
                     System.out.println("Zero power pressed - STORE");
-                    String selectedBundle = model.select();
-                    model.buySong(selectedBundle + "(bundle).zip");
                     controllerOn.set(false);
+                    String selectedBundle = model.select();
+                    model.buySong(selectedBundle);
                     Run.changeMode(Mode.SLASH);
                     break;
 

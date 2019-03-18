@@ -73,7 +73,7 @@ public class Run {
         break;
 
       case STORE:
-        StoreMode st = new StoreMode();
+        st = new StoreMode();
         window.setContentPane(st);
         window.setVisible(true);
         break;

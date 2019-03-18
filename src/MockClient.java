@@ -60,7 +60,7 @@ public class MockClient {
   }
 
   /**
-   * Downloads the given file from the server, and unzips it in the corresponding directory.
+   * Downloads the given file from the server.
    *
    * @param fileName: The filepath of the file to download.
    * @param method: Download method (DOWNLOAD_BUNDLE or DOWNLOAD_PREVIEW).
