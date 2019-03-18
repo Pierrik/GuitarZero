@@ -117,9 +117,11 @@ public class PlayModeController implements Runnable {
             } else if (i == ESCAPE) { // escape button
               if (val == BUTTON_THRESHOLD) {
                 System.out.println("escape");
+
                 this.model.playSong.song_running.set(false);  // stopping the song running
-                //Run.changeMode(Mode.SLASH);
-                System.exit(1);
+                Run.changeMode(Mode.SLASH);
+                controller_running.set(false);
+                //System.exit(1);
               }
             } else if (i == WHAMMY) { //whammy  16 in linux
               if (val >= BUTTON_THRESHOLD) {
@@ -284,9 +286,6 @@ public class PlayModeController implements Runnable {
         pollForever( ctrl );
       }
     }
-
-    System.out.println( GUITAR_HERO + " controller not found" );
-    System.exit( 1 );
   }
 
   @Override

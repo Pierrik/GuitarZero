@@ -11,11 +11,6 @@ import javax.swing.JPanel;
  */
 public class StoreMode extends JPanel {
 
-  // MVC attributes
-  CarouselView view;
-  StoreModeModel model;
-  StoreModeController controller;
-
   // Server settings
   private static final String HOST = "localhost";
   private static final int    PORT = 8888;
@@ -52,11 +47,13 @@ public class StoreMode extends JPanel {
     CarouselView       view        = new CarouselView(menuOptions);
     CarouselModel      model       = new CarouselModel(view);
     CarouselController controller  = new CarouselController(model, Mode.STORE);
+
     try {
-      Thread.sleep(200);
+      Thread.sleep(1000);
     } catch (InterruptedException e){
       e.printStackTrace();
     }
+
     Thread controllerThread = new Thread(controller);
     controllerThread.start();
     this.add(view);

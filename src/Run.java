@@ -89,11 +89,11 @@ public class Run {
         break;
 
       case PLAY:
-        PlayMode d = new PlayMode(currentBundleDir);
-        window.setContentPane(d);
+        p = new PlayMode(currentBundleDir);
+        window.setContentPane(p);
         window.setVisible(true);
 
-        Thread t = new Thread(d);
+        Thread t = new Thread(p);
         t.start();
         break;
 

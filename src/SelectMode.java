@@ -51,7 +51,6 @@ public class SelectMode extends JPanel {
     }
 
     for (File song_folder : song_folders) {
-      System.out.println("song folder: " + song_folder.getName());
 
       File albumCover = new File("");
       String songName;
@@ -63,7 +62,6 @@ public class SelectMode extends JPanel {
         File[] song_files = song_folder.listFiles();
 
         for (File song_file : song_files) {
-          System.out.println("song file: " + song_file.getName());
 
           if (getExtension(song_file.getName()).equalsIgnoreCase("png")) {
             albumCover = song_file;
