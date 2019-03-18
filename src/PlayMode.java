@@ -26,7 +26,7 @@ public class PlayMode extends JPanel implements Runnable{
         // Initialise the model, controller, view GUI classes
         view = new PlayModeView();
         //view.setPreferredSize(new Dimension(1000,500));
-        view.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+        view.setPreferredSize(new Dimension(1000,563));
         model = new PlayModeModel(bundlePath, view);
         controller = new PlayModeController(model);
         this.add(view);

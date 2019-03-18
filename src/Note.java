@@ -12,7 +12,7 @@ import java.awt.*;
 */
 public class Note{
   //Load note sprites
-  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+  Dimension screenSize = new Dimension(1000,563);
   Image blackNote = new ImageIcon("../assets/BlackNote.png").getImage();
   Image whiteNote = new ImageIcon("../assets/WhiteNote.png").getImage();
   Image sprite;
@@ -47,14 +47,19 @@ public class Note{
   Override function to draw sprite at position x,y
   */
   public void paintComponent(Graphics g){
+    Image resizedImage = null;
     for(int[] each : positions){
       if(each[1] == 2){
-        g.drawImage(whiteNote,each[0], this.y, null);
+        resizedImage = whiteNote;
       }
       else if(each[1] == 1){
-        g.drawImage(blackNote,each[0], this.y, null);
+        resizedImage = blackNote;
       }
       else{}
+      if(resizedImage != null){
+        int dim = (int)((this.y)*resizedImage.getHeight(null));
+        g.drawImage(resizedImage,each[0], this.y, null);
+      }
     }
 
     incY(velocity);
@@ -69,10 +74,10 @@ public class Note{
 
   private void incY(int v){
     this.y += v;
-    if(this.y>(int)(0.5*screenSize.getHeight()) && y< (int)(0.82 * screenSize.getHeight()) && !this.collected){
+    if(this.y>(int)(0.5*563) && y< (int)(0.82 * 563) && !this.collected){
       model.setNoteToPlay(this.noteValue);
     }
-    else if(this.y > (int)(0.82 * screenSize.getHeight()) && !this.collected){
+    else if(this.y > (int)(0.82 * 563) && !this.collected){
       model.dropNote();
     }
   }

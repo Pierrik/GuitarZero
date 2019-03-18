@@ -6,6 +6,7 @@ import java.lang.Math;
 import java.util.HashMap;
 import java.io.FilenameFilter;
 import java.lang.Thread;
+import java.util.Map;
 
 
 /**
@@ -36,6 +37,11 @@ public class PlayModeModel implements Runnable{
   private String noteToPlay;
   public long startZeroPower;
   public long endZeroPower;
+
+  // a map of notes to controller buttons' values (the same for all OS)
+  Map<Integer, Integer> notesToButtons = new HashMap<Integer, Integer>() {{
+    put(0, 0); put(1, 1); put(2, 4); put(3, 2); put(4, 5); put(5, 3);
+  }};
 
   PlaySong playSong;
 
@@ -365,6 +371,7 @@ public class PlayModeModel implements Runnable{
 
       // Checks if the user has pressed the note that is at the bottom of the screen
       if(this.noteToPlay.equals(guitarNote) && !view.notes.get(0).collected){
+        displayCollectedNote(guitarNote);
         collectNote();
         view.notes.get(0).collect();
       }
@@ -398,8 +405,6 @@ public class PlayModeModel implements Runnable{
     setMultiplier();
     this.score += this.multiplier;
     updateCurrency();
-    view.resetScoreLabel(this.score);
-    //view.noteCollected(true);
   }
 
   /**
@@ -438,8 +443,25 @@ public class PlayModeModel implements Runnable{
 
   public void resetAll() {
     view.noteDisplay(false, 6);
-    //view.noteCollected(false, 6);
+    view.noteCollected(false, 6);
   }
 
+  public void displayCollectedNote(String guitarNote) {
+    for (int i = 0; i < 3; i ++) {
+      // 1 black, 2 white, 0 nothing
+      int singleNote = (int) guitarNote.charAt(i) - 48;
+      if (singleNote == 1) {
+        // then black i
+        int myNote = 1 + i * 2;
+        view.noteDisplay(false, 6);
+        view.noteCollected(true, notesToButtons.get(myNote));
+      } else if (singleNote == 2) {
+        // then white i
+        int myNote = 0 + i * 2;
+        view.noteDisplay(false, 6);
+        view.noteCollected(true, notesToButtons.get(myNote));
+      }
+    }
+  }
 
 }
