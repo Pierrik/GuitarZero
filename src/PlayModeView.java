@@ -66,7 +66,7 @@ public class PlayModeView extends JPanel{
       highway = ImageIO.read(new File("../assets/Done/Highway.bmp"));
       highway.getScaledInstance(width, height, Image.SCALE_DEFAULT);
       for(int i = 0; i<backgroundFrameCount; i++){
-        bg[i] = (BufferedImage)highway;
+        bg[i] = (BufferedImage)highway.getScaledInstance(width, height, Image.SCALE_DEFAULT);
       }
     } catch (Exception e) {
       e.printStackTrace();
