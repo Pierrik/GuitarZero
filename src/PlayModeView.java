@@ -61,7 +61,6 @@ public class PlayModeView extends JPanel{
 
   public PlayModeView(){
     frame = 0;
-    Image highway;
 
 
     try{
@@ -263,8 +262,6 @@ public class PlayModeView extends JPanel{
       }
     }
   }
-
-
 
 
   /**

@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
@@ -104,6 +106,19 @@ public class SelectMode extends JPanel {
     }
 
     return extension;
+  }
+
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g); // paint the background image and scale it to fill the entire space
+
+    Image highway = null;
+    try {
+      highway = ImageIO.read(new File("../assets/Done/Highway.bmp"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    g.drawImage(highway, 0, 0, this);
   }
 
 }

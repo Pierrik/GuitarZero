@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -31,10 +34,12 @@ public class CarouselView extends JPanel {
    */
   public CarouselView(ArrayList<JLabel> allOptions) {
 
+
     JLabel carousel = new JLabel(new ImageIcon("../assets/carousel.png"));
     carousel.setLayout(null);
     carouselLength = allOptions.size();
     initialiseBounds(carouselLength);
+
 
     // sets private menuOptions to, passed in variable, allOptions
     for (JLabel label : allOptions) {

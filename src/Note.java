@@ -18,7 +18,7 @@ public class Note{
   Image sprite;
   //Setup position/speed variables
   int velocity = 4;
-  int y = (int)(0.5*screenSize.height);
+  int y = (int)(0.4*screenSize.height);
   int x;
   String noteValue;
   int[][] positions = new int[3][2];
@@ -74,12 +74,13 @@ public class Note{
 
   private void incY(int v){
     this.y += v;
-    if(this.y>(int)(0.5*563) && y< (int)(0.82 * 563) && !this.collected){
+    if(this.y>(int)(350) && y< (int)(450) && !this.collected){
       model.setNoteToPlay(this.noteValue);
       System.out.println(this.noteValue);
     }
-    else if(this.y > (int)(0.82 * 563) && !this.collected){
+    else if(this.y > (int)(450) && !this.collected){
       model.dropNote();
+      model.setNoteToPlay("");
     }
   }
 }
