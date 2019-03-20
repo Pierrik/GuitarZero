@@ -33,10 +33,10 @@ public class PlayModeModel implements Runnable{
   private boolean endOfSong;
   private PlayModeView view;
   private long lastTick = 0;
-  private int bpm;
   private String noteToPlay;
   public long startZeroPower;
   public long endZeroPower;
+  public boolean startGame;
 
   // a map of notes to controller buttons' values (the same for all OS)
   Map<Integer, Integer> notesToButtons = new HashMap<Integer, Integer>() {{
@@ -64,20 +64,24 @@ public class PlayModeModel implements Runnable{
       this.notesFile = findNotesFile();
     } catch (Exception e) {
       e.printStackTrace();
-      // NEED TO GO BACK TO SLASH MODE
+      // Go back to slash mode
+      startGame = false;
     }
 
     try {
       this.midiFile = findMidiFile();
     } catch (Exception e) {
       e.printStackTrace();
-      // NEED TO GO BACK TO SLASH MODE
+      // Go back to slash mode
+      startGame = false;
     }
 
     try {
       this.coverArt = findCoverArt();
     } catch (Exception e) {
       e.printStackTrace();
+      startGame = false;
+     // Go back to slash mode
     }
     this.notes = new HashMap<>();
     loadNotesFile();
@@ -164,9 +168,7 @@ public class PlayModeModel implements Runnable{
       view.changeMultiplierLabel(img);
     }
   }
-  //*endregion
 
-  //*region Parse Zip
   /**
    * findNotesFile
    * @return the notes file in the bundle
@@ -192,9 +194,7 @@ public class PlayModeModel implements Runnable{
       return files[0];
 
     } else {
-
       throw new Exception("No Notes File In Bundle");
-
     }
 
   }
@@ -289,12 +289,10 @@ public class PlayModeModel implements Runnable{
       br.close();
     } catch (IOException e) {
       e.printStackTrace();
-      // NEED TO GO BACK TO SLASH MODE
+      startGame = false;
     }
 
   }
-  //*endregion
-
 
   /**
    * playSong
@@ -338,7 +336,17 @@ public class PlayModeModel implements Runnable{
     }
 
     if(playSong.endOfSong) {
-      // OUTPUT END OF GAME MESSAGE ?? RETURN TO SLASH MODE?? WAIT FOR USER TO ESCAPE??
+      try {
+        // Wait 5 seconds while final score/currency etc. is still displayed
+        Thread.sleep(5000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      } finally {
+        // Save save currency
+
+        // Go back to slash mode when the song is over
+        Run.changeMode(Mode.SLASH);
+      }
     }
 
   }
@@ -387,11 +395,6 @@ public class PlayModeModel implements Runnable{
 
     }
 
-    // User has not pressed the right note or attempted to play a note when none should be played
-    /*if ( !noteCollected ) {
-      dropNote();
-      view.collected = false;
-    }*/
   }
 
   /**

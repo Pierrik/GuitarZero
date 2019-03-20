@@ -116,7 +116,7 @@ public class PlayModeView extends JPanel{
 
   public void setCurrencyLabel() {
     currencyLabel = new JLabel(new ImageIcon());
-    currencyLabel.setBounds((int)(0.35*width), (int)(0.77*height), 140, 30);
+    currencyLabel.setBounds(200, 437, 140, 30);
     currencyLabel.setVisible(false);
     add(currencyLabel);
   }
@@ -145,7 +145,7 @@ public class PlayModeView extends JPanel{
   public void setScoreLabel(Integer score) {
     scoreLabel = new JLabel("Score: " + Integer.toString(score));
     scoreLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    scoreLabel.setBounds((int)(0.05*width),(int)(0.7*height), 200, 100);
+    scoreLabel.setBounds(50, 400, 200, 100);
     scoreLabel.setForeground(Color.white);
     scoreLabel.setVisible(true);
     add(scoreLabel);
@@ -158,7 +158,7 @@ public class PlayModeView extends JPanel{
   public void setStreakLabel() {
     streakLabel = new JLabel("Streak:  " + Integer.toString(0));
     streakLabel.setFont(new Font("Serif", Font.BOLD, 32));
-    streakLabel.setBounds((int)(0.45*width),(int)(0.05*height), 200, 200);
+    streakLabel.setBounds(440,28, 200, 200);
     streakLabel.setForeground(Color.white);
     add(streakLabel);
   }
@@ -285,12 +285,6 @@ public class PlayModeView extends JPanel{
     //Draw the background animation frame depending on the current frame/10%(number of frames in the animation)
     g.drawImage(this.bg[((frame/this.backgroundFrameDelay)%this.backgroundFrameCount)], 0, 0, null);
     int len = notes.size();
-
-    /*scoreLabel.setBounds(75,350, 100, 100);
-    streakLabel.setBounds(75,450, 100, 100);
-    zeroPowerLabel.setBounds(0, 0, 174, 192);
-    coverArtLabel.setBounds(50, 50, 150, 150);
-    multiplierLabel.setBounds(75, 225, 100, 100);*/
 
 
     for(int i=len-1; i>-1; i--){

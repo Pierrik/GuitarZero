@@ -25,12 +25,15 @@ public class PlayMode extends JPanel implements Runnable{
 
         // Initialise the model, controller, view GUI classes
         view = new PlayModeView();
-        //view.setPreferredSize(new Dimension(1000,500));
         view.setPreferredSize(new Dimension(1000,563));
         model = new PlayModeModel(bundlePath, view);
         controller = new PlayModeController(model);
         this.add(view);
         view.setVisible(true);
+
+    if(!model.startGame) {
+      Run.changeMode(Mode.SLASH);
+    }
 
     }
 
@@ -43,15 +46,17 @@ public class PlayMode extends JPanel implements Runnable{
     Thread modelThread = new Thread(model);
     Thread controllerThread = new Thread(controller);
 
-    // Start the game
-    modelThread.start();
+    // Start the game if no exceptions have occurred in loading the game
+    if(model.startGame) {
+      modelThread.start();
+      // Start the controller thread to run alongside the game
+      controllerThread.start();
+      playmode_running.set(true);
+    }
 
-    // Start the controller thread to run alongside the game
     // Limit the speed of the frames
-    controllerThread.start();
     long targetTime = 30;
 
-    playmode_running.set(true);
     while (playmode_running.get()) {
       long s = System.nanoTime();
       view.repaint();
@@ -65,8 +70,8 @@ public class PlayMode extends JPanel implements Runnable{
         o.printStackTrace();
       }
 
-      // If a note has passed the screen without being played, drop the note
-
     }
+    //Exit Play Mode
+    Run.changeMode(Mode.SLASH);
   }
 }
