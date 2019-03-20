@@ -1,6 +1,8 @@
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class CarouselModel {
   final static String BUNDLES = "../local_store/bundle_files/";
   final static String HOST  = "localhost";
   final static int    PORT  = 8888;
+  JLabel popUp;
 
   /**
    * Skeleton constructor for later use
@@ -63,11 +66,11 @@ public class CarouselModel {
     if (totalCurrency > 0 && !isInLocalDir(songName)) {
       updateCurrencyAndLocalStore(bundleName, songName);
     } else if (totalCurrency < 1 && isInLocalDir(songName)){
-      popUp("Insufficient funds.");
+      popUp("../assets/NoMoneyAndSongOwnedPopUp.jpg", 3000);
     } else if (totalCurrency > 0 && isInLocalDir(songName)){
-      popUp("Already own this song.");
+      popUp("../assets/SongOwnedPopUp.jpg", 3000);
     } else {
-      popUp("Insufficient funds. \nAlready own this song.");
+      popUp("../assets/NoMoneyPopUp.jpg", 3000);
     }
   }
 
@@ -80,18 +83,19 @@ public class CarouselModel {
     MockClient.unzip(BUNDLES + bundleName, bundlesDir);
   }
 
-  public void popUp(String pngPath) {
-    JLabel popUp = new JLabel(new ImageIcon(pngPath));
-    popUp.setSize(1000, 1000);
-    popUp.setBackground(Color.green);
-    popUp.setBounds(100, 100, 200, 200);
+  public void popUp(String pngPath, int time) {
+
+    popUp = new JLabel(new ImageIcon(pngPath));
+    popUp.setSize(260, 160);
+    popUp.setBounds(275, 50, 260, 160);
     this.view.add(popUp, 0);
     this.view.repaint();
     try {
-      Thread.sleep(3000);
+      Thread.sleep(time);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+    this.view.remove(popUp);
   }
 
   /**

@@ -48,11 +48,7 @@ public class StoreMode extends JPanel {
     CarouselModel      model       = new CarouselModel(view);
     CarouselController controller  = new CarouselController(model, Mode.STORE);
 
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException e){
-      e.printStackTrace();
-    }
+    model.popUp("../assets/LoadingStorePopUp.jpg", 1000);
 
     Thread controllerThread = new Thread(controller);
     controllerThread.start();
