@@ -1,12 +1,14 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.Math;
 import java.util.HashMap;
 import java.io.FilenameFilter;
 import java.lang.Thread;
 import java.util.Map;
+import java.util.Scanner;
 
 
 /**
@@ -22,6 +24,7 @@ public class PlayModeModel implements Runnable{
   private File midiFile;
   private File notesFile;
   private File coverArt;
+  private File currencyFile;
   private int multiplier;
   private int streakCount;
   private int totalCurrency;
@@ -37,6 +40,7 @@ public class PlayModeModel implements Runnable{
   public long startZeroPower;
   public long endZeroPower;
   public boolean startGame;
+  private int errors = 0;
 
   // a map of notes to controller buttons' values (the same for all OS)
   Map<Integer, Integer> notesToButtons = new HashMap<Integer, Integer>() {{
@@ -53,7 +57,6 @@ public class PlayModeModel implements Runnable{
     this.bundlePath = bundlePath;
     this.multiplier = 1;
     this.streakCount = 0;
-    this.totalCurrency = Currency.loadTotalCurrency();
     this.currencyEarned = 0;
     this.score = 0;
     this.currentTick = 0;
@@ -64,16 +67,16 @@ public class PlayModeModel implements Runnable{
       this.notesFile = findNotesFile();
     } catch (Exception e) {
       e.printStackTrace();
-      // Go back to slash mode
       startGame = false;
+      errors ++;
     }
 
     try {
       this.midiFile = findMidiFile();
     } catch (Exception e) {
       e.printStackTrace();
-      // Go back to slash mode
       startGame = false;
+      errors ++;
     }
 
     try {
@@ -81,16 +84,37 @@ public class PlayModeModel implements Runnable{
     } catch (Exception e) {
       e.printStackTrace();
       startGame = false;
-     // Go back to slash mode
+      errors ++;
     }
+
+    try {
+      this.currencyFile = findCurrencyFile();
+    } catch (Exception e) {
+      e.printStackTrace();
+      startGame = false;
+      errors ++;
+    }
+
     this.notes = new HashMap<>();
     loadNotesFile();
+
+    try {
+      loadCurrencyFile();
+    } catch (Exception e) {
+      e.printStackTrace();
+      startGame = false;
+      errors ++;
+    }
+
+    if (errors == 0 ) {
+      this.startGame = true;
+    }
   }
 
 
   @Override
   public void run(){
-    //Setup JLabels
+    //Set up JLabels
     view.setCoverArtLabel(this.coverArt);
     view.setMultiplierLabel();
     view.setCurrencyLabel();
@@ -176,9 +200,7 @@ public class PlayModeModel implements Runnable{
    */
   public File findNotesFile() throws Exception {
 
-    System.out.println(this.bundlePath);
     File bundle = new File(this.bundlePath);
-    System.out.println(bundle.getName());
 
     // Find text files in the directory
     File[] files = bundle.listFiles(new FilenameFilter() {
@@ -253,6 +275,30 @@ public class PlayModeModel implements Runnable{
 
   }
 
+  public File findCurrencyFile() throws Exception {
+    File bundle = new File("../currency");
+
+    // Find PNG files in the bundle
+    File[] files = bundle.listFiles(new FilenameFilter() {
+      @Override
+      public boolean accept(File dir, String name) {
+        return name.endsWith(".txt");
+      }
+    });
+
+    if ( files.length > 0 ) {
+
+      // Returns first occurrence of txt file, should only be one
+      return files[0];
+
+    } else {
+      File currencyFile = new File("../currency/currency.txt");
+      currencyFile.createNewFile();
+      return currencyFile;
+    }
+
+  }
+
   /**
    * loadNotesFile
    * Reads the notes file in the bundle and adds notes to a map
@@ -269,9 +315,6 @@ public class PlayModeModel implements Runnable{
         // Split notes file by comma, separating ticks and notes
         String str[] = line.split(",");
         this.notes.put(Long.parseLong(str[0]), str[1]);
-
-        for (String string:str){
-          System.out.println(string);}
 
         if (Long.parseLong(str[2]) == 1) {
 
@@ -292,6 +335,42 @@ public class PlayModeModel implements Runnable{
       startGame = false;
     }
 
+  }
+
+  /**
+   * loadCurrencyFile
+   * Reads the currency file and updates the total currency
+   * @throws Exception when the file cannot be read
+   */
+  public void loadCurrencyFile() throws Exception {
+
+    File inputFile = this.currencyFile;
+    int currency;
+
+    Scanner input = new Scanner(inputFile);
+    // Iterates through each line of the file
+    while (input.hasNextLine()) {
+      currency = Integer.valueOf(input.nextLine());
+      if (currency > 0)
+      {
+        this.totalCurrency = currency;
+      }
+      else {
+        this.totalCurrency = 0;
+      }
+    }
+    input.close();
+  }
+
+  /**
+   * saveCurrencyFile
+   * Updates the currency file when the song has finished with any earned currency
+   * @throws Exception
+   */
+  public void saveCurrencyFile() throws Exception {
+    FileWriter writer = new FileWriter(this.currencyFile.getName());
+    writer.write(Integer.toString(this.totalCurrency));
+    writer.close();
   }
 
   /**
@@ -342,8 +421,13 @@ public class PlayModeModel implements Runnable{
       } catch (InterruptedException e) {
         e.printStackTrace();
       } finally {
-        // Save save currency
 
+        // Update total currency and save
+        try {
+          saveCurrencyFile();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
         // Go back to slash mode when the song is over
         Run.changeMode(Mode.SLASH);
       }
@@ -434,6 +518,7 @@ public class PlayModeModel implements Runnable{
       // Currency is earned every time score is a multiple of 500
       if(this.score % 500 == 0) {
         this.currencyEarned ++;
+        this.totalCurrency ++;
         String img = "../assets/"+Integer.toString(this.currencyEarned)+"Star.png";
         view.changeCurrencyLabel(img);
       }

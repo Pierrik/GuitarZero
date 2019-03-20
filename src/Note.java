@@ -76,7 +76,6 @@ public class Note{
     this.y += v;
     if(this.y>(int)(350) && y< (int)(450) && !this.collected){
       model.setNoteToPlay(this.noteValue);
-      System.out.println(this.noteValue);
     }
     else if(this.y > (int)(450) && !this.collected){
       model.dropNote();
