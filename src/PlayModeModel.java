@@ -40,19 +40,38 @@ public class PlayModeModel implements Runnable{
   public long startZeroPower;
   public long endZeroPower;
   public boolean startGame;
-  private int errors = 0;
-
+  private int errors;
+  PlaySong playSong;
   // a map of notes to controller buttons' values (the same for all OS)
   Map<Integer, Integer> notesToButtons = new HashMap<Integer, Integer>() {{
     put(0, 0); put(1, 1); put(2, 4); put(3, 2); put(4, 5); put(5, 3);
   }};
 
-  PlaySong playSong;
+  // Constants
+  private static final String ZERO_POWER_PATH = "../assets/ZeroPowerShield.png";
+  private static final String MULTIPLIER2 = "../assets/times2Multiplier3.png";
+  private static final String MULTIPLIER4 = "../assets/times4Multiplier3.png";
+  private static final String MULTIPLIER8 = "../assets/times8Multiplier3.png";
+  private static final String MULTIPLIER16 = "../assets/times16Multiplier3.png";
+  private static final String MULTIPLIER32 = "../assets/times32Multiplier3.png";
+  private static final String MULTIPLIER64 = "../assets/times64Multiplier3.png";
+  private static final String TXT_EXTENSION = ".txt";
+  private static final String PNG_EXTENSION = ".png";
+  private static final String MIDI_EXTENSION = ".mid";
+  private static final String CURRENCY_PATH = "../currency/currency.txt";
+  private static final String EMPTY_NOTE = "000";
+  private static final int END_OF_GAME_DELAY = 5000;
+  private static final int MAX_CURRENCY = 5;
+  private static final int CURRENCY_SCORE = 500;
 
-  //Constructor
+
+
+
+  // Constructor
   public PlayModeModel( String bundlePath, PlayModeView view ) {
 
     // Set initial values of the game
+    this.errors = 0;
     this.view = view;
     this.bundlePath = bundlePath;
     this.multiplier = 1;
@@ -120,7 +139,7 @@ public class PlayModeModel implements Runnable{
     view.setCurrencyLabel();
     view.setScoreLabel(this.score);
     view.setStreakLabel();
-    view.setZeroPowerLabelInit("../assets/ZeroPowerShield.png");
+    view.setZeroPowerLabelInit(ZERO_POWER_PATH);
     view.noteInit();
 
     playSong();
@@ -162,27 +181,27 @@ public class PlayModeModel implements Runnable{
       this.multiplier = (int) Math.pow(2, this.streakCount/10);
       switch(this.multiplier){
         case 2:
-          img = "../assets/times2Multiplier3.png";
+          img = MULTIPLIER2;
           break;
 
         case 4:
-          img = "../assets/times4Multiplier3.png";
+          img = MULTIPLIER4;
           break;
 
         case 8:
-          img = "../assets/times8Multiplier3.png";
+          img = MULTIPLIER8;
           break;
 
         case 16:
-          img = "../assets/times16Multiplier3.png";
+          img = MULTIPLIER16;
           break;
 
         case 32:
-          img = "../assets/times32Multiplier3.png";
+          img = MULTIPLIER32;
           break;
 
         case 64:
-          img = "../assets/times64Multiplier3.png";
+          img = MULTIPLIER64;
           break;
 
         default:
@@ -206,7 +225,7 @@ public class PlayModeModel implements Runnable{
     File[] files = bundle.listFiles(new FilenameFilter() {
       @Override
       public boolean accept(File dir, String name) {
-        return name.endsWith(".txt");
+        return name.endsWith(TXT_EXTENSION);
       }
     });
 
@@ -234,7 +253,7 @@ public class PlayModeModel implements Runnable{
     File[] files = bundle.listFiles(new FilenameFilter() {
       @Override
       public boolean accept(File dir, String name) {
-        return name.endsWith(".mid");
+        return name.endsWith(MIDI_EXTENSION);
       }
     });
     if ( files.length > 0 ) {
@@ -258,7 +277,7 @@ public class PlayModeModel implements Runnable{
     File[] files = bundle.listFiles(new FilenameFilter() {
       @Override
       public boolean accept(File dir, String name) {
-        return name.endsWith(".png");
+        return name.endsWith(PNG_EXTENSION);
       }
     });
 
@@ -282,7 +301,7 @@ public class PlayModeModel implements Runnable{
     File[] files = bundle.listFiles(new FilenameFilter() {
       @Override
       public boolean accept(File dir, String name) {
-        return name.endsWith(".txt");
+        return name.endsWith(TXT_EXTENSION);
       }
     });
 
@@ -292,7 +311,7 @@ public class PlayModeModel implements Runnable{
       return files[0];
 
     } else {
-      File currencyFile = new File("../currency/currency.txt");
+      File currencyFile = new File(CURRENCY_PATH);
       currencyFile.createNewFile();
       return currencyFile;
     }
@@ -403,7 +422,7 @@ public class PlayModeModel implements Runnable{
       }
 
       // If there is a not to be played and the note has not already been added to highway
-      if(!currentNote.equals("000") && currentTick != lastTick){
+      if(!currentNote.equals(EMPTY_NOTE) && currentTick != lastTick){
 
         // Add the note to the highway
         Note note = new Note(currentNote, this);
@@ -417,7 +436,7 @@ public class PlayModeModel implements Runnable{
     if(playSong.endOfSong) {
       try {
         // Wait 5 seconds while final score/currency etc. is still displayed
-        Thread.sleep(5000);
+        Thread.sleep(END_OF_GAME_DELAY);
       } catch (InterruptedException e) {
         e.printStackTrace();
       } finally {
@@ -445,7 +464,7 @@ public class PlayModeModel implements Runnable{
       return this.notes.get(Long.valueOf(tick));
     }
     else{
-      return "000";
+      return EMPTY_NOTE;
     }
   }
 
@@ -514,9 +533,9 @@ public class PlayModeModel implements Runnable{
   public void updateCurrency() {
 
     // Can only earn a maximum currency value of 5 per game
-    if(this.currencyEarned < 5 ) {
+    if(this.currencyEarned < MAX_CURRENCY ) {
       // Currency is earned every time score is a multiple of 500
-      if(this.score % 500 == 0) {
+      if(this.score % CURRENCY_SCORE == 0) {
         this.currencyEarned ++;
         this.totalCurrency ++;
         String img = "../assets/"+Integer.toString(this.currencyEarned)+"Star.png";
