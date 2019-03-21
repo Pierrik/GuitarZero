@@ -28,6 +28,19 @@ public class CarouselView extends JPanel {
   private ArrayList<Rectangle> bounds = new ArrayList<>();
   private int carouselLength = 0;
 
+  final static int CV_WIDTH      = 740;
+  final static int CV_HEIGHT     = 150;
+  final static int CV_Y          = 65;
+  final static int CV_X          = 80;
+  final static int MAX_X_BOUND   = 630;
+  final static int BOUNDS_X_1    = 180;
+  final static int BOUNDS_X_2    = 330;
+  final static int BOUNDS_X_3    = 480;
+  final static int BOUNDS_Y      = 50;
+  final static int BOUNDS_WIDTH  = 140;
+  final static int BOUNDS_HEIGHT = 160;
+  final static int EXTRA         = 30;
+
   /**
    * Alters the GUI by taking commands from a model class
    *
@@ -78,12 +91,8 @@ public class CarouselView extends JPanel {
       menuOptions.get(2).setBounds(bounds.get(2));
     }
 
-
-
-
-
     this.add(carousel);
-    this.setBounds(80, 65, 740, 150);
+    this.setBounds(CV_X, CV_Y, CV_WIDTH, CV_HEIGHT);
   }
 
   /**
@@ -134,7 +143,7 @@ public class CarouselView extends JPanel {
     }
 
     for (JLabel label : menuOptions) {
-      if (label.getX() > 630) {
+      if (label.getX() > MAX_X_BOUND) {
         label.setVisible(false);
       } else {
         label.setVisible(true);
@@ -167,7 +176,7 @@ public class CarouselView extends JPanel {
 
 
     for (JLabel label : menuOptions) {
-      if (label.getX() > 630) {
+      if (label.getX() > MAX_X_BOUND) {
         label.setVisible(false);
       } else {
         label.setVisible(true);
@@ -178,13 +187,13 @@ public class CarouselView extends JPanel {
   public void initialiseBounds( int labelLength){
 
     if (carouselLength == 3) {
-      bounds.add(new Rectangle(180, 50, 140, 160));
-      bounds.add(new Rectangle(330, 50, 140, 160));
-      bounds.add(new Rectangle(480, 50, 140, 160));
+      bounds.add(new Rectangle(BOUNDS_X_1, BOUNDS_Y, BOUNDS_WIDTH, BOUNDS_HEIGHT));
+      bounds.add(new Rectangle(BOUNDS_X_2, BOUNDS_Y, BOUNDS_WIDTH, BOUNDS_HEIGHT));
+      bounds.add(new Rectangle(BOUNDS_X_3, BOUNDS_Y, BOUNDS_WIDTH, BOUNDS_HEIGHT));
 
     } else {
       for (int i = 0; i <= labelLength; i++) {
-        bounds.add(new Rectangle((i * 150) + 30, 50, 140, 160));
+        bounds.add(new Rectangle((i * CV_HEIGHT) + EXTRA, BOUNDS_Y, BOUNDS_WIDTH, BOUNDS_HEIGHT));
       }
     }
   }

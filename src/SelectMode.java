@@ -30,6 +30,7 @@ import javax.swing.JLabel;
  */
 public class SelectMode extends JPanel {
 
+  private static final int POINT_0_0 = 0;
 
   /**
    * Initialises the GUI classes for a carousel with menu options specific to Select Mode
@@ -114,7 +115,7 @@ public class SelectMode extends JPanel {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    g.drawImage(highway, 0, 0, this);
+    g.drawImage(highway, POINT_0_0, POINT_0_0, this);
   }
 
 }

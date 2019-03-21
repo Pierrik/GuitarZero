@@ -22,8 +22,8 @@ import net.java.games.input.ControllerEnvironment;
  */
 public class CarouselController implements Runnable {
 
-  final static String GUITAR_HERO      = "Guitar Hero";
-  final static int    POLL_DELAY       = 100;
+  final static String   GUITAR_HERO    = "Guitar Hero";
+  final static int      POLL_DELAY     = 100;
 
   CarouselModel         model;
   ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
@@ -37,7 +37,7 @@ public class CarouselController implements Runnable {
   final static int    ESCAPE           = 10;
 
   // variables that change for different operating systems, default: windows
-  static int STRUM            = 16;
+  static int          STRUM            = 16;
 
   AtomicBoolean controllerOn = new AtomicBoolean(false);
 

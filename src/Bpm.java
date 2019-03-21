@@ -12,11 +12,14 @@ public class Bpm {
   /*
    * Returns the BPM of the given MIDI sequence
    */
+
+	final static int SECONDS = 60000000;
+
   public static int getBPM(Sequence sequence){
     try {
 
       //Get sequence from file
-      return(60000000 / getMicrosecondsPerQuarterNote(sequence));
+      return(SECONDS / getMicrosecondsPerQuarterNote(sequence));
     }catch (Exception e) {
     	e.printStackTrace();
 		}
@@ -38,7 +41,8 @@ public class Bpm {
   				byte[] data = m.getData();
   				int type = m.getType();
   				if (type == 0x51){ //[0x51]MIDI_SET_TEMPO
-  					return ((data[0] & 0xff) << 16) | ((data[1] & 0xff) << 8) | (data[2] & 0xff);
+  					// returns mpqm
+  				  return ((data[0] & 0xff) << 16) | ((data[1] & 0xff) << 8) | (data[2] & 0xff);
   				}
   			}
   		}

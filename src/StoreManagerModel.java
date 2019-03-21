@@ -24,16 +24,14 @@ public class StoreManagerModel {
   // Server settings
   private static final String HOST = "localhost";
   private static final int    PORT = 8888;
+  private static final int    SIZE = 1024;
 
   // Storing bundle files
   private File titleFile = null;
   private File coverArtFile = null;
   private File musicFile = null;
 
-
-
   public StoreManagerModel () {
-
   }
 
   /**
@@ -101,7 +99,7 @@ public class StoreManagerModel {
       ZipEntry zipEntry = new ZipEntry(srcFile.getName());
       zipOut.putNextEntry(zipEntry);
 
-      byte[] bytes = new byte[1024];
+      byte[] bytes = new byte[SIZE];
       int length;
       while((length = fis.read(bytes)) >= 0) {
         zipOut.write(bytes, 0, length);
@@ -133,7 +131,7 @@ public class StoreManagerModel {
     ZipEntry zipEntry = new ZipEntry(coverArtFile.getName());
     zipOut.putNextEntry(zipEntry);
 
-    byte[] bytes = new byte[1024];
+    byte[] bytes = new byte[SIZE];
     int length;
     while((length = fis.read(bytes)) >= 0) {
       zipOut.write(bytes, 0, length);

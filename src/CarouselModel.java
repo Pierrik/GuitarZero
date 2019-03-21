@@ -17,10 +17,15 @@ import java.util.ArrayList;
 
 public class CarouselModel {
   CarouselView view;
-  private static int totalCurrency;
-  final static String BUNDLES = "../local_store/bundle_files/";
-  final static String HOST  = "localhost";
-  final static int    PORT  = 8888;
+  private static int  totalCurrency;
+  final static String BUNDLES       = "../local_store/bundle_files/";
+  final static String HOST          = "localhost";
+  final static int    PORT          = 8888;
+  final static int    POP_UP_TIME   = 3000;
+  final static int    POP_UP_WIDTH  = 260;
+  final static int    POP_UP_HEIGHT = 160;
+  final static int    POP_UP_Y      = 50;
+  final static int    POP_UP_X      = 275;
   JLabel popUp;
 
   /**
@@ -66,11 +71,11 @@ public class CarouselModel {
     if (totalCurrency > 0 && !isInLocalDir(songName)) {
       updateCurrencyAndLocalStore(bundleName, songName);
     } else if (totalCurrency < 1 && isInLocalDir(songName)){
-      popUp("../assets/NoMoneyAndSongOwnedPopUp.jpg", 3000);
+      popUp("../assets/NoMoneyAndSongOwnedPopUp.jpg", POP_UP_TIME);
     } else if (totalCurrency > 0 && isInLocalDir(songName)){
-      popUp("../assets/SongOwnedPopUp.jpg", 3000);
+      popUp("../assets/SongOwnedPopUp.jpg", POP_UP_TIME);
     } else {
-      popUp("../assets/NoMoneyPopUp.jpg", 3000);
+      popUp("../assets/NoMoneyPopUp.jpg", POP_UP_TIME);
     }
   }
 
@@ -86,8 +91,8 @@ public class CarouselModel {
   public void popUp(String pngPath, int time) {
 
     popUp = new JLabel(new ImageIcon(pngPath));
-    popUp.setSize(260, 160);
-    popUp.setBounds(275, 50, 260, 160);
+    popUp.setSize(POP_UP_WIDTH, POP_UP_HEIGHT);
+    popUp.setBounds(POP_UP_X, POP_UP_Y, POP_UP_WIDTH, POP_UP_HEIGHT);
     this.view.add(popUp, 0);
     this.view.repaint();
     try {

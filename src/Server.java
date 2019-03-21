@@ -11,8 +11,8 @@ import java.util.Date;
  * @version 1.04, March 2019.
  */
 public class Server {
-  private static final int PORT = 8888;
-  private static final boolean verbose = true;
+  private static final int     PORT    = 8888;
+  private static final boolean VERBOSE = true;
 
   public static void main(String[] argv) {
     try {
@@ -31,7 +31,7 @@ public class Server {
 
       // Starting the server
       final ServerSocket ssck = new ServerSocket(PORT);
-      if (verbose) {
+      if (VERBOSE) {
         System.out.println("Server started.\nListening for connections on port : " +
             PORT + " ...\n");
       }
@@ -40,7 +40,7 @@ public class Server {
       while (true) {
         // Waiting for a client to connect
         final Socket sck = ssck.accept();
-        if (verbose) {System.out.println("Connection opened. (" + new Date() + ")");}
+        if (VERBOSE) {System.out.println("Connection opened. (" + new Date() + ")");}
 
         // Create dedicated thread to handle client connection
         Handler handler = new Handler(sck);

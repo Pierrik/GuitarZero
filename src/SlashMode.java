@@ -36,6 +36,8 @@ import javax.swing.JLabel;
  */
 public class SlashMode extends JPanel {
 
+  private static final int POINT_0_0 = 0;
+
   CarouselView view;
   CarouselModel model;
   CarouselController controller;
@@ -94,7 +96,7 @@ public class SlashMode extends JPanel {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    g.drawImage(highway, 0, 0, this);
+    g.drawImage(highway, POINT_0_0, POINT_0_0, this);
   }
 
 }
