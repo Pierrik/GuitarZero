@@ -38,12 +38,25 @@ public class PlayModeView extends JPanel{
   private JLabel zeroPowerLabel;
   private JLabel noteLabel;
   private JLabel noteCollected;
+  private JLabel endStatisticsBackground;
+  private JLabel endStatisticsImg;
+  private JLabel endStatisticsTitle;
+  private JLabel endStatisticsScore;
+  private JLabel endStatisticsCurrency;
+  private JLabel endStatisticsNote;
   private JLabel[] activeNotes = new JLabel[6];
   private JLabel[] collectedNotes = new JLabel[6];
 
   // Path to the background of the game
   private static final String HIGHWAY_PATH = "../assets/Done/Highway.bmp";
 
+  // Dimensions for displaying the end statistics
+  private static final int END_STATISTICS_WIDTH = 400;
+  private static final int END_STATISTICS_HEIGHT = 400;
+  private static final int END_STATISTICS_X = 300;
+  private static final int END_STATISTICS_Y = 100;
+  private static final int END_STATISTIC_MARGIN = 20;
+  private static final int END_STATISTIC_TEXT_HEIGHT = 40;
   // Dimensions for displaying the cover art
   private static final int COVER_ART_WIDTH = 200;
   private static final int COVER_ART_HEIGHT = 200;
@@ -115,25 +128,84 @@ public class PlayModeView extends JPanel{
   }
 
   /**
+   * displayEndValues
+   * @param img The cover art of the current song
+   * @param songTitle The current songs name
+   * @param score The final score of the game
+   * @param currency The users currency total
+   */
+  public void displayEndValues(File img, String songTitle, String score, String currency){
+    endStatisticsBackground = new JLabel(new ImageIcon("../assets/emptyBox.jpeg"));
+    endStatisticsBackground.setBounds(END_STATISTICS_X,END_STATISTICS_Y,END_STATISTICS_WIDTH,END_STATISTICS_HEIGHT);
+
+    //SONG NAME
+    endStatisticsTitle = new JLabel("Song: "+songTitle);
+    endStatisticsTitle.setBounds(END_STATISTICS_X + (END_STATISTICS_WIDTH/2) - (COVER_ART_WIDTH/2), END_STATISTICS_Y+COVER_ART_HEIGHT+(2*END_STATISTIC_MARGIN), COVER_ART_WIDTH, END_STATISTIC_TEXT_HEIGHT);
+    endStatisticsTitle.setForeground(Color.BLACK);
+    scoreLabel.setFont(new Font("Serif", Font.BOLD, TEXT_SIZE));
+    endStatisticsTitle.setVisible(true);
+    add(endStatisticsTitle);
+
+    //GAME SCORE
+    endStatisticsScore = new JLabel("Score: "+score);
+    endStatisticsScore.setBounds(END_STATISTICS_X + (END_STATISTICS_WIDTH/2) - (COVER_ART_WIDTH/2), END_STATISTICS_Y+COVER_ART_HEIGHT+(3*END_STATISTIC_MARGIN), COVER_ART_WIDTH, END_STATISTIC_TEXT_HEIGHT);
+    endStatisticsScore.setForeground(Color.BLACK);
+    scoreLabel.setFont(new Font("Serif", Font.BOLD, TEXT_SIZE));
+    endStatisticsScore.setVisible(true);
+    add(endStatisticsScore);
+
+    //TOTAL CURRENCY
+    endStatisticsCurrency = new JLabel("Currency: "+currency);
+    endStatisticsCurrency.setBounds(END_STATISTICS_X + (END_STATISTICS_WIDTH/2) - (COVER_ART_WIDTH/2), END_STATISTICS_Y+COVER_ART_HEIGHT+(4*END_STATISTIC_MARGIN), COVER_ART_WIDTH, END_STATISTIC_TEXT_HEIGHT);
+    endStatisticsCurrency.setForeground(Color.BLACK);
+    scoreLabel.setFont(new Font("Serif", Font.BOLD, TEXT_SIZE));
+    endStatisticsCurrency.setVisible(true);
+    add(endStatisticsCurrency);
+
+    //FOOT NOTE
+    endStatisticsNote = new JLabel("Exit Button (O) - Main Menu");
+    endStatisticsNote.setBounds(END_STATISTICS_X + (END_STATISTICS_WIDTH/2) - (COVER_ART_WIDTH/2), END_STATISTICS_Y+END_STATISTICS_HEIGHT-40, COVER_ART_WIDTH,40);
+    endStatisticsNote.setForeground(Color.BLACK);
+    scoreLabel.setFont(new Font("Serif", Font.BOLD, TEXT_SIZE));
+    endStatisticsNote.setVisible(true);
+    add(endStatisticsNote);
+
+    //COVER ART
+    endStatisticsImg = new JLabel(new ImageIcon(resizeImage(img, COVER_ART_WIDTH, COVER_ART_HEIGHT)));
+    endStatisticsImg.setBounds((int) (END_STATISTICS_X + (END_STATISTICS_WIDTH/2) - (COVER_ART_WIDTH/2)), END_STATISTICS_Y+50,COVER_ART_WIDTH,COVER_ART_HEIGHT);
+    add(endStatisticsImg);
+    add(endStatisticsBackground);
+  }
+
+  /**
    * setCoverArtLabel
    * Sets the cover art to be displayed on the screen during the game
    * Resizes the image file to fit the size of the JLabel
    * @param coverFile
    */
   public void setCoverArtLabel(File coverFile) {
-
-    // Resize the cover art image to fit the correct size of the label
-    Image image = null;
-    try {
-      image = ImageIO.read(coverFile);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    Image resizedImage = image.getScaledInstance(COVER_ART_WIDTH, COVER_ART_HEIGHT, Image.SCALE_DEFAULT);
-
+    Image resizedImage = resizeImage(coverFile,COVER_ART_WIDTH,COVER_ART_HEIGHT);
     coverArtLabel = new JLabel(new ImageIcon(resizedImage));
     coverArtLabel.setBounds(COVER_ART_X, COVER_ART_Y, COVER_ART_WIDTH, COVER_ART_HEIGHT);
     add(coverArtLabel);
+  }
+
+  /**
+   * Reads an image file and resizes it to desired dimensions
+   * @param file
+   * @param width
+   * @param height
+   * @return Resized Image as Image
+   */
+  public Image resizeImage(File file, int width, int height){
+    Image image = null;
+    try {
+      image = ImageIO.read(file);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    Image resizedImage = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+    return resizedImage;
   }
 
   /**

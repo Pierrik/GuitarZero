@@ -58,6 +58,7 @@ public class CarouselController implements Runnable {
     controllerOn.set(true);
     while (controllerOn.get()) {
       GameUtils.sleep(POLL_DELAY);
+
       if (ctrl.poll()) {
         for ( int i = 0; i < BUTTONS; i++ ) {
           vals[i] = activeCmps[i].getPollData();

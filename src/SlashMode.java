@@ -4,11 +4,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 /**
  * Slash Mode.
@@ -37,7 +34,7 @@ import javax.swing.JLabel;
  *   $ javac SlashMode.java
  *   $ java -Djava.library.path=. SlashMode
  */
-public class SlashMode extends JPanel{
+public class SlashMode extends JPanel {
 
   private static final int POINT_0_0 = 0;
 
