@@ -16,9 +16,10 @@ import javax.swing.JPanel;
 public class StoreMode extends JPanel {
 
   // Server settings
-  private static final String HOST = "localhost";
-  private static final int    PORT = 8888;
-  final static int MODE_DELAY = 150;
+  private static final String HOST       = "localhost";
+  private static final int    PORT       = 8888;
+  private final static int    MODE_DELAY = 150;
+  private static final int    POINT_0_0  = 0;
 
   // Store settings
   private static final String PREVIEWS = "../local_store/preview_files/";
@@ -72,7 +73,7 @@ public class StoreMode extends JPanel {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    g.drawImage(highway, 0, 0, this);
+    g.drawImage(highway, POINT_0_0, POINT_0_0, this);
   }
 
   public void sleep(int millis){

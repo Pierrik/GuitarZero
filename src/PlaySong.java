@@ -16,8 +16,8 @@ import javax.sound.midi.Transmitter;
 public class PlaySong implements Runnable {
   private File midiFile;
   private String currentNote;
-  private long currentTick;
-  private AtomicBoolean endOfSong;
+  public long currentTick;
+  public AtomicBoolean endOfSong;
   private int ticksPerBeat;
   private int bpm;
   private int time;

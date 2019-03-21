@@ -26,6 +26,9 @@ public class StoreManagerView extends JFrame {
   static JTextField coverArtField = new JTextField(10);
   static JTextField musicField = new JTextField(10);
 
+  private static final int STORE_WIDTH  = 300;
+  private static final int STORE_HEIGHT = 200;
+
   /**
    * Sets up the JFrame.
    * @param storeManagercontroller1: Title browse controller
@@ -41,7 +44,7 @@ public class StoreManagerView extends JFrame {
     setTitle("Store Manager");
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setSize(300, 200);
+    setSize(STORE_WIDTH, STORE_HEIGHT);
 
     // Creating components to populate the frame
     JLabel titleLabel = new JLabel("Title:       ");
