@@ -66,6 +66,8 @@ public class PlayModeController implements Runnable {
 
     controller_running.set(true);
     while(controller_running.get()) {
+      GameUtils.sleep(POLL_DELAY);
+
       if (ctrl.poll()) {
 
         model.resetAll();
@@ -121,8 +123,7 @@ public class PlayModeController implements Runnable {
                 System.out.println("Escape - PLAY");
                 this.model.playSong.song_running.set(false);
                 controller_running.set(false);
-
-                GameUtils.changeModeOnNewThread(Mode.SLASH);
+                PlayMode.playmode_running.set(false);
               }
             } else if (i == WHAMMY) { //whammy  16 in linux
               if (val >= BUTTON_THRESHOLD) {
@@ -144,9 +145,6 @@ public class PlayModeController implements Runnable {
           }
         }
       }
-
-      GameUtils.sleep(POLL_DELAY);
-
     }
   }
 

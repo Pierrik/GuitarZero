@@ -9,13 +9,13 @@ import java.lang.Thread;
  * @author Tom Mansfield
  * @version 2.00, March 2019.
 */
-public class PlayMode extends JPanel implements Runnable{
+public class PlayMode extends JPanel implements Runnable {
 
     PlayModeView view;
     PlayModeModel model;
     PlayModeController controller;
 
-    AtomicBoolean playmode_running = new AtomicBoolean(false);
+    static AtomicBoolean playmode_running = new AtomicBoolean(false);
 
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 563;
@@ -73,8 +73,6 @@ public class PlayMode extends JPanel implements Runnable{
 
     }
 
-    //Exit Play Mode
     GameUtils.changeModeOnNewThread(Mode.SLASH);
-
   }
 }

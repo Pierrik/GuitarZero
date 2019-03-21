@@ -62,10 +62,7 @@ public class Run {
    * @param option: Mode to change to
    */
   public static void changeMode(Mode option) {
-    JPanel mode = null;
-
     switch (option) {
-
       case SLASH:
         sl = new SlashMode();
         window.setContentPane(sl);
@@ -90,6 +87,9 @@ public class Run {
 
       case PLAY:
         p = new PlayMode(currentBundleDir);
+        if (p.model.errors > 0){
+          break;
+        }
         window.setContentPane(p);
         window.setVisible(true);
 

@@ -40,7 +40,7 @@ public class PlayModeModel implements Runnable{
   public long startZeroPower;
   public long endZeroPower;
   public boolean startGame;
-  private int errors;
+  public int errors;
   PlaySong playSong;
   // a map of notes to controller buttons' values (the same for all OS)
   Map<Integer, Integer> notesToButtons = new HashMap<Integer, Integer>() {{
