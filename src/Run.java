@@ -32,17 +32,20 @@ public class Run {
 
   static JFrame window;
   static SelectMode se = null;
-  static SlashMode sl = null;
-  static StoreMode st = null;
-  static PlayMode p = null;
+  static SlashMode  sl = null;
+  static StoreMode  st = null;
+  static PlayMode   p  = null;
 
   static String currentBundleDir = "../testBundle";
+
+  private static final int GAME_WIDTH  = 1000;
+  private static final int GAME_HEIGHT = 563;
 
 
   public static void main(String[] args){
     window = new JFrame("Guitar Zero Game");
 
-    Dimension dims = new Dimension(1000,563);
+    Dimension dims = new Dimension(GAME_WIDTH,GAME_HEIGHT);
 
     sl = new SlashMode();
     window.setContentPane(sl);

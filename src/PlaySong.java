@@ -14,14 +14,16 @@ import javax.sound.midi.Transmitter;
  */
 
 public class PlaySong implements Runnable {
-  public File midiFile;
-  public String currentNote;
-  public long currentTick;
-  public AtomicBoolean endOfSong;
-  public int ticksPerBeat;
-  public int bpm;
-  public int time;
-  public double x = 1.49;
+  private File midiFile;
+  private String currentNote;
+  private long currentTick;
+  private AtomicBoolean endOfSong;
+  private int ticksPerBeat;
+  private int bpm;
+  private int time;
+
+  private static final double X       = 1.49;
+  private static final int    SECONDS = 60;
 
   public AtomicBoolean song_running = new AtomicBoolean(false);
 
@@ -57,13 +59,13 @@ public class PlaySong implements Runnable {
       try {
         //Calculate how many frames a note travels per second
         bpm = Bpm.getBPM(MidiSystem.getSequence(midiFile));
-        time = (bpm * ticksPerBeat) / 60;
+        time = (bpm * ticksPerBeat) / SECONDS;
       } catch (Exception e) {
       }
       // Set the current tick pointer to the current tick of the song
       song_running.set(true);
       while (seq.isRunning() && song_running.get()) {
-        currentTick = seq.getTickPosition() + Math.round(time * x);
+        currentTick = seq.getTickPosition() + Math.round(time * X);
         this.currentTick = currentTick;
         //System.out.println(this.currentTick);
       }
