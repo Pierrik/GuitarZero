@@ -47,7 +47,7 @@ public class PlayModeModel implements Runnable{
     put(0, 0); put(1, 1); put(2, 4); put(3, 2); put(4, 5); put(5, 3);
   }};
 
-  // Constants
+  // File paths to update assets displayed during the game
   private static final String ZERO_POWER_PATH = "../assets/ZeroPowerShield.png";
   private static final String MULTIPLIER2 = "../assets/times2Multiplier3.png";
   private static final String MULTIPLIER4 = "../assets/times4Multiplier3.png";
@@ -55,19 +55,26 @@ public class PlayModeModel implements Runnable{
   private static final String MULTIPLIER16 = "../assets/times16Multiplier3.png";
   private static final String MULTIPLIER32 = "../assets/times32Multiplier3.png";
   private static final String MULTIPLIER64 = "../assets/times64Multiplier3.png";
+  private static final String CURRENCY_PATH = "../currency/currency.txt";
+
+  // Extensions of files to search for in the bundle
   private static final String TXT_EXTENSION = ".txt";
   private static final String PNG_EXTENSION = ".png";
   private static final String MIDI_EXTENSION = ".mid";
-  private static final String CURRENCY_PATH = "../currency/currency.txt";
+
+  // The value of no note being played
   private static final String EMPTY_NOTE = "000";
+
+  // The amount of time to wait at the end of the game before returning to slash mode
+  // Allows the user to see their score
   private static final int END_OF_GAME_DELAY = 5000;
+
+  // The maximum amount of currency that can be earned during the game
   private static final int MAX_CURRENCY = 5;
+
+  // Currency updated every time the user reaches a score that is a multiple of 500
   private static final int CURRENCY_SCORE = 500;
 
-
-
-
-  // Constructor
   public PlayModeModel( String bundlePath, PlayModeView view ) {
 
     // Set initial values of the game
@@ -82,6 +89,7 @@ public class PlayModeModel implements Runnable{
     this.currentNote = "";
     this.endOfSong = false;
 
+    // If notes file can't be loaded, do not start the game
     try {
       this.notesFile = findNotesFile();
     } catch (Exception e) {
@@ -90,6 +98,7 @@ public class PlayModeModel implements Runnable{
       errors ++;
     }
 
+    // If midi file can't be loaded, do not start the game
     try {
       this.midiFile = findMidiFile();
     } catch (Exception e) {
@@ -98,6 +107,7 @@ public class PlayModeModel implements Runnable{
       errors ++;
     }
 
+    // If the cover art can't be loaded, do not start the game
     try {
       this.coverArt = findCoverArt();
     } catch (Exception e) {
@@ -106,6 +116,7 @@ public class PlayModeModel implements Runnable{
       errors ++;
     }
 
+    // If the currency file can't be loaded, do not start the game
     try {
       this.currencyFile = findCurrencyFile();
     } catch (Exception e) {
@@ -114,9 +125,11 @@ public class PlayModeModel implements Runnable{
       errors ++;
     }
 
+    // Load the values in the notes file into a map of notes to be evaluated during the game
     this.notes = new HashMap<>();
     loadNotesFile();
 
+    // If currency file cannot be read properly, do not start the game
     try {
       loadCurrencyFile();
     } catch (Exception e) {
@@ -125,12 +138,17 @@ public class PlayModeModel implements Runnable{
       errors ++;
     }
 
+    // If no errors occur during initialisation, the game can begin
     if (errors == 0 ) {
       this.startGame = true;
     }
   }
 
-
+  /**
+   * run
+   * Sets up the JLabels to be displayed during the game
+   * Starts the song playing
+   */
   @Override
   public void run(){
     //Set up JLabels
@@ -145,23 +163,35 @@ public class PlayModeModel implements Runnable{
     playSong();
   }
 
-  //*region Accessors
+  /**
+   * setNoteToPlay
+   * Set the value of the note that is next to be played during the song
+   * @param n the note to set
+   */
   public void setNoteToPlay(String n){
     this.noteToPlay = n;
   }
 
+  /**
+   * getCurrentNote
+   * @return the note currently being played during the song
+   */
   public String getCurrentNote() {
     return this.currentNote;
   }
 
-  public HashMap<Long, String> getNotes() {
-    return this.notes;
-  }
-
+  /**
+   * getCurrentTick
+   * @return the current tick value of the song being played
+   */
   public long getCurrentTick() {
     return this.currentTick;
   }
 
+  /**
+   * isEndOfSong
+   * @return true if the song has finished playing, false otherwise
+   */
   public boolean isEndOfSong() {
     return this.endOfSong;
   }
@@ -170,15 +200,21 @@ public class PlayModeModel implements Runnable{
    * setMultiplier
    * Changes the value of the multiplier if streakCount is multiple of 10 or 0
    * Does nothing if streak count not multiple of 10 or 0
+   * Multiplier doubles each time it is increased
+   * E.g. score = 10, multiplier = 2
+   *      score = 20, multiplier = 4
+   *      score = 30, multiplier = 8 etc.
    */
   public void setMultiplier() {
-
     // Each time streak is a multiple of 10, change the multiplier
     if(this.streakCount % 10 == 0 ) {
       // Multiplier value doubles each time, e.g. 2, 4, 8, 16, 32, 64 etc.
       String img;
-      //this.multiplierLabel.setVisible(true);
+
+      // Determine which value the multiplier should be
       this.multiplier = (int) Math.pow(2, this.streakCount/10);
+
+      // Set the multiplier labels in the view to the correct assets
       switch(this.multiplier){
         case 2:
           img = MULTIPLIER2;
@@ -230,11 +266,11 @@ public class PlayModeModel implements Runnable{
     });
 
     if ( files.length > 0 ) {
-
       // Returns first occurrence of a text file, should only be one
       return files[0];
-
     } else {
+      // Throw an exception if there is no notes file
+      // If this method throws an exception, the game does not begin
       throw new Exception("No Notes File In Bundle");
     }
 
@@ -260,6 +296,8 @@ public class PlayModeModel implements Runnable{
       // Returns first occurrence of MIDI file, should only be one
       return files[0];
     } else {
+      // Throw an exception if there is no midi file
+      // If this method throws an exception, the game does not begin
       throw new Exception("No MIDI File In Bundle");
     }
   }
@@ -282,22 +320,26 @@ public class PlayModeModel implements Runnable{
     });
 
     if ( files.length > 0 ) {
-
       // Returns first occurrence of PNG file, should only be one
       return files[0];
-
     } else {
-
+      // Throw an exception if there is no cover art file
+      // If this method throws an exception, the game does not begin
       throw new Exception("No Cover Art In Bundle");
-
     }
 
   }
 
+  /**
+   * findCurrencyFile
+   * @return the currency file for the game
+   * @throws Exception
+   */
   public File findCurrencyFile() throws Exception {
+    // Search the currency directory
     File bundle = new File("../currency");
 
-    // Find PNG files in the bundle
+    // Find text files in the currency folder
     File[] files = bundle.listFiles(new FilenameFilter() {
       @Override
       public boolean accept(File dir, String name) {
@@ -306,13 +348,20 @@ public class PlayModeModel implements Runnable{
     });
 
     if ( files.length > 0 ) {
-
       // Returns first occurrence of txt file, should only be one
       return files[0];
 
     } else {
+      // If there is no currency file found, create one
       File currencyFile = new File(CURRENCY_PATH);
       currencyFile.createNewFile();
+
+      // Set the score value in the file to 0
+      FileWriter writer = new FileWriter(CURRENCY_PATH);
+      writer.write(Integer.toString(0));
+      writer.close();
+
+      // Returns the created currency file
       return currencyFile;
     }
 
@@ -320,12 +369,16 @@ public class PlayModeModel implements Runnable{
 
   /**
    * loadNotesFile
-   * Reads the notes file in the bundle and adds notes to a map
+   * Reads the notes file in the bundle and adds the note values to a map
+   * Determines when zero power mode is set to start
+   * Reads the values for the tick, note and zero power mode by separating the values by commas
+   * Zero power mode is determined when the third column of the notes file is set to 1 for a note
+   * The first occurrence of a 1 means start zero power mode at this tick and the second occurrence means finish
    */
   public void loadNotesFile() {
 
     try {
-      BufferedReader br = new BufferedReader( new FileReader(this.notesFile));
+      BufferedReader br = new BufferedReader(new FileReader(this.notesFile));
       String line;
       boolean hasStarted = false;
       boolean hasEnded = false;
@@ -333,10 +386,12 @@ public class PlayModeModel implements Runnable{
       while((line = br.readLine())!=null) {
         // Split notes file by comma, separating ticks and notes
         String str[] = line.split(",");
+
+        // Put the note into the map using the tick as the key value
         this.notes.put(Long.parseLong(str[0]), str[1]);
 
+        // If the third value is a 1, this is when zero power mode starts or ends
         if (Long.parseLong(str[2]) == 1) {
-
           if (!hasStarted) {
             startZeroPower = Long.parseLong(str[0]);
             hasStarted = true;
@@ -358,7 +413,7 @@ public class PlayModeModel implements Runnable{
 
   /**
    * loadCurrencyFile
-   * Reads the currency file and updates the total currency
+   * Reads the currency file and updates the total currency to the value contained in the file
    * @throws Exception when the file cannot be read
    */
   public void loadCurrencyFile() throws Exception {
@@ -384,7 +439,7 @@ public class PlayModeModel implements Runnable{
   /**
    * saveCurrencyFile
    * Updates the currency file when the song has finished with any earned currency
-   * @throws Exception
+   * @throws Exception if the currency file cannot be written
    */
   public void saveCurrencyFile() throws Exception {
     FileWriter writer = new FileWriter(this.currencyFile.getName());
@@ -394,8 +449,11 @@ public class PlayModeModel implements Runnable{
 
   /**
    * playSong
-   * Play the MIDI song
+   * Plays the MIDI song
    * Sets current tick and current note values as the song is played
+   * Adds a note object to the view to be displayed on the highway if one is due to be played
+   * Starts/ends zero power mode if it should be started or ended at the current tick
+   * When the song finishes playing, end the game and save the currency earned to the user's currency file
    */
   public void playSong() {
 
@@ -413,9 +471,12 @@ public class PlayModeModel implements Runnable{
       currentTick = playSong.currentTick;
       this.currentNote = changeCurrentNote(currentTick);
 
+      // Start zero power mode if it should be started at the current tick
       if (!hasZeroStarted && currentTick >= startZeroPower) {
         view.setZeroPowerLabelVisible();
         hasZeroStarted = true;
+
+      // End zero power mode if it should finish at the current tick
       } else if (!hasZeroEnded && currentTick >= endZeroPower) {
         view.setZeroPowerLabelFalse();
         hasZeroEnded = true;
@@ -433,6 +494,7 @@ public class PlayModeModel implements Runnable{
       }
     }
 
+    // If the song has finished, end the game
     if(playSong.endOfSong) {
       try {
         // Wait 5 seconds while final score/currency etc. is still displayed
@@ -456,7 +518,8 @@ public class PlayModeModel implements Runnable{
 
   /**
    * changeCurrentNote
-   * Changes the current note to the note that should be played
+   * Changes the current note value to the value of the note that should be played
+   * If no note should be played at the current tick, return an empty note
    * @param tick the current tick
    */
   public String changeCurrentNote(long tick) {
@@ -470,7 +533,7 @@ public class PlayModeModel implements Runnable{
 
   /**
    * checkNote
-   * Called by the controller, checks whether a note played on the guitar is correct
+   * Called by the controller, checks whether the note played by the user on the guitar should be played
    * Collect note if correct, otherwise drop the note
    * @param guitarNote the note played on the guitar
    */
