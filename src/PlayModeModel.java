@@ -56,7 +56,6 @@ public class PlayModeModel implements Runnable{
   private static final String  MULTIPLIER16      = "../assets/times16Multiplier3.png";
   private static final String  MULTIPLIER32      = "../assets/times32Multiplier3.png";
   private static final String  MULTIPLIER64      = "../assets/times64Multiplier3.png";
-  private static final String  CURRENCY_PATH     = "../currency/currency.txt";
 
   // Extensions of files to search for in the bundle
   private static final String  TXT_EXTENSION     = ".txt";
@@ -128,7 +127,7 @@ public class PlayModeModel implements Runnable{
 
     // If the currency file can't be loaded, do not start the game
     try {
-      this.currencyFile = findCurrencyFile();
+      this.currencyFile = Currency.findCurrencyFile();
     } catch (Exception e) {
       e.printStackTrace();
       startGame = false;
@@ -141,7 +140,7 @@ public class PlayModeModel implements Runnable{
 
     // If currency file cannot be read properly, do not start the game
     try {
-      loadCurrencyFile();
+      Currency.loadCurrencyFile(this.currencyFile);
     } catch (Exception e) {
       e.printStackTrace();
       startGame = false;
@@ -342,43 +341,6 @@ public class PlayModeModel implements Runnable{
   }
 
   /**
-   * findCurrencyFile
-   * @return the currency file for the game
-   * @throws Exception
-   */
-  public File findCurrencyFile() throws Exception {
-    // Search the currency directory
-    File bundle = new File("../currency");
-
-    // Find text files in the currency folder
-    File[] files = bundle.listFiles(new FilenameFilter() {
-      @Override
-      public boolean accept(File dir, String name) {
-        return name.endsWith(TXT_EXTENSION);
-      }
-    });
-
-    if ( files.length > 0 ) {
-      // Returns first occurrence of txt file, should only be one
-      return files[0];
-
-    } else {
-      // If there is no currency file found, create one
-      File currencyFile = new File(CURRENCY_PATH);
-      currencyFile.createNewFile();
-
-      // Set the score value in the file to 0
-      FileWriter writer = new FileWriter(CURRENCY_PATH);
-      writer.write(Integer.toString(0));
-      writer.close();
-
-      // Returns the created currency file
-      return currencyFile;
-    }
-
-  }
-
-  /**
    * loadNotesFile
    * Reads the notes file in the bundle and adds the note values to a map
    * Determines when zero power mode is set to start
@@ -420,42 +382,6 @@ public class PlayModeModel implements Runnable{
       startGame = false;
     }
 
-  }
-
-  /**
-   * loadCurrencyFile
-   * Reads the currency file and updates the total currency to the value contained in the file
-   * @throws Exception when the file cannot be read
-   */
-  public void loadCurrencyFile() throws Exception {
-
-    File inputFile = this.currencyFile;
-    int currency;
-
-    Scanner input = new Scanner(inputFile);
-    // Iterates through each line of the file
-    while (input.hasNextLine()) {
-      currency = Integer.valueOf(input.nextLine());
-      if (currency > 0)
-      {
-        this.totalCurrency = currency;
-      }
-      else {
-        this.totalCurrency = 0;
-      }
-    }
-    input.close();
-  }
-
-  /**
-   * saveCurrencyFile
-   * Updates the currency file when the song has finished with any earned currency
-   * @throws Exception if the currency file cannot be written
-   */
-  public void saveCurrencyFile() throws Exception {
-    FileWriter writer = new FileWriter(this.currencyFile.getName());
-    writer.write(Integer.toString(this.totalCurrency));
-    writer.close();
   }
 
   /**
@@ -516,7 +442,7 @@ public class PlayModeModel implements Runnable{
 
         // Update total currency and save
         try {
-          saveCurrencyFile();
+          Currency.saveCurrencyFile(currencyFile, totalCurrency);
         } catch (Exception e) {
           e.printStackTrace();
         }
