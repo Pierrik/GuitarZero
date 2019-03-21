@@ -170,68 +170,69 @@ public class PlayModeView extends JPanel{
   public void noteInit() {
 
     // WHITE1 - 0 in controller
-    noteLabel = new JLabel(new ImageIcon("../assets/Done/WhiteCollectLeft.png"));
-    noteLabel.setBounds(300, 350, 100, 100);
+    //noteLabel = new JLabel(new ImageIcon("../assets/Done/WhiteCollectLeft.png"));
+    noteLabel = new JLabel(new ImageIcon("../assets/Done/WhiteNoteToPlay.png"));
+    noteLabel.setBounds(350, 395, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[0] = noteLabel;
 
-    noteCollected = new JLabel(new ImageIcon("../assets/Done/WhiteLeft.png"));
-    noteCollected.setBounds(300, 350, 100, 100);
+    noteCollected = new JLabel(new ImageIcon("../assets/Done/WhiteNoteCollected.png"));
+    noteCollected.setBounds(350, 395, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[0] = noteCollected;
 
     //BLACK1 - 1 in controller
-    noteLabel = new JLabel(new ImageIcon("../assets/Done/BlackCollectLeft.png"));
-    noteLabel.setBounds(300, 350, 100, 100);
+    noteLabel = new JLabel(new ImageIcon("../assets/Done/BlackNoteToPlay.png"));
+    noteLabel.setBounds(350, 395, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[1] = noteLabel;
 
-    noteCollected = new JLabel(new ImageIcon("../assets/Done/BlackLeft.png"));
-    noteCollected.setBounds(300, 350, 100, 100);
+    noteCollected = new JLabel(new ImageIcon("../assets/Done/BlackNoteCollected.png"));
+    noteCollected.setBounds(350, 395, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[1] = noteCollected;
 
     //BLACK2 - 2 in controller
-    noteLabel = new JLabel(new ImageIcon("../assets/Done/BlackCollectMiddle.png"));
-    noteLabel.setBounds(450, 350, 100, 100);
+    noteLabel = new JLabel(new ImageIcon("../assets/Done/BlackNoteToPlay.png"));
+    noteLabel.setBounds(450, 395, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[2] = noteLabel;
 
-    noteCollected = new JLabel(new ImageIcon("../assets/Done/BlackMiddle.png"));
-    noteCollected.setBounds(450, 350, 100, 100);
+    noteCollected = new JLabel(new ImageIcon("../assets/Done/BlackNoteCollected.png"));
+    noteCollected.setBounds(450, 395, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[2] = noteCollected;
 
     //BLACK3 - 3 in controller
-    noteLabel = new JLabel(new ImageIcon("../assets/Done/BlackCollectRight.png"));
-    noteLabel.setBounds(575, 350, 100, 100);
+    noteLabel = new JLabel(new ImageIcon("../assets/Done/BlackNoteToPlay.png"));
+    noteLabel.setBounds(550, 395, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[3] = noteLabel;
 
-    noteCollected = new JLabel(new ImageIcon("../assets/Done/BlackRight.png"));
-    noteCollected.setBounds(575, 350, 100, 100);
+    noteCollected = new JLabel(new ImageIcon("../assets/Done/BlackNoteCollected.png"));
+    noteCollected.setBounds(550, 395, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[3] = noteCollected;
 
     //WHITE2 - 4 in controller
-    noteLabel = new JLabel(new ImageIcon("../assets/Done/WhiteCollectMiddle.png"));
-    noteLabel.setBounds(450, 350, 100, 100);
+    noteLabel = new JLabel(new ImageIcon("../assets/Done/WhiteNoteToPlay.png"));
+    noteLabel.setBounds(450, 395, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[4] = noteLabel;
 
-    noteCollected = new JLabel(new ImageIcon("../assets/Done/WhiteMiddle.png"));
-    noteCollected.setBounds(450, 350, 100, 100);
+    noteCollected = new JLabel(new ImageIcon("../assets/Done/WhiteNoteCollected.png"));
+    noteCollected.setBounds(450, 395, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[4] = noteCollected;
 
     //WHITE3 - 5 in controller
-    noteLabel = new JLabel(new ImageIcon("../assets/Done/WhiteCollectRight.png"));
-    noteLabel.setBounds(575, 350, 100, 100);
+    noteLabel = new JLabel(new ImageIcon("../assets/Done/WhiteNoteToPlay.png"));
+    noteLabel.setBounds(550, 395, 100, 100);
     noteLabel.setVisible(false);
     activeNotes[5] = noteLabel;
 
-    noteCollected = new JLabel(new ImageIcon("../assets/Done/WhiteRight.png"));
-    noteCollected.setBounds(575, 350, 100, 100);
+    noteCollected = new JLabel(new ImageIcon("../assets/Done/WhiteNoteCollected.png"));
+    noteCollected.setBounds(550, 395, 100, 100);
     noteCollected.setVisible(false);
     collectedNotes[5] = noteCollected;
 
@@ -292,8 +293,10 @@ public class PlayModeView extends JPanel{
       notes.get(i).paintComponent(g);
 
         // Remove from the notes ArrayList as no longer needed
-      if(notes.get(i).getY() > (int)(0.82 * height) || notes.get(i).collected)
+      //if(notes.get(i).getY() > (int)(0.82 * height) || notes.get(i).collected)
+      if(notes.get(i).getY() > 463 || notes.get(i).collected)
         notes.remove(i);
+        //System.out.println("note dropped");
       }
 
     frame++;

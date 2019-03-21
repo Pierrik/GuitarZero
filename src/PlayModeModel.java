@@ -481,7 +481,7 @@ public class PlayModeModel implements Runnable{
     try {
 
       // Checks if the user has pressed the note that is at the bottom of the screen
-      if(this.noteToPlay.equals(guitarNote) && !view.notes.get(0).collected && view.notes.get(0).noteValue.equals(noteToPlay)){
+      if(this.noteToPlay.equals(guitarNote) && !view.notes.get(0).collected && view.notes.get(0).noteValue.equals(noteToPlay) && view.notes.get(0).getY()>390){
         displayCollectedNote(guitarNote);
         collectNote();
         view.notes.get(0).collect();
