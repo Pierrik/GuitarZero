@@ -7,7 +7,8 @@ import net.java.games.input.ControllerEnvironment;
  * PlayModeController.
  *
  * @author  Kamila Hoffmann-Derlacka
- * @version 1.5, February 2019.
+ * @author  John Mercer
+ * @version 1.8, March 2019.
  *
  *   Linux/Mac:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
@@ -22,7 +23,8 @@ import net.java.games.input.ControllerEnvironment;
  */
 public class PlayModeController implements Runnable {
   final static String GUITAR_HERO = "Guitar Hero";
-  final static int    DELAY       = 150;
+  final static int    BUTTON_DELAY     = 250;
+  final static int    POLL_DELAY       = 150;
 
   private  PlayModeModel model;
   // make them non static when not using main anymore
@@ -116,12 +118,10 @@ public class PlayModeController implements Runnable {
               }
             } else if (i == ESCAPE) { // escape button
               if (val == BUTTON_THRESHOLD) {
-                System.out.println("escape");
-
-                this.model.playSong.song_running.set(false);  // stopping the song running
-                Run.changeMode(Mode.SLASH);
+                System.out.println("Escape - PLAY");
+                this.model.playSong.song_running.set(false);
                 controller_running.set(false);
-                //System.exit(1);
+                ControllerUtils.changeModeOnNewThread(Mode.SLASH);
               }
             } else if (i == WHAMMY) { // whammy  16 in linux
               if (val >= BUTTON_THRESHOLD) {
@@ -144,11 +144,8 @@ public class PlayModeController implements Runnable {
         }
       }
 
-      try {
-        Thread.sleep(DELAY);
-      } catch (Exception exn) {
-        System.out.println(exn); System.exit(1);
-      }
+      ControllerUtils.sleep(POLL_DELAY);
+
     }
   }
 
@@ -262,29 +259,6 @@ public class PlayModeController implements Runnable {
    * Finds GH controller and polls it forever. If none found, error is printed and program
    * terminates.
    */
-
-  // Main commented out as pollForever can't be referenced from static
-
-  /*public static void main(String[] args) {
-
-    if (Run.OSvalidator() == 'm') {
-      BENDER_ROUND     = 13;
-      WHAMMY           = 17;
-    } else if (Run.OSvalidator() == 'u') {
-      BENDER_ROUND     = 17;
-      WHAMMY           = 16;
-    }
-
-    for ( Controller ctrl : ctrls ) {
-      if ( ctrl.getName().contains( GUITAR_HERO ) ) {
-        pollForever( ctrl );
-      }
-    }
-
-    System.out.println( GUITAR_HERO + " controller not found" );
-    System.exit( 1 );
-  }*/
-
   public void pollGuitarForever() {
 
     if (Run.OSvalidator() == 'm') {

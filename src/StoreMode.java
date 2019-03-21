@@ -18,6 +18,7 @@ public class StoreMode extends JPanel {
   // Server settings
   private static final String HOST = "localhost";
   private static final int    PORT = 8888;
+  final static int MODE_DELAY = 150;
 
   // Store settings
   private static final String PREVIEWS = "../local_store/preview_files/";
@@ -72,6 +73,14 @@ public class StoreMode extends JPanel {
       e.printStackTrace();
     }
     g.drawImage(highway, 0, 0, this);
+  }
+
+  public void sleep(int millis){
+    try {
+      Thread.sleep(millis);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
 }
