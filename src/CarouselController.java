@@ -24,7 +24,7 @@ import net.java.games.input.ControllerEnvironment;
 public class CarouselController implements Runnable {
 
   final static String GUITAR_HERO      = "Guitar Hero";
-  final static int    DELAY            = 100;
+  final static int    POLL_DELAY            = 100;
 
   CarouselModel         model;
   ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
@@ -58,6 +58,7 @@ public class CarouselController implements Runnable {
 
     controllerOn.set(true);
     while (controllerOn.get()) {
+      ControllerUtils.sleep(POLL_DELAY);
       if (ctrl.poll()) {
         for ( int i = 0; i < BUTTONS; i++ ) {
           vals[i] = activeCmps[i].getPollData();
@@ -75,7 +76,7 @@ public class CarouselController implements Runnable {
                     System.out.println("Zero power pressed - SLASH");
                     controllerOn.set(false);    // interrupting current controller thread
                     String selectedMode = model.select();
-                    Run.changeMode(Mode.valueOf(selectedMode));
+                    ControllerUtils.changeModeOnNewThread(Mode.valueOf(selectedMode));
                     break;
 
                   case SELECT:
@@ -83,7 +84,7 @@ public class CarouselController implements Runnable {
                     controllerOn.set(false);
                     String selectedSong = model.select();
                     Run.currentBundleDir = "../local_store/bundle_files/" + selectedSong + "/";
-                    Run.changeMode(Mode.SLASH);
+                    ControllerUtils.changeModeOnNewThread(Mode.SLASH);
                     break;
 
                   case STORE:
@@ -91,31 +92,22 @@ public class CarouselController implements Runnable {
                     controllerOn.set(false);
                     String selectedBundle = model.select();
                     model.buySong(selectedBundle);
-                    Run.changeMode(Mode.SLASH);
+                    ControllerUtils.changeModeOnNewThread(Mode.SLASH);
                     break;
 
                 }
-                try {
-                  Thread.sleep(1250);
-                } catch (InterruptedException e) {
-                  e.printStackTrace();
-                }
+                ControllerUtils.sleep(1250); // still needed?
               }
               break;
 
 
             // escape button
             case 1 :
-              if (val >= BUTTON_THRESHOLD){
-                // stay in slash mode
+              if (this.mode != Mode.SLASH && val >= BUTTON_THRESHOLD) {
+                // go back to slash mode if outside of slash mode
                 System.out.println("Escape button pressed");
-                Run.changeMode(Mode.SLASH);
-
-                try {
-                  Thread.sleep(1250);
-                } catch (InterruptedException e) {
-                  e.printStackTrace();
-                }
+                controllerOn.set(false);
+                ControllerUtils.changeModeOnNewThread(Mode.SLASH);
               }
               break;
 
@@ -132,14 +124,6 @@ public class CarouselController implements Runnable {
           }
         }
       }
-
-
-      try {
-        Thread.sleep(DELAY);
-      } catch (Exception exn) {
-        System.out.println(exn); System.exit(1);
-      }
-
     }
   }
 
