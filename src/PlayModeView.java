@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Harper Ford
  * @author Tom Mansfield
  * @author Kamila Hoffmann-Derlacka
- * @version 3.2, March 2019.
+ * @version 5.1, March 2019.
 */
 public class PlayModeView extends JPanel{
 
