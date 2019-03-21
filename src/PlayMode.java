@@ -11,17 +11,18 @@ import java.lang.Thread;
 */
 public class PlayMode extends JPanel implements Runnable{
 
-    PlayModeView view;
-    PlayModeModel model;
-    PlayModeController controller;
+  PlayModeView view;
+  PlayModeModel model;
+  PlayModeController controller;
 
-    AtomicBoolean playmode_running = new AtomicBoolean(false);
+  AtomicBoolean playmode_running = new AtomicBoolean(false);
 
-    private static final int SCREEN_WIDTH = 1000;
-    private static final int SCREEN_HEIGHT = 563;
+  private static final int SCREEN_WIDTH  = 1000;
+  private static final int SCREEN_HEIGHT = 563;
 
   // Limit the speed of the frames
-  private static long targetTime = 30;
+  private static long      TARGET_TIME   = 30;
+  private static long      MILLION       = 1000000;
 
   /**
    * Sets up the Play Mode, Initialises Model, View and Controller
@@ -29,13 +30,13 @@ public class PlayMode extends JPanel implements Runnable{
    */
   public PlayMode(String bundlePath) {
 
-        // Initialise the model, controller, view GUI classes
-        view = new PlayModeView();
-        view.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
-        model = new PlayModeModel(bundlePath, view);
-        controller = new PlayModeController(model);
-        this.add(view);
-        view.setVisible(true);
+    // Initialise the model, controller, view GUI classes
+    view = new PlayModeView();
+    view.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
+    model = new PlayModeModel(bundlePath, view);
+    controller = new PlayModeController(model);
+    this.add(view);
+    view.setVisible(true);
 
     if(!model.startGame) {
       Run.changeMode(Mode.SLASH);
@@ -67,7 +68,7 @@ public class PlayMode extends JPanel implements Runnable{
       long s = System.nanoTime();
       view.repaint();
       long elapsed = System.nanoTime() - s;
-      long wait = targetTime - elapsed / 1000000;
+      long wait = TARGET_TIME - elapsed / MILLION;
       try {
         Thread.sleep(wait);
       } catch (Exception o) {

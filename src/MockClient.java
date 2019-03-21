@@ -18,6 +18,8 @@ public class MockClient {
   private int    port;
 
   private final static int BUFFER_SIZE = 4092;
+  private final static int GET_SONG_BUNDLE = 12;
+  private final static int GET_SONG_PREVIEW = 13;
 
   MockClient(String host, int port){
     this.host = host;

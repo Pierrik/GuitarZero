@@ -26,8 +26,8 @@ public class PlayModeController implements Runnable {
 
   private  PlayModeModel model;
   // make them non static when not using main anymore
-  private static ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
-  private static net.java.games.input.Controller[] ctrls = cenv.getControllers();
+  private ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
+  private net.java.games.input.Controller[] ctrls = cenv.getControllers();
 
   final static double BUTTON_THRESHOLD = 1.0;
 
@@ -123,7 +123,7 @@ public class PlayModeController implements Runnable {
                 controller_running.set(false);
                 //System.exit(1);
               }
-            } else if (i == WHAMMY) { //whammy  16 in linux
+            } else if (i == WHAMMY) { // whammy  16 in linux
               if (val >= BUTTON_THRESHOLD) {
                 if (model.getCurrentTick() >= model.startZeroPower
                     && model.getCurrentTick() <= model.endZeroPower) {
@@ -134,7 +134,7 @@ public class PlayModeController implements Runnable {
               if (val > 0) {
                 // action
               }
-            } else if (i == BENDER_ROUND) { //bender round linux 17
+            } else if (i == BENDER_ROUND) { // bender round linux 17
               if (val > 0) {
                 if (model.getCurrentTick() <= model.startZeroPower
                     || model.getCurrentTick() >= model.endZeroPower)
@@ -157,18 +157,22 @@ public class PlayModeController implements Runnable {
         if (previous2 == WHITE2) {
           if (previous3 == WHITE3) {
             model.checkNote("222");
-          } else if (previous3 == BLACK3) {
+          }
+          else if (previous3 == BLACK3) {
             model.checkNote("221");
-          } else {
+          }
+          else {
             model.checkNote("220");
           }
         }
         else if (previous2 == BLACK2) {
           if (previous3 == WHITE3) {
             model.checkNote("212");
-          } else if (previous3 == BLACK3) {
+          }
+          else if (previous3 == BLACK3) {
             model.checkNote("211");
-          } else {
+          }
+          else {
             model.checkNote("210");
           }
         }
@@ -188,25 +192,31 @@ public class PlayModeController implements Runnable {
         if (previous2 == WHITE2) {
           if (previous3 == WHITE3) {
             model.checkNote("122");
-          } else if (previous3 == BLACK3) {
+          }
+          else if (previous3 == BLACK3) {
             model.checkNote("121");
-          } else {
+          }
+          else {
             model.checkNote("120");
           }
         } else if (previous2 == BLACK2) {
           if (previous3 == WHITE3) {
             model.checkNote("112");
-          } else if (previous3 == BLACK3) {
+          }
+          else if (previous3 == BLACK3) {
             model.checkNote("111");
-          } else {
+          }
+          else {
             model.checkNote("110");
           }
         } else {
           if (previous3 == WHITE3) {
             model.checkNote("120");
-          } else if (previous3 == BLACK3) {
+          }
+          else if (previous3 == BLACK3) {
             model.checkNote("101");
-          } else {
+          }
+          else {
             model.checkNote("100");
           }
         }
@@ -215,18 +225,22 @@ public class PlayModeController implements Runnable {
         if (previous2 == WHITE2) {
           if (previous3 == WHITE3) {
             model.checkNote("022");
-          } else if (previous3 == BLACK3) {
+          }
+          else if (previous3 == BLACK3) {
             model.checkNote("021");
-          } else {
+          }
+          else {
             model.checkNote("020");
           }
         }
         else if (previous2 == BLACK2) {
           if (previous3 == WHITE3) {
             model.checkNote("012");
-          } else if (previous3 == BLACK3) {
+          }
+          else if (previous3 == BLACK3) {
             model.checkNote("011");
-          } else {
+          }
+          else {
             model.checkNote("010");
           }
         }

@@ -28,6 +28,12 @@ public class CarouselView extends JPanel {
   private ArrayList<Rectangle> bounds = new ArrayList<>();
   private int carouselLength = 0;
 
+  final static int CV_WIDTH = 740;
+  final static int CV_HEIGHT = 150;
+  final static int CV_Y = 65;
+  final static int CV_X = 80;
+  final static int VARCV1 = 630;
+
   /**
    * Alters the GUI by taking commands from a model class
    *
@@ -78,12 +84,8 @@ public class CarouselView extends JPanel {
       menuOptions.get(2).setBounds(bounds.get(2));
     }
 
-
-
-
-
     this.add(carousel);
-    this.setBounds(80, 65, 740, 150);
+    this.setBounds(CV_X, CV_Y, CV_WIDTH, CV_HEIGHT);
   }
 
   /**

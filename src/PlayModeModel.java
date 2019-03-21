@@ -42,40 +42,41 @@ public class PlayModeModel implements Runnable{
   public boolean startGame;
   private int errors;
   PlaySong playSong;
+
   // a map of notes to controller buttons' values (the same for all OS)
-  Map<Integer, Integer> notesToButtons = new HashMap<Integer, Integer>() {{
+  Map<Integer, Integer> notesToButtons = new HashMap<>() {{
     put(0, 0); put(1, 1); put(2, 4); put(3, 2); put(4, 5); put(5, 3);
   }};
 
   // File paths to update assets displayed during the game
-  private static final String ZERO_POWER_PATH = "../assets/ZeroPowerShield.png";
-  private static final String MULTIPLIER2 = "../assets/times2Multiplier3.png";
-  private static final String MULTIPLIER4 = "../assets/times4Multiplier3.png";
-  private static final String MULTIPLIER8 = "../assets/times8Multiplier3.png";
-  private static final String MULTIPLIER16 = "../assets/times16Multiplier3.png";
-  private static final String MULTIPLIER32 = "../assets/times32Multiplier3.png";
-  private static final String MULTIPLIER64 = "../assets/times64Multiplier3.png";
-  private static final String CURRENCY_PATH = "../currency/currency.txt";
+  private static final String  ZERO_POWER_PATH  = "../assets/ZeroPowerShield.png";
+  private static final String  MULTIPLIER2      = "../assets/times2Multiplier3.png";
+  private static final String  MULTIPLIER4      = "../assets/times4Multiplier3.png";
+  private static final String  MULTIPLIER8      = "../assets/times8Multiplier3.png";
+  private static final String  MULTIPLIER16     = "../assets/times16Multiplier3.png";
+  private static final String  MULTIPLIER32     = "../assets/times32Multiplier3.png";
+  private static final String  MULTIPLIER64     = "../assets/times64Multiplier3.png";
+  private static final String  CURRENCY_PATH    = "../currency/currency.txt";
 
   // Extensions of files to search for in the bundle
-  private static final String TXT_EXTENSION = ".txt";
-  private static final String PNG_EXTENSION = ".png";
-  private static final String MIDI_EXTENSION = ".mid";
+  private static final String  TXT_EXTENSION    = ".txt";
+  private static final String  PNG_EXTENSION    = ".png";
+  private static final String  MIDI_EXTENSION   = ".mid";
 
   // The value of no note being played
-  private static final String EMPTY_NOTE = "000";
+  private static final String EMPTY_NOTE        = "000";
 
   // The amount of time to wait at the end of the game before returning to slash mode
   // Allows the user to see their score
-  private static final int END_OF_GAME_DELAY = 5000;
+  private static final int     END_OF_GAME_DELAY = 5000;
 
   // The maximum amount of currency that can be earned during the game
-  private static final int MAX_CURRENCY = 5;
+  private static final int     MAX_CURRENCY      = 5;
 
   // Currency updated every time the user reaches a score that is a multiple of 500
-  private static final int CURRENCY_SCORE = 500;
+  private static final int     CURRENCY_SCORE    = 500;
 
-  private static final int DROP_NOTE_REGION = 390;
+  private static final int     DROP_NOTE_REGION  = 390;
 
   public PlayModeModel( String bundlePath, PlayModeView view ) {
 

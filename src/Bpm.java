@@ -12,11 +12,18 @@ public class Bpm {
   /*
    * Returns the BPM of the given MIDI sequence
    */
+
+	final static int SECONDS = 60000000;
+  final static int VAR1    = 0x51;
+  final static int VAR2    = 0xff;
+  final static int VAR3    = 16;
+  final static int VAR4    = 8;
+
   public static int getBPM(Sequence sequence){
     try {
 
       //Get sequence from file
-      return(60000000 / getMicrosecondsPerQuarterNote(sequence));
+      return(SECONDS / getMicrosecondsPerQuarterNote(sequence));
     }catch (Exception e) {
     	e.printStackTrace();
 		}

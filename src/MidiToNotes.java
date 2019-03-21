@@ -14,9 +14,11 @@ import java.util.Map;
  * MidiToNotes
  * Revisited class
  * Converts a MIDI file into a notes file
+ *
  * @author Tom Mansfield
  * @author Kamila Hoffmann-Derlacka
  * @author Harper Ford
+ *
  * @version 2.2, February 2019
  */
 public class MidiToNotes {
@@ -32,6 +34,8 @@ public class MidiToNotes {
   final static int  LAST_GUITAR      = 39;
   final static int  ZERO_POWER_TIME  = 10;
   final static int  SECONDS          = 60;
+  final static int  BUTTONS          = 6;
+  final static int  LANES            = 3;
 
 
   public static int getNotes ( Sequence seq , int instrumentNumber ){
@@ -116,7 +120,7 @@ public class MidiToNotes {
    */
   public static void formatNote( long tick, int n, Map<Long, String> m ) {
 
-    final int note = n % 6;
+    final int note = n % BUTTONS;
 
     String format = "";
 
@@ -153,7 +157,7 @@ public class MidiToNotes {
   public static String compare( String a, String b ){
     String newNote = "";
     try {
-      for ( int i = 0; i < 3; i ++ ) {
+      for ( int i = 0; i < LANES; i ++ ) {
         if ( Character.isDigit ( a.charAt( i ) ) && Character.isDigit( b.charAt( i ) ) ) {
           if ( Character.getNumericValue( a.charAt( i ) ) > Character.getNumericValue( b.charAt( i ) ) ){
             newNote = newNote + a.charAt(i);

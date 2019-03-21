@@ -122,7 +122,6 @@ public class Run {
       return 'u';
     else {
       System.out.println("OS not recognised.");
-      // throw an exception??
       return 'q';
     }
   }

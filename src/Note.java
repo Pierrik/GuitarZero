@@ -14,17 +14,17 @@ import java.awt.*;
 public class Note{
 
   // Constants used to paint the notes and bounds to collect notes
-  private static final int INITIAL_Y = 225;
-  private static final int VELOCITY = 4;
-  private static final int SCREEN_WIDTH = 1000;
-  private static final int SCREEN_HEIGHT = 563;
-  private static final int LEFT_INITIAL_X = 412;
-  private static final int RIGHT_INITIAL_X = 510;
-  private static final int WHITE_VALUE = 2;
-  private static final int BLACK_VALUE = 1;
-  private static final double GRADIENT = 0.4;
-  private static final int COLLECT_START_BOUND = 350;
-  private static final int COLLECT_END_BOUND = 460;
+  private static final int    INITIAL_Y           = 225;
+  private static final int    VELOCITY            = 4;
+  private static final int    SCREEN_WIDTH        = 1000;
+  private static final int    SCREEN_HEIGHT       = 563;
+  private static final int    LEFT_INITIAL_X      = 412;
+  private static final int    RIGHT_INITIAL_X     = 510;
+  private static final int    WHITE_VALUE         = 2;
+  private static final int    BLACK_VALUE         = 1;
+  private static final double GRADIENT            = 0.4;
+  private static final int    COLLECT_START_BOUND = 350;
+  private static final int    COLLECT_END_BOUND   = 460;
 
   //Load note sprites
   private Dimension screenSize = new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT);
