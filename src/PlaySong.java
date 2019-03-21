@@ -17,7 +17,7 @@ public class PlaySong implements Runnable {
   public File midiFile;
   public String currentNote;
   public long currentTick;
-  public boolean endOfSong;
+  public AtomicBoolean endOfSong;
   public int ticksPerBeat;
   public int bpm;
   public int time;
@@ -29,7 +29,7 @@ public class PlaySong implements Runnable {
     this.midiFile = file;
     this.currentNote="";
     this.currentTick = 0;
-    this.endOfSong = false;
+    this.endOfSong = new AtomicBoolean(false);
   }
 
   @Override
@@ -68,7 +68,7 @@ public class PlaySong implements Runnable {
         //System.out.println(this.currentTick);
       }
       seq.stop();
-      this.endOfSong = true;
+      this.endOfSong.set(true);
     } catch (Exception exn) {
       System.out.println(exn);
       System.exit(1);
