@@ -39,7 +39,7 @@ public class PlayMode extends JPanel implements Runnable{
     view.setVisible(true);
 
     if(!model.startGame) {
-      Run.changeMode(Mode.SLASH);
+      GameUtils.changeModeOnNewThread(Mode.SLASH);
     }
 
     }
@@ -50,15 +50,12 @@ public class PlayMode extends JPanel implements Runnable{
    */
   @Override
   public void run() {
-    Thread modelThread = new Thread(model);
-    Thread controllerThread = new Thread(controller);
 
     // Start the game if no exceptions have occurred in loading the game
     if(model.startGame) {
 
-      modelThread.start();
-      // Start the controller thread to run alongside the game
-      controllerThread.start();
+      new Thread(model).start();
+      new Thread(controller).start();
       playmode_running.set(true);
 
     }
@@ -78,7 +75,7 @@ public class PlayMode extends JPanel implements Runnable{
     }
 
     //Exit Play Mode
-    Run.changeMode(Mode.SLASH);
+    GameUtils.changeModeOnNewThread(Mode.SLASH);
 
   }
 }

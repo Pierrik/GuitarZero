@@ -468,7 +468,7 @@ public class PlayModeModel implements Runnable{
     boolean hasZeroEnded = false;
 
     // While the song is still playing
-    while(!playSong.endOfSong){
+    while(!playSong.endOfSong.get()){
 
       // Change the current tick and current note values
       currentTick = playSong.currentTick;
@@ -498,7 +498,7 @@ public class PlayModeModel implements Runnable{
     }
 
     // If the song has finished, end the game
-    if(playSong.endOfSong) {
+    if(playSong.endOfSong.get()) {
       try {
         // Wait 5 seconds while final score/currency etc. is still displayed
         Thread.sleep(END_OF_GAME_DELAY);
@@ -513,7 +513,7 @@ public class PlayModeModel implements Runnable{
           e.printStackTrace();
         }
         // Go back to slash mode when the song is over
-        Run.changeMode(Mode.SLASH);
+        GameUtils.changeModeOnNewThread(Mode.SLASH);
       }
     }
 

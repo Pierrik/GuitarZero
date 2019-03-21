@@ -1,10 +1,10 @@
 /**
- * ControllerUtils.
+ * GameUtils.
  *
  * @author John Mercer
  * @version 1.0, March 2019
  */
-public class ControllerUtils {
+public class GameUtils {
 
   public static void sleep(int millis){
     try {
