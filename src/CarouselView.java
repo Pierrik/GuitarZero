@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+//import org.omg.CORBA.Bounds;
 
 // Manages the display model
 
@@ -49,17 +50,38 @@ public class CarouselView extends JPanel {
       carousel.add(label);
     }
 
-    // sets the initial menuOption bounds
-    for (int i = 0; i < allOptions.size(); i++) {
-      menuOptions.get(i).setBounds(bounds.get(i));
-      if(i-1 < 4) {
-        menuOptions.get(i).setVisible(true);
-
-      } else {
-        menuOptions.get(i).setVisible(false);
-
+    // sets the initial menuOption bounds when 5 items or more are in the carousel
+    if (allOptions.size() > 4) {
+      for (int i = 0; i < allOptions.size(); i++) {
+        menuOptions.get(i).setBounds(bounds.get(i));
+        if (i > 4) {
+          menuOptions.get(i).setVisible(false);
+        } else {
+          menuOptions.get(i).setVisible(true);
+        }
       }
     }
+
+
+    // sets the initial menuOption bounds when 4 items are in the carousel
+    if (allOptions.size() == 4) {
+      menuOptions.get(0).setBounds(bounds.get(0));
+      menuOptions.get(1).setBounds(bounds.get(1));
+      menuOptions.get(2).setBounds(bounds.get(2));
+      menuOptions.get(3).setBounds(bounds.get(3));
+    }
+
+    // sets the initial menuOption bounds when 3 items are in the carousel
+    if (allOptions.size() == 3) {
+      menuOptions.get(0).setBounds(bounds.get(0));
+      menuOptions.get(1).setBounds(bounds.get(1));
+      menuOptions.get(2).setBounds(bounds.get(2));
+    }
+
+
+
+
+
     this.add(carousel);
     this.setBounds(80, 65, 740, 150);
   }
@@ -75,9 +97,17 @@ public class CarouselView extends JPanel {
 
     for (JLabel label : menuOptions) {
 
-      if (label.getX() == bounds.get(2).x) {
-        optionTitle = label.getText();
-        System.out.println(optionTitle);
+      if (carouselLength == 3) {
+        if (label.getX() == bounds.get(1).x) {
+          optionTitle = label.getText();
+          System.out.println(optionTitle);
+        }
+
+      } else {
+        if (label.getX() == bounds.get(2).x) {
+          optionTitle = label.getText();
+          System.out.println(optionTitle);
+        }
       }
     }
 
@@ -89,27 +119,30 @@ public class CarouselView extends JPanel {
    */
   public void leftMovement() {
     for (JLabel label : menuOptions) {
+
       for (int i = 0; i < carouselLength; i++) {
-        if(i-1 < 5) {
-          label.setVisible(true);
-
-        } else {
-          label.setVisible(false);
-
-        }
 
         if (label.getX() == bounds.get(0).x) {
           label.setBounds(bounds.get(carouselLength-1));
           break;
 
-        } else if (label.getX() == bounds.get(i).x && bounds.get(i).x != 0) {
+        } else if (label.getX() == bounds.get(i).x) {
           label.setBounds(bounds.get(i - 1));
           break;
         }
+      }
+    }
 
+    for (JLabel label : menuOptions) {
+      if (label.getX() > 630) {
+        label.setVisible(false);
+      } else {
+        label.setVisible(true);
       }
     }
   }
+
+
 
   /**
    * Shifts the JLabels right, called from the CarouselModel object
@@ -120,32 +153,39 @@ public class CarouselView extends JPanel {
 
       for (int i = 0; i < carouselLength; i++) {
 
-        if(i-1 < 3) {
-          label.setVisible(true);
-
-        } else {
-          label.setVisible(false);
-
-        }
-
-
         if (label.getX() == bounds.get(carouselLength-1).x) {
           label.setBounds(bounds.get(0));
           break;
 
-        } else if (label.getX() == bounds.get(i).x && bounds.get(i).x != bounds.get(carouselLength-1).x) {
+        } else if (label.getX() == bounds.get(i).x) {
           label.setBounds(bounds.get(i + 1));
           break;
         }
 
+      }
+    }
 
+
+    for (JLabel label : menuOptions) {
+      if (label.getX() > 630) {
+        label.setVisible(false);
+      } else {
+        label.setVisible(true);
       }
     }
   }
 
   public void initialiseBounds( int labelLength){
+
+    if (carouselLength == 3) {
+      bounds.add(new Rectangle(180, 50, 140, 160));
+      bounds.add(new Rectangle(330, 50, 140, 160));
+      bounds.add(new Rectangle(480, 50, 140, 160));
+
+    } else {
       for (int i = 0; i <= labelLength; i++) {
-          bounds.add(new Rectangle((i * 150)+30, 50, 140, 160));
+        bounds.add(new Rectangle((i * 150) + 30, 50, 140, 160));
       }
     }
+  }
 }
