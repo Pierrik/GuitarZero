@@ -75,6 +75,8 @@ public class PlayModeModel implements Runnable{
   // Currency updated every time the user reaches a score that is a multiple of 500
   private static final int CURRENCY_SCORE = 500;
 
+  private static final int DROP_NOTE_REGION = 390;
+
   public PlayModeModel( String bundlePath, PlayModeView view ) {
 
     // Set initial values of the game
@@ -544,21 +546,20 @@ public class PlayModeModel implements Runnable{
     try {
 
       // Checks if the user has pressed the note that is at the bottom of the screen
-      if(this.noteToPlay.equals(guitarNote) && !view.notes.get(0).collected && view.notes.get(0).noteValue.equals(noteToPlay) && view.notes.get(0).getY()>390){
+      // If the current note to play is the note pressed by the user, the note has not already been collected
+      // Also check whether the value of the note is the value supposed to be played and that the note is in the correct region
+      if(this.noteToPlay.equals(guitarNote) && !view.notes.get(0).collected && view.notes.get(0).noteValue.equals(noteToPlay) && view.notes.get(0).getY()>DROP_NOTE_REGION){
         displayCollectedNote(guitarNote);
         collectNote();
         view.notes.get(0).collect();
       }
+
+      // Otherwise, drop the note
       else{
         dropNote();
       }
-
     } catch (Exception e) {
-
-      // If there is an error, continue game and don't crash
-      // Very rare but may need to revisit how this is dealt with
       dropNote();
-
     }
 
   }
@@ -567,6 +568,7 @@ public class PlayModeModel implements Runnable{
    * collectNote
    * Occurs when the user plays a correct note
    * Updates the streakCount, Multiplier and currencyEarned if necessary
+   * Sets the labels displayed on the screen to the correct values
    */
   public void collectNote() {
     this.streakCount ++;
@@ -581,6 +583,7 @@ public class PlayModeModel implements Runnable{
    * dropNote
    * Occurs when the user does not play a correct note or plays a note when no note should be played
    * Resets the streakCount and multiplier
+   * Sets the labels displayed on the screen to the correct values
    */
   public void dropNote() {
     this.streakCount = 0;
@@ -592,6 +595,7 @@ public class PlayModeModel implements Runnable{
   /**
    * updateCurrency
    * Updates the current currency earned during the song
+   * Sets the currency label to display the correct amount of stars on the screen
    */
   public void updateCurrency() {
 
@@ -608,15 +612,30 @@ public class PlayModeModel implements Runnable{
 
   }
 
+  /**
+   * displayNoteOn
+   * When the user presses a note button, show which button they have pressed on the fretboard
+   * Makes the game easier as the user can see which buttons they are pressing without looking at the guitar
+   * @param pressedButton the button that has been pressed
+   */
   public void displayNoteOn(int pressedButton) {
     view.noteDisplay(true, pressedButton);
   }
 
+  /**
+   * resetAll
+   * Don't show any notes on the fretboard when no buttons are being clicked
+   */
   public void resetAll() {
     view.noteDisplay(false, 6);
     view.noteCollected(false, 6);
   }
 
+  /**
+   * displayCollectedNote
+   * Change the colour of the note on the fretboard when a note has been collected
+   * @param guitarNote the note that has been collected
+   */
   public void displayCollectedNote(String guitarNote) {
     for (int i = 0; i < 3; i ++) {
       // 1 black, 2 white, 0 nothing

@@ -1,5 +1,9 @@
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -56,4 +60,18 @@ public class StoreMode extends JPanel {
     //view.setVisible(true);
 
   }
+
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g); // paint the background image and scale it to fill the entire space
+
+    Image highway = null;
+    try {
+      highway = ImageIO.read(new File("../assets/Done/Highway.bmp"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    g.drawImage(highway, 0, 0, this);
+  }
+
 }
