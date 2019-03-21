@@ -520,8 +520,8 @@ public class PlayModeModel implements Runnable{
         } catch (Exception e) {
           e.printStackTrace();
         }
-        // Go back to slash mode when the song is over
-        GameUtils.changeModeOnNewThread(Mode.SLASH);
+        //Display end stats. Go back to slash mode when the song is over
+        this.view.displayEndValues(this.coverArt, this.bundlePath, Integer.toString(this.score), Integer.toString(this.totalCurrency));
       }
     }
 
