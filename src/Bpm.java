@@ -14,10 +14,6 @@ public class Bpm {
    */
 
 	final static int SECONDS = 60000000;
-  final static int VAR1    = 0x51;
-  final static int VAR2    = 0xff;
-  final static int VAR3    = 16;
-  final static int VAR4    = 8;
 
   public static int getBPM(Sequence sequence){
     try {
@@ -45,7 +41,8 @@ public class Bpm {
   				byte[] data = m.getData();
   				int type = m.getType();
   				if (type == 0x51){ //[0x51]MIDI_SET_TEMPO
-  					return ((data[0] & 0xff) << 16) | ((data[1] & 0xff) << 8) | (data[2] & 0xff);
+  					// returns mpqm
+  				  return ((data[0] & 0xff) << 16) | ((data[1] & 0xff) << 8) | (data[2] & 0xff);
   				}
   			}
   		}

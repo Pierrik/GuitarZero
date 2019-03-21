@@ -32,7 +32,7 @@ public class CarouselView extends JPanel {
   final static int CV_HEIGHT     = 150;
   final static int CV_Y          = 65;
   final static int CV_X          = 80;
-  final static int VARCV1        = 630;
+  final static int MAX_X_BOUND   = 630;
   final static int BOUNDS_X_1    = 180;
   final static int BOUNDS_X_2    = 330;
   final static int BOUNDS_X_3    = 480;
@@ -143,7 +143,7 @@ public class CarouselView extends JPanel {
     }
 
     for (JLabel label : menuOptions) {
-      if (label.getX() > 630) {
+      if (label.getX() > MAX_X_BOUND) {
         label.setVisible(false);
       } else {
         label.setVisible(true);
@@ -176,7 +176,7 @@ public class CarouselView extends JPanel {
 
 
     for (JLabel label : menuOptions) {
-      if (label.getX() > 630) {
+      if (label.getX() > MAX_X_BOUND) {
         label.setVisible(false);
       } else {
         label.setVisible(true);

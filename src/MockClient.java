@@ -18,8 +18,8 @@ public class MockClient {
   private int    port;
 
   private final static int BUFFER_SIZE = 4092;
-  private final static int GET_SONG_BUNDLE = 12;
-  private final static int GET_SONG_PREVIEW = 13;
+  private final static int BUNDLE_LEN_DIFF = 12;
+  private final static int PREVIEW_LEN_DIFF = 13;
 
   MockClient(String host, int port){
     this.host = host;
@@ -146,7 +146,7 @@ public class MockClient {
    * @return: Song name.
    */
   public static String getSongBundle(String bundle){
-    return bundle.substring(0, bundle.length() - 12);
+    return bundle.substring(0, bundle.length() - BUNDLE_LEN_DIFF);
   }
 
   /**
@@ -157,7 +157,7 @@ public class MockClient {
    * @return: Song name.
    */
   public static String getSongPreview(String preview){
-    return preview.substring(0, preview.length() - 13);
+    return preview.substring(0, preview.length() - PREVIEW_LEN_DIFF);
   }
 
   /**
