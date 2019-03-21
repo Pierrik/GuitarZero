@@ -49,22 +49,22 @@ public class PlayModeModel implements Runnable{
   }};
 
   // File paths to update assets displayed during the game
-  private static final String  ZERO_POWER_PATH  = "../assets/ZeroPowerShield.png";
-  private static final String  MULTIPLIER2      = "../assets/times2Multiplier3.png";
-  private static final String  MULTIPLIER4      = "../assets/times4Multiplier3.png";
-  private static final String  MULTIPLIER8      = "../assets/times8Multiplier3.png";
-  private static final String  MULTIPLIER16     = "../assets/times16Multiplier3.png";
-  private static final String  MULTIPLIER32     = "../assets/times32Multiplier3.png";
-  private static final String  MULTIPLIER64     = "../assets/times64Multiplier3.png";
-  private static final String  CURRENCY_PATH    = "../currency/currency.txt";
+  private static final String  ZERO_POWER_PATH   = "../assets/ZeroPowerShield.png";
+  private static final String  MULTIPLIER2       = "../assets/times2Multiplier3.png";
+  private static final String  MULTIPLIER4       = "../assets/times4Multiplier3.png";
+  private static final String  MULTIPLIER8       = "../assets/times8Multiplier3.png";
+  private static final String  MULTIPLIER16      = "../assets/times16Multiplier3.png";
+  private static final String  MULTIPLIER32      = "../assets/times32Multiplier3.png";
+  private static final String  MULTIPLIER64      = "../assets/times64Multiplier3.png";
+  private static final String  CURRENCY_PATH     = "../currency/currency.txt";
 
   // Extensions of files to search for in the bundle
-  private static final String  TXT_EXTENSION    = ".txt";
-  private static final String  PNG_EXTENSION    = ".png";
-  private static final String  MIDI_EXTENSION   = ".mid";
+  private static final String  TXT_EXTENSION     = ".txt";
+  private static final String  PNG_EXTENSION     = ".png";
+  private static final String  MIDI_EXTENSION    = ".mid";
 
   // The value of no note being played
-  private static final String EMPTY_NOTE        = "000";
+  private static final String  EMPTY_NOTE        = "000";
 
   // The amount of time to wait at the end of the game before returning to slash mode
   // Allows the user to see their score
@@ -77,6 +77,13 @@ public class PlayModeModel implements Runnable{
   private static final int     CURRENCY_SCORE    = 500;
 
   private static final int     DROP_NOTE_REGION  = 390;
+  private static final int     MULTIPLIER_SETTER = 10;
+  private static final int     ALL_BUTTONS       = 6;
+  private static final int     ASCII_DIFF        = 48;
+  private static final int     LANES             = 3;
+  private static final int     FIRST_WHITE       = 0;
+  private static final int     FIRST_BLACK       = 1;
+  private static final int     BUTTON_DIFF       = 2;
 
   public PlayModeModel( String bundlePath, PlayModeView view ) {
 
@@ -208,9 +215,10 @@ public class PlayModeModel implements Runnable{
    *      score = 20, multiplier = 4
    *      score = 30, multiplier = 8 etc.
    */
+
   public void setMultiplier() {
     // Each time streak is a multiple of 10, change the multiplier
-    if(this.streakCount % 10 == 0 ) {
+    if(this.streakCount % MULTIPLIER_SETTER == 0 ) {
       // Multiplier value doubles each time, e.g. 2, 4, 8, 16, 32, 64 etc.
       String img;
 
@@ -637,19 +645,22 @@ public class PlayModeModel implements Runnable{
    * Change the colour of the note on the fretboard when a note has been collected
    * @param guitarNote the note that has been collected
    */
+
   public void displayCollectedNote(String guitarNote) {
-    for (int i = 0; i < 3; i ++) {
+    for (int i = 0; i < LANES; i ++) {
       // 1 black, 2 white, 0 nothing
-      int singleNote = (int) guitarNote.charAt(i) - 48;
+      int singleNote = (int) guitarNote.charAt(i) - ASCII_DIFF;
+
+      // if 1 then it's black
       if (singleNote == 1) {
-        // then black i
-        int myNote = 1 + i * 2;
-        view.noteDisplay(false, 6);
+        int myNote = FIRST_BLACK + i * BUTTON_DIFF;
+        view.noteDisplay(false, ALL_BUTTONS);
         view.noteCollected(true, notesToButtons.get(myNote));
-      } else if (singleNote == 2) {
-        // then white i
-        int myNote = 0 + i * 2;
-        view.noteDisplay(false, 6);
+      }
+      // if 2 then it's white
+      else if (singleNote == 2) {
+        int myNote = FIRST_WHITE + i * BUTTON_DIFF;
+        view.noteDisplay(false, ALL_BUTTONS);
         view.noteCollected(true, notesToButtons.get(myNote));
       }
     }

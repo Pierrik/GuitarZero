@@ -34,19 +34,19 @@ public class PlayModeController implements Runnable {
   final static double BUTTON_THRESHOLD = 1.0;
 
   // Buttons
-  final static int    WHITE1       = 0;
-  final static int    BLACK1       = 1;
-  final static int    WHITE2       = 4;
-  final static int    BLACK2       = 2;
-  final static int    WHITE3       = 5;
-  final static int    BLACK3       = 3;
-  final static int    ZERO_POWER   = 8;
-  final static int    ESCAPE       = 10;
-  final static int    BENDER_CLICK = 12;
+  final static int    WHITE1           = 0;
+  final static int    BLACK1           = 1;
+  final static int    WHITE2           = 4;
+  final static int    BLACK2           = 2;
+  final static int    WHITE3           = 5;
+  final static int    BLACK3           = 3;
+  final static int    ZERO_POWER       = 8;
+  final static int    ESCAPE           = 10;
+  final static int    BENDER_CLICK     = 12;
 
   // Variables that change for different operating systems, default: windows
-  static int          BENDER_ROUND = 13;
-  static int          WHAMMY       = 14;
+  static int          BENDER_ROUND     = 13;
+  static int          WHAMMY           = 14;
 
   private final AtomicBoolean controller_running = new AtomicBoolean(false);
 
