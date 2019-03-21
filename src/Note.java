@@ -39,9 +39,7 @@ public class Note{
   PlayModeModel model;
 
   public int getY(){ return this.y; }
-  /**
-   *
-   */
+
   public Note(String notes, PlayModeModel model){
     this.model = model;
     this.positions[0][0] = LEFT_INITIAL_X;
@@ -85,11 +83,13 @@ public class Note{
     this.collected = true;
   }
 
+  // Sets the note tp play when the note is in a certain area
   private void incY(int v){
     this.y += v;
     if(this.y>COLLECT_START_BOUND && y< COLLECT_END_BOUND && !this.collected){
       model.setNoteToPlay(this.noteValue);
     }
+    // Drop note when it falls past the collection area
     else if(this.y > COLLECT_END_BOUND && !this.collected){
       model.dropNote();
       model.setNoteToPlay("");
