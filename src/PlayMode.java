@@ -60,19 +60,20 @@ public class PlayMode extends JPanel implements Runnable {
     // Start the game if no exceptions have occurred in loading the game
     if(model.startGame) {
 
+      // Start model and controller threads
       new Thread(model).start();
       new Thread(controller).start();
       playmode_running.set(true);
-
     }
 
+    // Repaints the screen constantly while the game is still playing
     while (playmode_running.get()) {
 
       long s = System.nanoTime();
       view.revalidate();
       view.repaint();
 
-
+      // Limit the screen refresh to 30 frames per second
       long elapsed = System.nanoTime() - s;
       long wait = TARGET_TIME - elapsed / MILLION;
       try {
