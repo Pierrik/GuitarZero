@@ -7,6 +7,7 @@ import java.util.Scanner;
  * Currency.
  *
  * @author  Kamila Hoffmann-Derlacka
+ * @authro Tom Mansfield
  * @version 2.00, March 2019.
  */
 

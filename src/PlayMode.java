@@ -11,12 +11,15 @@ import java.lang.Thread;
 */
 public class PlayMode extends JPanel implements Runnable {
 
+  // Play Mode MVC
   PlayModeView view;
   PlayModeModel model;
   PlayModeController controller;
+
+  // Stores the current state of the game
   static AtomicBoolean playmode_running = new AtomicBoolean(false);
 
-
+  // Screen dimensions
   private static final int SCREEN_WIDTH  = 1000;
   private static final int SCREEN_HEIGHT = 563;
 
@@ -32,9 +35,11 @@ public class PlayMode extends JPanel implements Runnable {
 
     // Initialise the model, controller, view GUI classes
     view = new PlayModeView();
-    view.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
     model = new PlayModeModel(bundlePath, view);
     controller = new PlayModeController(model);
+
+    // Set the screen size of the view
+    view.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
     this.add(view);
     view.setVisible(true);
 
