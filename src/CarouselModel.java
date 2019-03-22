@@ -100,7 +100,7 @@ public class CarouselModel {
 
   public void updateCurrencyAndLocalStore(String bundleName, String songName) throws Exception {
     totalCurrency --;
-    Currency.saveCurrencyFile(-1);
+    Currency.saveCurrencyFile(totalCurrency);
 
     MockClient client = new MockClient(HOST, PORT);
     client.downloadFile(bundleName, "DOWNLOAD_BUNDLE");
