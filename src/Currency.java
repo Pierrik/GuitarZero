@@ -17,6 +17,7 @@ public class Currency {
 
   /**
    * findCurrencyFile
+   * Finds the file used to store the user's earned currency
    * @return the currency file for the game
    * @throws Exception
    */

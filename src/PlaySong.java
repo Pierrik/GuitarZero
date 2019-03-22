@@ -44,7 +44,6 @@ public class PlaySong implements Runnable {
       final Sequencer seq = MidiSystem.getSequencer();
       final Transmitter trans = seq.getTransmitter();
       this.ticksPerBeat = MidiSystem.getSequence(midiFile).getResolution();
-      //System.out.println(this.bpm);
       long currentTick;
       seq.open();
       seq.setSequence(MidiSystem.getSequence(midiFile));

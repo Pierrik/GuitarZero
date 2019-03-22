@@ -37,7 +37,14 @@ public class MidiToNotes {
   final static int  BUTTONS          = 6;
   final static int  LANES            = 3;
 
-
+  /**
+   * getNotes
+   * Gets the total amount of notes played by one instrument channel during a song
+   * Loops through each track in the MIDI sequence and collects how many times a channel outputs a "Note On" message for the correct instrument
+   * @param seq the MIDI sequence to check
+   * @param instrumentNumber the number of the instrument to check for note occurrences
+   * @return the total number of notes played by the instrument
+   */
   public static int getNotes ( Sequence seq , int instrumentNumber ){
     // Total notes played by the instrument
     int totalNotes = 0;
@@ -83,7 +90,10 @@ public class MidiToNotes {
   }
 
   /**
-   * Finds the instrument that plays the most notes in the song
+   * mostNotes
+   * Finds the instrument that plays the most notes in the song using getNotes
+   * Loop through each guitar instrument number
+   * If a guitar plays more notes than the number of notes in highestNotesPlayed, set this value to the amount of notes the guitar plays
    * @param seq The sequence of the MIDI file
    * @return The program number of the instrument playing the most notes
    */
@@ -98,8 +108,12 @@ public class MidiToNotes {
       for(int i = FIRST_GUITAR; i < LAST_GUITAR; i++) {
         // Get the amount of notes the instrument plays in the song
         int notes = getNotes( seq, i );
+
+        // set highestNotesPlayed to this value if it is higher
         if ( notes > highestNotesPlayed ) {
           highestNotesPlayed = notes;
+
+          // Set the instrument number as the program number of the guitar currently found to play the most notes
           instrumentNumber = i;
         }
       }
@@ -113,8 +127,10 @@ public class MidiToNotes {
   }
 
   /**
+   * formatNote
    * Coverts a MIDI note to the correct format for the game note file
-   * @param tick the tick of the note
+   * Finds the note number modulus with the amount of note buttons on the guitar
+   * @param tick the tick that the note occurs on
    * @param n the number of the note
    * @param m the map to store the note
    */
@@ -225,7 +241,12 @@ public class MidiToNotes {
     return m;
   }
 
-
+  /**
+   * zeroPower
+   * Determines when Zero Power Mode should start and end in the song
+   * @param seq the MIDI sequence to analyse
+   * @param notesMap the map of formatted notes to check
+   */
   public static MyResult zeroPower( Sequence seq, TreeMap<Long, String> notesMap) {
     long start;
     long end;
