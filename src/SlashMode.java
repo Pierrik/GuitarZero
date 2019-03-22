@@ -72,7 +72,7 @@ public class SlashMode extends JPanel{
     menuOptions.add(label5);
 
     // Initialise the model, controller, view GUI classes
-    CarouselView       view       = new CarouselView(menuOptions, Mode.SLASH);
+    CarouselView       view       = new CarouselView(menuOptions);
     CarouselModel      model      = new CarouselModel(view);
     CarouselController controller = new CarouselController( model, Mode.SLASH );
     try {
