@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.io.File;
 import javax.swing.*;
 import java.lang.*;
@@ -21,8 +22,7 @@ public class TutorialMode extends JPanel {
 
     ArrayList<ImageIcon> pictureIcons = new ArrayList<>();
 
-    String cd = System.getProperty("user.dir");
-    String bundleDirPath = "../assets/tutorialMode";
+    String bundleDirPath = "../assets/tutorialMode/";
 
     File[] pictureFiles = new File(bundleDirPath).listFiles();
 
@@ -33,15 +33,16 @@ public class TutorialMode extends JPanel {
 
     for (File pictureFile : pictureFiles) {
 
-      File instructionPicture = new File("");
-
       if (getExtension(pictureFile.getName()).equalsIgnoreCase("png")) {
-        pictureIcons.add(new ImageIcon(instructionPicture.getPath()));
+        pictureIcons.add(new ImageIcon(pictureFile.getPath()));
+        System.out.println(pictureFile.getPath());
       }
     }
 
+    System.out.println(pictureIcons.size());
+
     // Initialise the model, controller, view GUI classes
-    TutorialModeView       view       = new TutorialModeView( pictureIcons);
+    TutorialModeView       view       = new TutorialModeView( pictureIcons );
     TutorialModeModel      model      = new TutorialModeModel( view );
     TutorialModeController controller = new TutorialModeController( model , Mode.TUTORIAL );
 

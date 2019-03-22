@@ -13,7 +13,7 @@ import javax.swing.SpringLayout.Constraints;
  *   Linux/Mac:
  *   $ CLASSPATH=jinput-2.0.9.jar:.
  *   $ export CLASSPATH
- *   $ javac Run.java
+ *   $ javac *.java
  *   $ java Run
  *
  *   Windows:
@@ -32,10 +32,11 @@ public class Run {
   private static String OS = System.getProperty("os.name").toLowerCase();
 
   public static JFrame window;
-  static SelectMode se = null;
-  static SlashMode  sl = null;
-  static StoreMode  st = null;
-  static PlayMode   p  = null;
+  static SelectMode   se = null;
+  static SlashMode    sl = null;
+  static StoreMode    st = null;
+  static TutorialMode tu = null;
+  static PlayMode     p  = null;
 
   static String currentBundleDir = "../testBundle";
 
@@ -105,7 +106,12 @@ public class Run {
         break;
 
       case TUTORIAL:
-        System.out.println("Tutorial mode is still under progress...");
+        try {
+          tu = new TutorialMode();
+        } catch (NoPictureException e) {
+          e.printStackTrace();
+        }
+        window.setContentPane(tu);
         window.setVisible(true);
         break;
 

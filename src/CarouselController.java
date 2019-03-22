@@ -9,16 +9,6 @@ import net.java.games.input.ControllerEnvironment;
  * @author  Kamila Hoffmann-Derlacka
  * @version 1.5, March 2019.
  *
- *   Linux/Mac:
- *   $ CLASSPATH=jinput-2.0.9.jar:.
- *   $ export CLASSPATH
- *   $ javac CarouselController.java
- *   $ java -Djava.library.path=. CarouselController
- *
- *   Windows:
- *   set CLASSPATH=jinput-2.0.9.jar;.
- *   javac CarouselController.java
- *   java -Djava.library.path=. CarouselController
  */
 public class CarouselController implements Runnable {
 

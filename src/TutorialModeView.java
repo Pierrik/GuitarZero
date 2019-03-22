@@ -13,9 +13,10 @@ import javax.swing.JLabel;
  */
 public class TutorialModeView extends JPanel {
 
-  private ArrayList<ImageIcon> pictureIcons = new ArrayList<>();
+  private ArrayList<ImageIcon> pictureIcons;
 
-  JLabel picture;
+  JLabel currentPicture = null;
+  ArrayList<JLabel> pictureLabels = new ArrayList<JLabel>();;
 
   /**
    * Alters the GUI by taking commands from a model class
@@ -26,12 +27,29 @@ public class TutorialModeView extends JPanel {
 
     this.pictureIcons = pictureIcons;
 
-    picture = new JLabel(pictureIcons.get(0));
-    picture.setBounds(50, 50, 300, 300);
+    ///picture = new JLabel(pictureIcons.get(0));
+    //picture.setBounds(50, 50, 300, 300);
 
-    this.add(picture);
-    this.setBounds(0, 0, 1000, 500);
+    //add(picture);
 
+    setBounds(0, 0, 1000, 500);
+
+    //picture.setVisible(true);
+    setVisible(true);
+
+
+    for (ImageIcon pictureIcon : pictureIcons) {
+      JLabel label = new JLabel(pictureIcon);
+      label.setBounds(50, 50, 400, 400);
+      add(label);
+      label.setVisible(false);
+      pictureLabels.add(label);
+    }
+
+    pictureLabels.get(3).setVisible(true);
+    currentPicture = pictureLabels.get(3);
+
+    setVisible(true);
   }
 
 
@@ -40,14 +58,23 @@ public class TutorialModeView extends JPanel {
    */
   public void leftMovement() {
 
-    for (int i = 0; i < pictureIcons.size(); i++) {
+    System.out.println("left movement.");
 
-      if (picture.getIcon() == pictureIcons.get(i) && i != 0) {
-        picture = new JLabel(pictureIcons.get(i-1));
+
+    for (int i = 0; i < pictureLabels.size(); i++) {
+
+      if (pictureLabels.get(i) == currentPicture && i != 0) {
+
+        pictureLabels.get(i).setVisible(false);
+        pictureLabels.get(i-1).setVisible(true);
+        currentPicture = pictureLabels.get(i-1);
+
+        setVisible(true);
+
         break;
 
-      } else if (i == 0) {
-        picture = new JLabel(pictureIcons.get(pictureIcons.size()-1));
+      } else if (pictureLabels.get(i) == currentPicture && i == 0){
+
         break;
       }
     }
@@ -59,18 +86,29 @@ public class TutorialModeView extends JPanel {
    * Switches images to the right, replacing with next picture
    */
   public void rightMovement() {
+    System.out.println("right movement.");
 
-    for (int i = 0; i < pictureIcons.size(); i++) {
 
-      if (picture.getIcon() == pictureIcons.get(i) && i != pictureIcons.size()-1) {
-        picture = new JLabel(pictureIcons.get(i+1));
+    for (int i = 0; i < pictureLabels.size(); i++) {
+
+      if (pictureLabels.get(i) == currentPicture && i != pictureLabels.size()-1) {
+
+        pictureLabels.get(i).setVisible(false);
+        pictureLabels.get(i + 1).setVisible(true);
+        currentPicture = pictureLabels.get(i + 1);
+
+        setVisible(true);
+
         break;
 
-      } else if (i == pictureIcons.size()-1) {
-        picture = new JLabel(pictureIcons.get(0));
+      } else if (pictureLabels.get(i) == currentPicture && i == pictureLabels.size()-1) {
+
         break;
+
       }
     }
+
+
   }
 
 
