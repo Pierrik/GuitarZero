@@ -39,6 +39,7 @@ public class PlayMode extends JPanel implements Runnable {
     view.setVisible(true);
 
     if(!model.startGame) {
+      // print error?
       GameUtils.changeModeOnNewThread(Mode.SLASH);
     }
 

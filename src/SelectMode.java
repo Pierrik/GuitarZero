@@ -18,19 +18,7 @@ import javax.swing.JLabel;
  * Select Mode.
  *
  * @author Pierrik Mellab
- * @version 1.1, March 2019.
- *
- *   Windows:
- *   set CLASSPATH=jinput-2.0.9.jar;.
- *   javac SelectMode.java
- *   java -Djava.library.path=. SelectMode
- *
- *   Mac/ Linux:
- *   $ (cd src)
- *   $ CLASSPATH=jinput-2.0.9.jar:.
- *   $ export CLASSPATH
- *   $ javac SelectMode.java
- *   $ java -Djava.library.path=. SelectMode
+ * @version 2.0, March 2019.
  */
 public class SelectMode extends JPanel {
 

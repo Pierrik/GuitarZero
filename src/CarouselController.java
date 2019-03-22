@@ -156,30 +156,4 @@ public class CarouselController implements Runnable {
     this.pollGuitarForever();
   }
 
-/*
-  public static void main(String[] args) {
-    ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
-    Controller[]          ctrls = cenv.getControllers();
-
-
-    if (isMac()) {
-      ZERO_POWER       = 8;
-      ESCAPE           = 10;
-      STRUM            = 16;
-    } else if (isUnix()) {
-      ZERO_POWER       = 8;
-      ESCAPE           = 10;
-      STRUM            = 14;
-    }
-
-    for ( Controller ctrl : ctrls ) {
-      if ( ctrl.getName().contains( GUITAR_HERO ) ) {
-        pollForever( ctrl );
-      }
-    }
-
-    System.out.println( GUITAR_HERO + " controller not found" );
-    System.exit( 1 );
-  }*/
-
 }

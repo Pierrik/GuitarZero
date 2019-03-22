@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 /**
  * StoreMode.
  * @author John Mercer
+ * @author Harper Ford (exception handling)
  * @version 2.13, March 2019
  */
 public class StoreMode extends JPanel {
