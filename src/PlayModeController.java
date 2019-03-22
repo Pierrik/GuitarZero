@@ -78,39 +78,22 @@ public class PlayModeController implements Runnable {
         previous2 = -1;
         previous3 = -1;
 
-        // speicla comment for retards
-
         for ( int i = 0; i < allCmps.length; i++ ) {
           float val = vals[i];
-            if (i == WHITE1) {
-              if (val == BUTTON_THRESHOLD){
+            if (i == WHITE1 || i == BLACK1) {
+              if (val == BUTTON_THRESHOLD  && previous1 == -1){
                 previous1 = i;
-                model.displayNoteOn(WHITE1);
+                model.displayNoteOn(i);
               }
-            } else if ( i == BLACK1) {
-              if (val == BUTTON_THRESHOLD){
-                previous1 = i;
-                model.displayNoteOn(BLACK1);
-              }
-            } else if (i == BLACK2) {
-              if (val == BUTTON_THRESHOLD){
+            } else if (i == WHITE2 || i == BLACK2) {
+              if (val == BUTTON_THRESHOLD  && previous2 == -1){
                 previous2 = i;
-                model.displayNoteOn(BLACK2);
+                model.displayNoteOn(i);
               }
-            } else if (i == BLACK3) {
-              if (val == BUTTON_THRESHOLD){
+            } else if (i == WHITE3 || i == BLACK3) {
+              if (val == BUTTON_THRESHOLD  && previous3 == -1){
                 previous3 = i;
-                model.displayNoteOn(BLACK3);
-              }
-            } else if (i == WHITE2) {
-              if (val == BUTTON_THRESHOLD){
-                previous2 = i;
-                model.displayNoteOn(WHITE2);
-              }
-            } else if (i == WHITE3) {
-              if (val == BUTTON_THRESHOLD){
-                previous3 = i;
-                model.displayNoteOn(WHITE3);
+                model.displayNoteOn(i);
               }
             } else if (i == ZERO_POWER) {
               if (val == BUTTON_THRESHOLD) {
