@@ -6,7 +6,7 @@ import javax.swing.*;
 /**
  * CarouselModel
  *
- * @author  Pierrik Mellab
+ * @author Pierrik Mellab
  * @author Harper Ford
  * @author Kamila Hoffmann-Derlacka
  * @author John Mercer
@@ -95,6 +95,9 @@ public class CarouselModel {
     }
   }
 
+  /**
+   * Updates currency and local store.
+   */
   public void updateCurrencyAndLocalStore(String bundleName, String songName) throws Exception {
     totalCurrency --;
     Currency.saveCurrencyFile(totalCurrency);
@@ -105,6 +108,9 @@ public class CarouselModel {
     MockClient.unzip(BUNDLES + bundleName, bundlesDir);
   }
 
+  /**
+   * Displays pop up messages.
+   */
   public void popUp(String pngPath, int time) {
     popUp = new JLabel(new ImageIcon(pngPath));
     popUp.setSize(POP_UP_WIDTH, POP_UP_HEIGHT);

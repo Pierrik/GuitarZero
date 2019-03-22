@@ -193,6 +193,9 @@ public class CarouselView extends JPanel {
     }
   }
 
+  /**
+   * Initialises carousel view bounds.
+   */
   public void initialiseBounds( int labelLength){
 
     if (carouselLength == 3) {
