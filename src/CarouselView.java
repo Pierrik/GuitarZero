@@ -22,7 +22,7 @@ public class CarouselView extends JPanel {
 
   final static int CV_WIDTH      = 740;
   final static int CV_HEIGHT     = 150;
-  final static int CV_Y          = 0;
+  final static int CV_Y          = 65;
   final static int CV_X          = 80;
   final static int MAX_X_BOUND   = 630;
   final static int BOUNDS_X_1    = 180;
@@ -95,7 +95,7 @@ public class CarouselView extends JPanel {
     }
 
     this.add(carousel);
-    this.setBounds(CV_X, CV_Y, CV_WIDTH, CV_HEIGHT);
+    this.setBounds(500, 500, CV_WIDTH, CV_HEIGHT);
 
   }
 
