@@ -14,8 +14,9 @@ public class Currency {
 
   private static final String  CURRENCY_PATH     = "../currency/currency.txt";
   private static final String  TXT_EXTENSION     = ".txt";
+  private static int oldCurrency;
 
-   /**
+  /**
    * findCurrencyFile
    * @return the currency file for the game
    * @throws Exception
@@ -72,6 +73,7 @@ public class Currency {
         return 0;
       }
     }
+    oldCurrency = currency;
     return currency;
   }
 
@@ -82,7 +84,7 @@ public class Currency {
    */
   public static void saveCurrencyFile(int newCurrency) throws Exception {
     FileWriter writer = new FileWriter("../currency/currency.txt");
-    writer.write(Integer.toString(newCurrency));
+    writer.write(Integer.toString(oldCurrency + newCurrency));
     writer.close();
   }
 }
