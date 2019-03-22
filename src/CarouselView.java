@@ -195,4 +195,18 @@ public class CarouselView extends JPanel {
       }
     }
   }
+
+
+  public void paintTitleBanner (Mode mode) {
+    JLabel banner = new JLabel(new ImageIcon("../assets/selectModeBanner.jpg"));
+    banner.setSize(300, 300);
+    banner.setBounds(400, 400, 300, 300);
+    add(banner, 0);
+    repaint();
+
+    System.out.println("I've printed the banner");
+  }
+
+
+
 }
