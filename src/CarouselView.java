@@ -82,8 +82,15 @@ public class CarouselView extends JPanel {
       menuOptions.get(2).setBounds(bounds.get(2));
     }
 
+
+    if (CarouselController.mode == Mode.SELECT) {
+      System.out.println("inside of select mode");
+    }
+
+
     this.add(carousel);
     this.setBounds(CV_X, CV_Y, CV_WIDTH, CV_HEIGHT);
+
   }
 
   /**
