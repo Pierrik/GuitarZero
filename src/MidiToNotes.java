@@ -300,10 +300,6 @@ public class MidiToNotes {
     }
   }
 
-  public static void main(String[] args) {
-    writeFile("testBundle/Guns_n_Roses_-_Sweet_Child_O_Mine.mid");
-  }
-
   public static final class MyResult {
     private final long first;
     private final long second;

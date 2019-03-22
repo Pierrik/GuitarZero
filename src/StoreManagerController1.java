@@ -23,21 +23,27 @@ class StoreManagerController implements ActionListener {
   public void actionPerformed( ActionEvent ev ) {
     switch (this.button) {
       case TITLE:
-        File titleFile = StoreManagerModel.fileFinder();
+        File titleFile = null;
+        try {
+          titleFile = StoreManagerModel.fileFinder("txt");
+        }
+        catch(Exception e){
+          System.out.println("Null reference, StoreManagerModel. /STOREMANAGERCONTROLLER");
+        }
         String titlePath = titleFile.getPath();
         storeManagerModel.setTitleFile(titleFile);
         storeManagerView.setTitleTitle(titlePath);
         break;
 
       case COVER:
-        File coverFile = StoreManagerModel.fileFinder();
+        File coverFile = StoreManagerModel.fileFinder("png");
         String coverPath = coverFile.getPath();
         storeManagerModel.setCoverArtFile(coverFile);
         storeManagerView.setCoverArtTitle(coverPath);
         break;
 
       case SONG:
-        File songFile = StoreManagerModel.fileFinder();
+        File songFile = StoreManagerModel.fileFinder("mid");
         String songPath = songFile.getPath();
         storeManagerModel.setMusicFile(songFile);
         storeManagerView.setMusicTitle(songPath);

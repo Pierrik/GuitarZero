@@ -135,6 +135,9 @@ public class PlayModeView extends JPanel{
    * @param currency The users currency total
    */
   public void displayEndValues(File img, String songTitle, String score, String currency){
+    String[] segments = songTitle.split("/");
+    String idStr = segments[segments.length-1];
+    songTitle = idStr;
     endStatisticsBackground = new JLabel(new ImageIcon("../assets/emptyBox.jpeg"));
     endStatisticsBackground.setBounds(END_STATISTICS_X,END_STATISTICS_Y,END_STATISTICS_WIDTH,END_STATISTICS_HEIGHT);
 

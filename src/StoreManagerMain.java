@@ -2,19 +2,42 @@
  * StoreManagerMain.
  *
  * @author  Pierrik Mellab
- * @version 1.0, February 2019.
+ * @authoer Harper Ford
+ * @version 2.0, March 2019.
  */
 public class StoreManagerMain {
 
   public static void main( String[] argv ) {
+    StoreManagerModel storeManagerModel = null;
+    StoreManagerController saveButton = null;
+    StoreManagerController songButton = null;
+    StoreManagerController coverArtButton = null;
+    StoreManagerController titleButton = null;
+    StoreManagerView storeManagerView = null;
 
-    StoreManagerModel       storeManagerModel       = new StoreManagerModel();
-    StoreManagerController titleButton = new StoreManagerController ( storeManagerModel, StoreManagerButton.TITLE );
-    StoreManagerController coverArtButton = new StoreManagerController ( storeManagerModel, StoreManagerButton.COVER );
-    StoreManagerController songButton = new StoreManagerController ( storeManagerModel, StoreManagerButton.SONG );
-    StoreManagerController saveButton = new StoreManagerController ( storeManagerModel, StoreManagerButton.SAVE );
+    try {
+      storeManagerModel = new StoreManagerModel();
+    }
+    catch(Exception e){
+      System.out.println("Unable to initialise Model. /STOREMANAGERMAIN");
+    }
 
-    StoreManagerView        storeManagerView        = new StoreManagerView( titleButton, coverArtButton, songButton, saveButton);
+    try {
+      titleButton = new StoreManagerController(storeManagerModel, StoreManagerButton.TITLE);
+      coverArtButton = new StoreManagerController(storeManagerModel, StoreManagerButton.COVER);
+      songButton = new StoreManagerController(storeManagerModel, StoreManagerButton.SONG);
+      saveButton = new StoreManagerController(storeManagerModel, StoreManagerButton.SAVE);
+    }
+    catch(Exception e){
+      System.out.println("Unable to initialise Buttons. /STOREMANAGERMAIN");
+    }
+
+    try{
+      storeManagerView = new StoreManagerView( titleButton, coverArtButton, songButton, saveButton);
+    }
+    catch(Exception e){
+      System.out.println("Unable to initialise View. /STOREMANAGERMAIN");
+    }
 
     storeManagerView.setVisible(true);
   }

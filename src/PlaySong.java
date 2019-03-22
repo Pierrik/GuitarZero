@@ -22,7 +22,7 @@ public class PlaySong implements Runnable {
   private int bpm;
   private int time;
 
-  private static final double X       = 1.49;
+  private static final double X       = 2;
   private static final int    SECONDS = 60;
 
   public AtomicBoolean song_running = new AtomicBoolean(false);
@@ -35,7 +35,7 @@ public class PlaySong implements Runnable {
   }
 
   @Override
-  /*
+  /**
    * Threaded function that starts the MIDI sequence and then adds Notes to the highway in PlayModeView
    */
   public void run() {
@@ -67,7 +67,6 @@ public class PlaySong implements Runnable {
       while (seq.isRunning() && song_running.get()) {
         currentTick = seq.getTickPosition() + Math.round(time * X);
         this.currentTick = currentTick;
-        //System.out.println(this.currentTick);
       }
       seq.stop();
       this.endOfSong.set(true);

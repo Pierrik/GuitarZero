@@ -41,11 +41,15 @@ public class Server {
         // Waiting for a client to connect
         final Socket sck = ssck.accept();
         if (VERBOSE) {System.out.println("Connection opened. (" + new Date() + ")");}
-
-        // Create dedicated thread to handle client connection
-        Handler handler = new Handler(sck);
-        Thread thread = new Thread(handler);
-        thread.start();
+        try {
+          // Create dedicated thread to handle client connection
+          Handler handler = new Handler(sck);
+          Thread thread = new Thread(handler);
+          thread.start();
+        }
+        catch(Exception e){
+          System.out.println("Unable to start handler thread. /SERVER");
+        }
       }
 
     } catch (Exception exn) {

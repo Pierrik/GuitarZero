@@ -25,8 +25,11 @@ public class StoreMode extends JPanel {
   private static final String PREVIEWS = "../local_store/preview_files/";
 
   public StoreMode() {
+    String songName = null;
+    String previewDir = null;
+    MockClient client = null;
     try {
-      MockClient client = new MockClient(HOST, PORT);
+      client = new MockClient(HOST, PORT);
     }
     catch(Exception e){
       System.out.println("Enable to create MockClient. /STOREMODE");
@@ -42,8 +45,8 @@ public class StoreMode extends JPanel {
       try {
         // Downloading and unzipping preview (and deleting zip after)
         client.downloadFile(fileName, "DOWNLOAD_PREVIEW");
-        String songName = MockClient.getSongPreview(fileName);
-        String previewDir = PREVIEWS + songName + "/";
+        songName = MockClient.getSongPreview(fileName);
+        previewDir = PREVIEWS + songName + "/";
         MockClient.unzip(PREVIEWS + fileName, previewDir);
       }
       catch(Exception e){
@@ -64,11 +67,13 @@ public class StoreMode extends JPanel {
         GameUtils.changeModeOnNewThread(Mode.SLASH);
       }
     }
+    CarouselController controller = null;
+    CarouselView view = null;
     try {
       // Initialise the model, controller, view GUI classes
-      CarouselView view = new CarouselView(menuOptions, Mode.STORE);
+      view = new CarouselView(menuOptions, Mode.STORE);
       CarouselModel model = new CarouselModel(view);
-      CarouselController controller = new CarouselController(model, Mode.STORE);
+      controller = new CarouselController(model, Mode.STORE);
     }
     catch(Exception e){
       System.out.println("Unable to start MVC. /STOREMODE");

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
 /**
@@ -16,7 +17,8 @@ import javax.swing.filechooser.FileSystemView;
  *
  * @author Pierrik Mellab
  * @author John Mercer
- * @version 1.9, March 2019
+ * @author Harper Ford
+ * @version 3.0, March 2019
  *
  */
 public class StoreManagerModel {
@@ -38,14 +40,34 @@ public class StoreManagerModel {
    * Lets a user browse for a file on their computer
    * @return The selected file or null if file not approved
    */
-  public static File fileFinder () {
-    JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+  public static File fileFinder (String filetype) {
+    JFileChooser jfc = null;
+    try {
+      jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+    }
+    catch(Exception e){
+      System.out.println("Couldn't start JFileChooser. /STOREMANAGERMODEL");
+    }
+    FileNameExtensionFilter filter = null;
+    try {
+      filter = new FileNameExtensionFilter(filetype, filetype, filetype);
+      jfc.setFileFilter(filter);
+    }
+    catch(Exception e){
+      System.out.println("Unable to filter files. /STOREMANAGERMODEL");
+    }
 
-    int returnValue = jfc.showOpenDialog(null);
-    if (returnValue == JFileChooser.APPROVE_OPTION) {
-      File selectedFile = jfc.getSelectedFile();
-      return selectedFile;
-    } else {
+    try {
+      int returnValue = jfc.showOpenDialog(null);
+      if (returnValue == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = jfc.getSelectedFile();
+        return selectedFile;
+      } else {
+        return null;
+      }
+    }
+    catch(Exception e){
+      System.out.println("Can't return file. /STOREMANAGERMODEL");
       return null;
     }
   }
@@ -82,32 +104,51 @@ public class StoreManagerModel {
    * @throws IOException  In case any of the files are corrupt or can't be found
    */
   public static String bundleZipper (File titleFile, File coverArtFile, File musicFile) throws IOException {
-
-    MidiToNotes.writeFile(musicFile.getPath());         // creates noteFile.txt in current directory
-    File noteFile = new File("noteFile.txt");
+    File noteFile = null;
+    FileOutputStream fos = null;
+    ZipOutputStream zipOut = null;
+    try {
+      MidiToNotes.writeFile(musicFile.getPath());         // creates noteFile.txt in current directory
+      noteFile = new File("noteFile.txt");
+    }
+    catch (Exception e){
+      System.out.println("Unable to create note file. /STOREMANAGERMODEL");
+    }
 
     List<File> srcFiles = Arrays.asList(coverArtFile, musicFile, noteFile);          // files to be zipped go here
 
     String songName = textFileReader(titleFile);
     songName += "(bundle).zip";
 
-    FileOutputStream fos = new FileOutputStream(songName);   // title goes here
-    ZipOutputStream zipOut = new ZipOutputStream(fos);
-
-    for (File srcFile : srcFiles) {
-      FileInputStream fis = new FileInputStream(srcFile);
-      ZipEntry zipEntry = new ZipEntry(srcFile.getName());
-      zipOut.putNextEntry(zipEntry);
-
-      byte[] bytes = new byte[SIZE];
-      int length;
-      while((length = fis.read(bytes)) >= 0) {
-        zipOut.write(bytes, 0, length);
-      }
-      fis.close();
+    try {
+      fos = new FileOutputStream(songName);
+      zipOut = new ZipOutputStream(fos);
     }
-    zipOut.close();
-    fos.close();
+    catch(Exception e){
+      System.out.println("Unable to create output streams. /STOREMANAGERMODEL");
+    }
+
+    //Zip files then send through outputstreams
+    try {
+      for (File srcFile : srcFiles) {
+        FileInputStream fis = new FileInputStream(srcFile);
+        ZipEntry zipEntry = new ZipEntry(srcFile.getName());
+        zipOut.putNextEntry(zipEntry);
+
+        byte[] bytes = new byte[SIZE];
+        int length;
+        while ((length = fis.read(bytes)) >= 0) {
+          zipOut.write(bytes, 0, length);
+        }
+        fis.close();
+      }
+      zipOut.close();
+      fos.close();
+    }
+    catch(Exception e){
+      System.out.println("Unable to zip and send files. /STOREMANAGERMODEL");
+      e.printStackTrace();
+    }
 
     return songName;
   }
@@ -120,26 +161,38 @@ public class StoreManagerModel {
    * @throws IOException  In case any of the files are corrupt or can't be found
    */
   public static String previewZipper (File titleFile, File coverArtFile) throws IOException {
-
+    FileOutputStream fos = null;
+    ZipOutputStream zipOut = null;
+    FileInputStream fis = null;
     String songName = textFileReader(titleFile);
     songName += "(preview).zip";
 
-    FileOutputStream fos = new FileOutputStream(songName);
-    ZipOutputStream zipOut = new ZipOutputStream(fos);
-    FileInputStream fis = new FileInputStream(coverArtFile);
-
-    ZipEntry zipEntry = new ZipEntry(coverArtFile.getName());
-    zipOut.putNextEntry(zipEntry);
-
-    byte[] bytes = new byte[SIZE];
-    int length;
-    while((length = fis.read(bytes)) >= 0) {
-      zipOut.write(bytes, 0, length);
+    try {
+      fos = new FileOutputStream(songName);
+      zipOut = new ZipOutputStream(fos);
+      fis = new FileInputStream(coverArtFile);
+    }
+    catch(Exception e){
+      System.out.println("Unable to open output and input streams (Preview). /STOREMANAGERMODEL");
     }
 
-    fis.close();
-    zipOut.close();
-    fos.close();
+    try {
+      ZipEntry zipEntry = new ZipEntry(coverArtFile.getName());
+      zipOut.putNextEntry(zipEntry);
+
+      byte[] bytes = new byte[SIZE];
+      int length;
+      while ((length = fis.read(bytes)) >= 0) {
+        zipOut.write(bytes, 0, length);
+      }
+
+      fis.close();
+      zipOut.close();
+      fos.close();
+    }
+    catch(Exception e){
+      System.out.println("Unable to zip and send (Preview). /STOREMANAGERMODEL");
+    }
 
     return songName;
   }
@@ -149,29 +202,48 @@ public class StoreManagerModel {
    * @param filePath: File to delete
    */
   public static void deleteFile(String filePath){
-    File file = new File(filePath);
-    file.delete();
+    try {
+      File file = new File(filePath);
+      file.delete();
+    }
+    catch(Exception e){
+      System.out.println("Unable to delete file. /STOREMANAGERMODEL");
+    }
   }
 
-
+  /**
+   * Saves files into zipped folders then uploads them to server
+   */
   public void saveAction () {
       try {
         if (titleFile != null && coverArtFile !=null && musicFile != null){
-          // zipping files and sending to server
-          String bundlePath = bundleZipper(titleFile, coverArtFile, musicFile);
-          String previewPath = previewZipper(titleFile, coverArtFile);
+          String bundlePath = null;
+          String previewPath = null;
+          try {
+            // zipping files and sending to server
+            bundlePath = bundleZipper(titleFile, coverArtFile, musicFile);
+            previewPath = previewZipper(titleFile, coverArtFile);
+          }
+          catch(Exception e){
+            System.out.println("Unable to zip files (saveAction). /STOREMANAGERMODEL");
+          }
 
-          MockClient client = new MockClient(HOST, PORT);
-          client.uploadFile(bundlePath, "UPLOAD_BUNDLE");
-          client.uploadFile(previewPath, "UPLOAD_PREVIEW");
+          try {
+            MockClient client = new MockClient(HOST, PORT);
+            client.uploadFile(bundlePath, "UPLOAD_BUNDLE");
+            client.uploadFile(previewPath, "UPLOAD_PREVIEW");
+          }
+          catch(Exception e){
+            System.out.println("Unable to upload files (saveAction). /STOREMANAGERMODEL");
+          }
 
           // cleaning up (deleting zips and noteFile on client-side)
           deleteFile(bundlePath);
           deleteFile(previewPath);
           deleteFile("noteFile.txt");
         }
-      } catch (IOException e1) {
-        e1.printStackTrace();
+      } catch (Exception e) {
+        System.out.println("Unable to save files. /STOREMANAGERMODEL");
       }
   }
 
