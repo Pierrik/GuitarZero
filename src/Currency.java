@@ -38,7 +38,6 @@ public class Currency {
 
     } else {
       // If there is no currency file found, create one
-
       File currencyFile = new File(CURRENCY_PATH);
       currencyFile.createNewFile();
 
