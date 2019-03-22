@@ -17,6 +17,7 @@ public class CarouselView extends JPanel {
 
   private ArrayList<JLabel> menuOptions = new ArrayList<>();
   private ArrayList<Rectangle> bounds = new ArrayList<>();
+  private JLabel currency = null;
   private int carouselLength = 0;
   Mode mode;
 
@@ -86,6 +87,21 @@ public class CarouselView extends JPanel {
     this.add(carousel);
     this.setBounds(CV_X, CV_Y, CV_WIDTH, CV_HEIGHT);
 
+  }
+
+  /**
+   * Displays the users currency when called
+   */
+  public void displayCurrency(){
+    try {
+      currency = new JLabel("Currency: " + Currency.loadCurrencyFile(Currency.findCurrencyFile()));
+      currency.setBounds(0,0,40,40);
+      currency.setVisible(true);
+    }
+    catch(Exception e){
+      System.out.println("Currency JLabel can't be created. /CAROUSELVIEW");
+    }
+    this.add(currency);
   }
 
   /**
