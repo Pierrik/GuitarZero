@@ -44,6 +44,11 @@ public class CarouselModel {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+
+    if (CarouselController.mode == Mode.SELECT)
+      view.paintTitleBanner(Mode.SELECT);
+      System.out.println("painted from very outside");
   }
 
   /**
@@ -104,7 +109,6 @@ public class CarouselModel {
   }
 
   public void popUp(String pngPath, int time) {
-
     popUp = new JLabel(new ImageIcon(pngPath));
     popUp.setSize(POP_UP_WIDTH, POP_UP_HEIGHT);
     popUp.setBounds(POP_UP_X, POP_UP_Y, POP_UP_WIDTH, POP_UP_HEIGHT);

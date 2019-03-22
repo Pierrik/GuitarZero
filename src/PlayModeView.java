@@ -214,7 +214,7 @@ public class PlayModeView extends JPanel{
    * Also used to set a blank multiplier label when the user loses their score multiplier
    */
   public void setMultiplierLabel() {
-    multiplierLabel = new JLabel(new ImageIcon());
+    multiplierLabel = new JLabel();
     multiplierLabel.setBounds(MULTIPLIER_X, MULTIPLIER_Y, MULTIPLIER_WIDTH, MULTIPLIER_HEIGHT);
     multiplierLabel.setVisible(false);
     add(multiplierLabel);
@@ -227,17 +227,16 @@ public class PlayModeView extends JPanel{
    * @param path the path of the multiplier asset to display
    */
   public void changeMultiplierLabel(String path) {
-    multiplierLabel.setIcon(new ImageIcon(path));
-    multiplierLabel.setVisible(true);
+      multiplierLabel.setIcon(new ImageIcon(path));
+      multiplierLabel.setVisible(true);
   }
-
 
   /**
    * setCurrencyLabel
    * Initialises tbe JLabel to display the currency stars
    */
   public void setCurrencyLabel() {
-    currencyLabel = new JLabel(new ImageIcon());
+    currencyLabel = new JLabel();
     currencyLabel.setBounds(CURRENCY_X, CURRENCY_Y, CURRENCY_WIDTH, CURRENCY_HEIGHT);
     currencyLabel.setVisible(false);
     add(currencyLabel);
@@ -318,7 +317,7 @@ public class PlayModeView extends JPanel{
    * @param streak the new streak to display
    */
   public void resetStreakLabel(Integer streak) {
-    streakLabel.setText("Streak:  " + Integer.toString(streak));
+    streakLabel.setText("Streak:  " + streak);
   }
 
   /**
