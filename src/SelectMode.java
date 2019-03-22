@@ -81,8 +81,11 @@ public class SelectMode extends JPanel {
     this.add(view);
   }
 
-
-
+  /**
+   * Gets the extension of a file
+   * @param fileName the name of the file to check
+   * @return the file extension
+   */
   private String getExtension (String fileName) {
 
     String extension = "";
@@ -96,6 +99,10 @@ public class SelectMode extends JPanel {
     return extension;
   }
 
+  /**
+   * Draws the highway background that the carousel will be placed on top of
+   * @param g
+   */
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g); // paint the background image and scale it to fill the entire space
