@@ -6,26 +6,27 @@ import net.java.games.input.ControllerEnvironment;
  * TutorialController.
  *
  * @author  Pierrik Mellab
+ * @author  Kamila Hoffmann-Derlacka
  * @version 1.5, March 2019.
  */
 public class TutorialModeController implements Runnable {
 
-  final static String GUITAR_HERO = "Guitar Hero";
-  final static int POLL_DELAY = 100;
+  final static String GUITAR_HERO      = "Guitar Hero";
+  final static int    POLL_DELAY       = 100;
 
   TutorialModeModel model;
   ControllerEnvironment cenv = ControllerEnvironment.getDefaultEnvironment();
   Controller[] ctrls = cenv.getControllers();
   Mode mode;
 
-  final static int BUTTONS = 3;
+  final static int    BUTTONS          = 3;
   final static double BUTTON_THRESHOLD = 1.0;
-  final static double STRUM_THRESHOLD = 0.75;
-  final static int ZERO_POWER = 8;
-  final static int ESCAPE = 10;
+  final static double STRUM_THRESHOLD  = 0.75;
+  final static int    ZERO_POWER       = 8;
+  final static int    ESCAPE           = 10;
 
   // variables that change for different operating systems, default: windows
-  static int STRUM = 16;
+  static int          STRUM            = 16;
 
   AtomicBoolean controllerOn = new AtomicBoolean(false);
 
