@@ -72,7 +72,7 @@ public class StoreMode extends JPanel {
     CarouselView view = null;
     try {
       // Initialise the model, controller, view GUI classes
-      view = new CarouselView(menuOptions, Mode.STORE);
+      view = new CarouselView(menuOptions);
       view.displayCurrency();
       CarouselModel model = new CarouselModel(view);
       controller = new CarouselController(model, Mode.STORE);
