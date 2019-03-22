@@ -47,17 +47,6 @@ public class CarouselView extends JPanel {
     carouselLength = allOptions.size();
     initialiseBounds(carouselLength);
 
-    if (mode == Mode.STORE) {
-      System.out.println("I'm in store mode now");
-      JLabel currencyDisplay = new JLabel("/Users/pierrikmellab/Documents/Group Software Development/Coursework/GuitarZero/assets/2Stars.png");
-      currencyDisplay.setForeground(Color.WHITE);
-      currencyDisplay.setSize(100, 100);
-      currencyDisplay.setBounds(400, 400, 10, 10);
-      add(currencyDisplay);
-      repaint();
-    }
-
-
     // sets private menuOptions to, passed in variable, allOptions
     for (JLabel label : allOptions) {
       label.setVerticalTextPosition(JLabel.BOTTOM);
@@ -201,18 +190,5 @@ public class CarouselView extends JPanel {
       }
     }
   }
-
-
-  public void paintTitleBanner (Mode mode) {
-    JLabel banner = new JLabel(new ImageIcon("../assets/selectModeBanner.jpg"));
-    banner.setSize(300, 300);
-    banner.setBounds(400, 400, 300, 300);
-    add(banner, 0);
-    repaint();
-
-    System.out.println("I've printed the banner");
-  }
-
-
 
 }
