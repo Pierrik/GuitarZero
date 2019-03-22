@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 /**
  * StoreMode.
  * @author John Mercer
+ * @author Harper Ford (exception handling)
  * @version 2.13, March 2019
  */
 public class StoreMode extends JPanel {
@@ -25,8 +26,9 @@ public class StoreMode extends JPanel {
   private static final String PREVIEWS = "../local_store/preview_files/";
 
   public StoreMode() {
+    MockClient client = null;
     try {
-      MockClient client = new MockClient(HOST, PORT);
+      client = new MockClient(HOST, PORT);
     }
     catch(Exception e){
       System.out.println("Enable to create MockClient. /STOREMODE");
@@ -39,11 +41,13 @@ public class StoreMode extends JPanel {
     // Downloading and unzipping all previews, and giving each title/cover a JLabel
     ArrayList<JLabel> menuOptions = new ArrayList<>();
     for (String fileName : fileNames){
+      String songName = null;
+      String previewDir = null;
       try {
         // Downloading and unzipping preview (and deleting zip after)
         client.downloadFile(fileName, "DOWNLOAD_PREVIEW");
-        String songName = MockClient.getSongPreview(fileName);
-        String previewDir = PREVIEWS + songName + "/";
+        songName = MockClient.getSongPreview(fileName);
+        previewDir = PREVIEWS + songName + "/";
         MockClient.unzip(PREVIEWS + fileName, previewDir);
       }
       catch(Exception e){
@@ -64,11 +68,13 @@ public class StoreMode extends JPanel {
         GameUtils.changeModeOnNewThread(Mode.SLASH);
       }
     }
+    CarouselView view = null;
+    CarouselController controller = null;
     try {
       // Initialise the model, controller, view GUI classes
-      CarouselView view = new CarouselView(menuOptions, Mode.STORE);
+      view = new CarouselView(menuOptions, Mode.STORE);
       CarouselModel model = new CarouselModel(view);
-      CarouselController controller = new CarouselController(model, Mode.STORE);
+      controller = new CarouselController(model, Mode.STORE);
     }
     catch(Exception e){
       System.out.println("Unable to start MVC. /STOREMODE");
