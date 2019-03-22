@@ -40,6 +40,7 @@ public class Run {
 
   static String currentBundleDir = "../testBundle";
 
+  // Screen Dimensions
   private static final int GAME_WIDTH  = 1000;
   private static final int GAME_HEIGHT = 563;
 
@@ -50,25 +51,26 @@ public class Run {
 
     Dimension dims = new Dimension(GAME_WIDTH,GAME_HEIGHT);
 
+    // Game begins in Slash Mode
     sl = new SlashMode();
     window.setContentPane(sl);
 
     //Set the content to the drawings from the GamePanel object
     window.setPreferredSize(dims);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    //window.setUndecorated(true);
     window.pack();
     window.setResizable(false);
     window.setVisible(true);
   }
 
-  /*
+  /**
    * Changes which MVC to display in the JFrame
    * @param option: Mode to change to
    */
   public static void changeMode(Mode option) {
     switch (option) {
+
+      // Initialise slash mode - set bounds and display
       case SLASH:
         sl = new SlashMode();
         sl.setBounds(500, 500, 150,150);
@@ -76,6 +78,7 @@ public class Run {
         window.setVisible(true);
         break;
 
+      // Initialise store mode - set bounds and display
       case STORE:
         st = new StoreMode();
         st.setBounds(500, 500, 150,150);
@@ -83,6 +86,7 @@ public class Run {
         window.setVisible(true);
         break;
 
+        // Attempt to set up Select Mode, display on screen
       case SELECT:
           try {
             se = new SelectMode();
@@ -93,18 +97,23 @@ public class Run {
         window.setVisible(true);
         break;
 
+        // Attempt to set up play mode
+        // Display if no errors occur when initialising
       case PLAY:
         p = new PlayMode(currentBundleDir);
+        // Don't open if there are errors when setting up play mode
         if (p.model.errors > 0){
           break;
         }
         window.setContentPane(p);
         window.setVisible(true);
 
+        // Start play mode thread
         Thread t = new Thread(p);
         t.start();
         break;
 
+      // Attempt to set up Select Mode, display on screen
       case TUTORIAL:
         try {
           tu = new TutorialMode();
@@ -115,17 +124,17 @@ public class Run {
         window.setVisible(true);
         break;
 
+        // If exit selected, end the game
       case EXIT:
         System.out.println("Exiting..");
         System.exit(0);
 
       default:
-        //window.close();
         break;
     }
   }
 
-
+  // Find the operating system the game is bing ran on
   public static char OSvalidator() {
     if (OS.indexOf("win") >= 0)
       return 'w';

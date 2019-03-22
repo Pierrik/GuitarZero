@@ -57,6 +57,7 @@ public class SlashMode extends JPanel{
     JLabel label4 = new JLabel(new ImageIcon("../assets/PlayLogo3.png"));
     JLabel label5 = new JLabel(new ImageIcon("../assets/TutorialLogo3.png"));
 
+    // Set values of the JLabels
     label1.setText("EXIT");
     label2.setText("STORE");
     label3.setText("SELECT");
@@ -87,6 +88,11 @@ public class SlashMode extends JPanel{
 
   }
 
+  /**
+   * paintComponent
+   * Draws the image of the highway that the carousel is placed on top of
+   * @param g
+   */
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g); // paint the background image and scale it to fill the entire space
