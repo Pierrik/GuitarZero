@@ -7,13 +7,12 @@ import java.util.Scanner;
  * Currency.
  *
  * @author  Kamila Hoffmann-Derlacka
- * @version 1.00, March 2019.
+ * @version 2.00, March 2019.
  */
 
 public class Currency {
 
   private static final String  CURRENCY_PATH     = "../currency/currency.txt";
-  private static int oldCurrency;
 
   /**
    * findCurrencyFile

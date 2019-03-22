@@ -25,7 +25,7 @@ import javax.swing.SpringLayout.Constraints;
  * @author Harper Ford
  * @author Kamila Hoffmann-Derlacka
  * @author Pierrik Mellab
- * @version 1.1, March 2019.
+ * @version 2.0, March 2019.
  */
 public class Run {
 

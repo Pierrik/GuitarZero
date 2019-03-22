@@ -11,7 +11,7 @@ import java.util.zip.ZipInputStream;
  * MockClient.
  *
  * @author  John Mercer
- * @version 2.09, February 2019.
+ * @version 2.5, March 2019.
  */
 public class MockClient {
   private String host;

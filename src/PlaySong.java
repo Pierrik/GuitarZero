@@ -8,9 +8,10 @@ import javax.sound.midi.Transmitter;
 
 /**
  * Run midi file in different Thread
- * Version 2.1, February 2019
+ *
  * @author Tom Mansfield
  * @author Harper Ford
+ * Version 2.1, February 2019
  */
 
 public class PlaySong implements Runnable {

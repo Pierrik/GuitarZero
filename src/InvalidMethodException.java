@@ -1,6 +1,9 @@
 /**
  * InvalidMethodException.
  *
+ * @author Tom Mansfield
+ * @version 1.0, March 2019
+ *
  * Can be thrown when an invalid method is provided.
  *
  * Valid methods are as follows:

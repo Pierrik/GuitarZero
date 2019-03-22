@@ -7,8 +7,10 @@ import javax.swing.*;
  * CarouselModel
  *
  * @author  Pierrik Mellab
- * @modified Harper Ford
- * @version 1.00, March 2019.
+ * @author Harper Ford
+ * @author Kamila Hoffmann-Derlacka
+ * @author John Mercer
+ * @version 2.00, March 2019.
  */
 
 public class CarouselModel {

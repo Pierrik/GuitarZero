@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 /**
  * PlayModeModel
- * Version 3.2, March 2019
+ * Version 3.5, March 2019
  * @author Tom Mansfield
  * @author Harper Ford
  * @author Kamila Hoffmann-Derlacka

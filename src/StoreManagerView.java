@@ -24,10 +24,10 @@ public class StoreManagerView extends JFrame {
 
   /**
    * Sets up the JFrame.
-   * @param storeManagercontroller1: Title browse controller
-   * @param storeManagerController2: Cover browse controller
-   * @param storeManagerController3: Midi browse controller
-   * @param storeManagerController4: Save button controller
+   * @param titleButton: Title browse controller
+   * @param coverArtButton: Cover browse controller
+   * @param songButton: Midi browse controller
+   * @param saveButton: Save button controller
    */
   public StoreManagerView ( StoreManagerController titleButton,
       StoreManagerController coverArtButton,

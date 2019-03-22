@@ -8,7 +8,8 @@ import net.java.games.input.ControllerEnvironment;
  *
  * @author  Kamila Hoffmann-Derlacka
  * @author  John Mercer
- * @version 1.8, March 2019.
+ * @author Harper Ford
+ * @version 2.0, March 2019.
  *
  *   Linux/Mac:
  *   $ CLASSPATH=jinput-2.0.9.jar:.

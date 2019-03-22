@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Kamila Hoffmann-Derlacka
  * @author Harper Ford
  *
- * @version 2.2, February 2019
+ * @version 3.0, March 2019
  */
 public class MidiToNotes {
 

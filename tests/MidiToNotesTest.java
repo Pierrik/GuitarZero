@@ -12,6 +12,7 @@ import org.junit.Test;
 /**
  * MidiToNotesTest
  * Junit 4.12
+ *
  * @author Tom Mansfield
  */
 public class MidiToNotesTest {
