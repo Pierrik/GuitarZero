@@ -76,7 +76,7 @@ public class PlayModeModel implements Runnable{
   private static final int     CURRENCY_SCORE    = 500;
 
   private static final int     DROP_NOTE_REGION  = 390;
-  private static final int     MULTIPLIER_SETTER = 10;
+  private static final int     MULTIPLIER_SETTER = 2;
   private static final int     ALL_BUTTONS       = 6;
   private static final int     ASCII_DIFF        = 48;
   private static final int     LANES             = 3;
@@ -215,15 +215,19 @@ public class PlayModeModel implements Runnable{
    *      score = 30, multiplier = 8 etc.
    */
 
-  public void setMultiplier() {
+  private void setMultiplier(int streak) {
+    System.out.println("Streak: "+ streak);
+    if(streak == 0){
+      view.changeMultiplierLabel(null);
+    }
     // Each time streak is a multiple of 10, change the multiplier
-    if(this.streakCount % MULTIPLIER_SETTER == 0 ) {
+    else if(streak % MULTIPLIER_SETTER == 0 ) {
       // Multiplier value doubles each time, e.g. 2, 4, 8, 16, 32, 64 etc.
       String img;
 
       // Determine which value the multiplier should be
-      this.multiplier = (int) Math.pow(2, this.streakCount/10);
-
+      this.multiplier = (int) Math.pow(2, streak/MULTIPLIER_SETTER);
+      System.out.println(this.multiplier);
       // Set the multiplier labels in the view to the correct assets
       switch(this.multiplier){
         case 2:
@@ -508,8 +512,8 @@ public class PlayModeModel implements Runnable{
   public void collectNote() {
     this.streakCount ++;
     view.resetStreakLabel(this.streakCount);
-    setMultiplier();
-    this.score += this.multiplier * 100;
+    this.score += this.multiplier;
+    setMultiplier(this.streakCount);
     updateCurrency();
     view.resetScoreLabel(this.score);
   }
@@ -523,8 +527,7 @@ public class PlayModeModel implements Runnable{
   public void dropNote() {
     this.streakCount = 0;
     view.resetStreakLabel(this.streakCount);
-    setMultiplier();
-    view.setMultiplierLabel();
+    setMultiplier(this.streakCount);
   }
 
   /**
