@@ -1,5 +1,4 @@
 import javax.sound.midi.*;
-import java.io.File;
 
 /**
  * BPM.
