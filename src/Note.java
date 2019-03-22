@@ -13,7 +13,7 @@ import java.awt.*;
 public class Note{
 
   // Constants used to paint the notes and bounds to collect notes
-  private static final int    INITIAL_Y           = 225;
+  private static final int    INITIAL_Y           = 175;
   private static final int    VELOCITY            = 4;
   private static final int    SCREEN_WIDTH        = 1000;
   private static final int    SCREEN_HEIGHT       = 563;
@@ -22,7 +22,7 @@ public class Note{
   private static final int    WHITE_VALUE         = 2;
   private static final int    BLACK_VALUE         = 1;
   private static final double GRADIENT            = 0.4;
-  private static final int    COLLECT_START_BOUND = 350;
+  private static final int    COLLECT_START_BOUND = 250;
   private static final int    COLLECT_END_BOUND   = 460;
 
   //Load note sprites
@@ -67,7 +67,7 @@ public class Note{
       }
       else{}
       if(resizedImage != null){
-        int dim = (int)((this.y)*resizedImage.getHeight(null));
+        int dim = (int)((this.y/SCREEN_HEIGHT)*resizedImage.getHeight(null));
         g.drawImage(resizedImage,each[0], this.y, null);
       }
     }

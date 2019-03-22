@@ -76,7 +76,7 @@ public class PlayModeModel implements Runnable{
   private static final int     CURRENCY_SCORE    = 500;
 
   private static final int     DROP_NOTE_REGION  = 390;
-  private static final int     MULTIPLIER_SETTER = 2;
+  private static final int     MULTIPLIER_SETTER = 10;
   private static final int     ALL_BUTTONS       = 6;
   private static final int     ASCII_DIFF        = 48;
   private static final int     LANES             = 3;
