@@ -191,7 +191,7 @@ public class PlayModeController implements Runnable {
           }
         } else {
           if (previous3 == WHITE3) {
-            model.checkNote("120");
+            model.checkNote("102");
           }
           else if (previous3 == BLACK3) {
             model.checkNote("101");
