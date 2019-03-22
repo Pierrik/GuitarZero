@@ -80,7 +80,6 @@ public class PlayModeController implements Runnable {
 
         for ( int i = 0; i < allCmps.length; i++ ) {
           float val = vals[i];
-
             if (i == WHITE1) {
               if (val == BUTTON_THRESHOLD){
                 previous1 = i;
