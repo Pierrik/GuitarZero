@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class CarouselModel {
   CarouselView view;
+  File currencyFile;
   private static int  totalCurrency;
   final static String BUNDLES       = "../local_store/bundle_files/";
   final static String HOST          = "localhost";
@@ -33,7 +34,20 @@ public class CarouselModel {
    */
   public CarouselModel(CarouselView view) {
     this.view = view;
-    this.totalCurrency = 1; //Currency.loadTotalCurrency();
+
+    // If the currency file can't be loaded, do not start the game
+    try {
+      this.currencyFile = Currency.findCurrencyFile();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    // If currency file cannot be read properly, do not start the game
+    try {
+      this.totalCurrency = Currency.loadCurrencyFile(this.currencyFile);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -69,7 +83,11 @@ public class CarouselModel {
     String bundleName = songName + "(bundle).zip";
 
     if (totalCurrency > 0 && !isInLocalDir(songName)) {
-      updateCurrencyAndLocalStore(bundleName, songName);
+      try {
+        updateCurrencyAndLocalStore(bundleName, songName);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     } else if (totalCurrency < 1 && isInLocalDir(songName)){
       popUp("../assets/NoMoneyAndSongOwnedPopUp.jpg", POP_UP_TIME);
     } else if (totalCurrency > 0 && isInLocalDir(songName)){
@@ -79,8 +97,9 @@ public class CarouselModel {
     }
   }
 
-  public void updateCurrencyAndLocalStore(String bundleName, String songName){
+  public void updateCurrencyAndLocalStore(String bundleName, String songName) throws Exception {
     totalCurrency --;
+    Currency.saveCurrencyFile(this.currencyFile, totalCurrency);
 
     MockClient client = new MockClient(HOST, PORT);
     client.downloadFile(bundleName, "DOWNLOAD_BUNDLE");

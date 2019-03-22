@@ -15,11 +15,9 @@ public class PlayMode extends JPanel implements Runnable {
   PlayModeModel model;
   PlayModeController controller;
 
-<<<<<<< HEAD
+
     static AtomicBoolean playmode_running = new AtomicBoolean(false);
-=======
-  AtomicBoolean playmode_running = new AtomicBoolean(false);
->>>>>>> origin/master
+
 
   private static final int SCREEN_WIDTH  = 1000;
   private static final int SCREEN_HEIGHT = 563;
