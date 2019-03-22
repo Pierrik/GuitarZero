@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 /**
  * StoreMode.
  * @author John Mercer
+ * @author Harper Ford (exception handling)
  * @version 2.13, March 2019
  */
 public class StoreMode extends JPanel {
@@ -25,7 +26,14 @@ public class StoreMode extends JPanel {
   private static final String PREVIEWS = "../local_store/preview_files/";
 
   public StoreMode() {
-    MockClient client = new MockClient(HOST, PORT);
+    MockClient client = null;
+    try {
+      client = new MockClient(HOST, PORT);
+    }
+    catch(Exception e){
+      System.out.println("Enable to create MockClient. /STOREMODE");
+      GameUtils.changeModeOnNewThread(Mode.SLASH);
+    }
 
     // Getting preview filenames of all available songs on the server
     ArrayList<String> fileNames = client.listDirectory();
@@ -33,29 +41,53 @@ public class StoreMode extends JPanel {
     // Downloading and unzipping all previews, and giving each title/cover a JLabel
     ArrayList<JLabel> menuOptions = new ArrayList<>();
     for (String fileName : fileNames){
-      // Downloading and unzipping preview (and deleting zip after)
-      client.downloadFile(fileName, "DOWNLOAD_PREVIEW");
-      String songName = MockClient.getSongPreview(fileName);
-      String previewDir = PREVIEWS + songName + "/";
-      MockClient.unzip(PREVIEWS + fileName, previewDir);
-
+      String songName = null;
+      String previewDir = null;
+      try {
+        // Downloading and unzipping preview (and deleting zip after)
+        client.downloadFile(fileName, "DOWNLOAD_PREVIEW");
+        songName = MockClient.getSongPreview(fileName);
+        previewDir = PREVIEWS + songName + "/";
+        MockClient.unzip(PREVIEWS + fileName, previewDir);
+      }
+      catch(Exception e){
+        System.out.println("Couldn't download files. /STOREMODE");
+        GameUtils.changeModeOnNewThread(Mode.SLASH);
+      }
       // Reading in the cover image and song name, assigning to a JLabel and adding to ArrayList
       File[] previewContents = new File(previewDir).listFiles();
-
-      for (File cover : previewContents){
-        JLabel label = new JLabel(new ImageIcon(previewDir + cover.getName()));
-        label.setText(songName);
-        menuOptions.add(label);
+      try {
+        for (File cover : previewContents) {
+          JLabel label = new JLabel(new ImageIcon(previewDir + cover.getName()));
+          label.setText(songName);
+          menuOptions.add(label);
+        }
+      }
+      catch(Exception e){
+        System.out.println("Can't create JLabels in Carousel. /STOREMODE");
+        GameUtils.changeModeOnNewThread(Mode.SLASH);
       }
     }
-
-    // Initialise the model, controller, view GUI classes
-    CarouselView       view        = new CarouselView(menuOptions, Mode.STORE);
-    CarouselModel      model       = new CarouselModel(view);
-    CarouselController controller  = new CarouselController(model, Mode.STORE);
-
-    Thread controllerThread = new Thread(controller);
-    controllerThread.start();
+    CarouselView view = null;
+    CarouselController controller = null;
+    try {
+      // Initialise the model, controller, view GUI classes
+      view = new CarouselView(menuOptions, Mode.STORE);
+      CarouselModel model = new CarouselModel(view);
+      controller = new CarouselController(model, Mode.STORE);
+    }
+    catch(Exception e){
+      System.out.println("Unable to start MVC. /STOREMODE");
+      GameUtils.changeModeOnNewThread(Mode.SLASH);
+    }
+    try {
+      Thread controllerThread = new Thread(controller);
+      controllerThread.start();
+    }
+    catch(Exception e){
+      System.out.println("Enable to start Thread for controller. /STOREMODE");
+      GameUtils.changeModeOnNewThread(Mode.SLASH);
+    }
     this.add(view);
     //view.setVisible(true);
 
@@ -69,16 +101,18 @@ public class StoreMode extends JPanel {
     try {
       highway = ImageIO.read(new File("../assets/Done/Highway.bmp"));
     } catch (IOException e) {
-      e.printStackTrace();
+      System.out.println("Unable to load highway");
+      GameUtils.changeModeOnNewThread(Mode.SLASH);
     }
-    g.drawImage(highway, POINT_0_0, POINT_0_0, this);
+    g.drawImage(highway, -7, 5, this);
   }
 
   public void sleep(int millis){
     try {
       Thread.sleep(millis);
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      System.out.println("Woken from sleep");
+      GameUtils.changeModeOnNewThread(Mode.SLASH);
     }
   }
 

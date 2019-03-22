@@ -39,6 +39,7 @@ public class PlayMode extends JPanel implements Runnable {
     view.setVisible(true);
 
     if(!model.startGame) {
+      // print error?
       GameUtils.changeModeOnNewThread(Mode.SLASH);
     }
 
@@ -63,7 +64,10 @@ public class PlayMode extends JPanel implements Runnable {
     while (playmode_running.get()) {
 
       long s = System.nanoTime();
+      view.revalidate();
       view.repaint();
+
+
       long elapsed = System.nanoTime() - s;
       long wait = TARGET_TIME - elapsed / MILLION;
       try {
