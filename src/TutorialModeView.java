@@ -46,8 +46,8 @@ public class TutorialModeView extends JPanel {
       pictureLabels.add(label);
     }
 
-    pictureLabels.get(3).setVisible(true);
-    currentPicture = pictureLabels.get(3);
+    pictureLabels.get(0).setVisible(true);
+    currentPicture = pictureLabels.get(0);
 
     setVisible(true);
   }
