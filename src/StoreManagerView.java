@@ -1,13 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 import java.io.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /**
  * StoreManagerView.

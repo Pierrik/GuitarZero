@@ -18,7 +18,6 @@ public class PlayMode extends JPanel implements Runnable {
 
   static AtomicBoolean playmode_running = new AtomicBoolean(false);
 
-
   private static final int SCREEN_WIDTH  = 1000;
   private static final int SCREEN_HEIGHT = 563;
 
