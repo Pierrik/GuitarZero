@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.SpringLayout.Constraints;
 //Run//
 /**
  * Main Game Call.
@@ -74,6 +75,7 @@ public class Run {
 
       case STORE:
         st = new StoreMode();
+        st.setBounds(500, 500, 150,150);
         window.setContentPane(st);
         window.setVisible(true);
         break;

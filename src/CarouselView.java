@@ -95,7 +95,7 @@ public class CarouselView extends JPanel {
     }
 
     this.add(carousel);
-    this.setBounds(500, 500, CV_WIDTH, CV_HEIGHT);
+    this.setBounds(CV_X, CV_Y, CV_WIDTH, CV_HEIGHT);
 
   }
 
