@@ -18,10 +18,11 @@ public class CarouselView extends JPanel {
   private ArrayList<JLabel> menuOptions = new ArrayList<>();
   private ArrayList<Rectangle> bounds = new ArrayList<>();
   private int carouselLength = 0;
+  Mode mode;
 
   final static int CV_WIDTH      = 740;
   final static int CV_HEIGHT     = 150;
-  final static int CV_Y          = 65;
+  final static int CV_Y          = 0;
   final static int CV_X          = 80;
   final static int MAX_X_BOUND   = 630;
   final static int BOUNDS_X_1    = 180;
@@ -37,13 +38,24 @@ public class CarouselView extends JPanel {
    *
    * @param allOptions: A list of options to display graphically
    */
-  public CarouselView(ArrayList<JLabel> allOptions) {
+  public CarouselView(ArrayList<JLabel> allOptions, Mode mode) {
 
+    this.mode = mode;
 
     JLabel carousel = new JLabel(new ImageIcon("../assets/carousel.png"));
     carousel.setLayout(null);
     carouselLength = allOptions.size();
     initialiseBounds(carouselLength);
+
+    if (mode == Mode.STORE) {
+      System.out.println("I'm in store mode now");
+      JLabel currencyDisplay = new JLabel("/Users/pierrikmellab/Documents/Group Software Development/Coursework/GuitarZero/assets/2Stars.png");
+      currencyDisplay.setForeground(Color.WHITE);
+      currencyDisplay.setSize(100, 100);
+      currencyDisplay.setBounds(400, 400, 10, 10);
+      add(currencyDisplay);
+      repaint();
+    }
 
 
     // sets private menuOptions to, passed in variable, allOptions
@@ -81,12 +93,6 @@ public class CarouselView extends JPanel {
       menuOptions.get(1).setBounds(bounds.get(1));
       menuOptions.get(2).setBounds(bounds.get(2));
     }
-
-
-    if (CarouselController.mode == Mode.SELECT) {
-      System.out.println("inside of select mode");
-    }
-
 
     this.add(carousel);
     this.setBounds(CV_X, CV_Y, CV_WIDTH, CV_HEIGHT);

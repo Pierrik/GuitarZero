@@ -28,7 +28,7 @@ public class CarouselController implements Runnable {
   CarouselModel         model;
   ControllerEnvironment cenv  = ControllerEnvironment.getDefaultEnvironment();
   Controller[]          ctrls = cenv.getControllers();
-  static Mode           mode;
+  Mode                  mode;
 
   final static int    BUTTONS          = 3;
   final static double BUTTON_THRESHOLD = 1.0;

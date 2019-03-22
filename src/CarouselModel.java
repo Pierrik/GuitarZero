@@ -44,11 +44,6 @@ public class CarouselModel {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-
-    if (CarouselController.mode == Mode.SELECT)
-      view.paintTitleBanner(Mode.SELECT);
-      System.out.println("painted from very outside");
   }
 
   /**
