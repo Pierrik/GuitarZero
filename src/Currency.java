@@ -80,8 +80,8 @@ public class Currency {
    * Updates the currency file when the song has finished with any earned currency
    * @throws Exception if the currency file cannot be written
    */
-  public static void saveCurrencyFile(File inputFile, int newCurrency) throws Exception {
-    FileWriter writer = new FileWriter(inputFile.getName());
+  public static void saveCurrencyFile(int newCurrency) throws Exception {
+    FileWriter writer = new FileWriter("../currency/currency.txt");
     writer.write(Integer.toString(newCurrency));
     writer.close();
   }

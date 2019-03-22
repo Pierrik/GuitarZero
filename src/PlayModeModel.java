@@ -442,7 +442,7 @@ public class PlayModeModel implements Runnable{
 
         // Update total currency and save
         try {
-          Currency.saveCurrencyFile(currencyFile, totalCurrency);
+          Currency.saveCurrencyFile(totalCurrency);
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -509,7 +509,7 @@ public class PlayModeModel implements Runnable{
     this.streakCount ++;
     view.resetStreakLabel(this.streakCount);
     setMultiplier();
-    this.score += this.multiplier;
+    this.score += this.multiplier * 100;
     updateCurrency();
     view.resetScoreLabel(this.score);
   }
