@@ -50,12 +50,12 @@ public class PlayModeModel implements Runnable{
 
   // File paths to update assets displayed during the game
   private static final String  ZERO_POWER_PATH   = "../assets/ZeroPowerShield.png";
-  private static final String  MULTIPLIER2       = "../assets/times2Multiplier3.png";
-  private static final String  MULTIPLIER4       = "../assets/times4Multiplier3.png";
-  private static final String  MULTIPLIER8       = "../assets/times8Multiplier3.png";
-  private static final String  MULTIPLIER16      = "../assets/times16Multiplier3.png";
-  private static final String  MULTIPLIER32      = "../assets/times32Multiplier3.png";
-  private static final String  MULTIPLIER64      = "../assets/times64Multiplier3.png";
+  private static final String  MULTIPLIER2       = "../assets/times2Multipler3.png";
+  private static final String  MULTIPLIER4       = "../assets/times4Multipler3.png";
+  private static final String  MULTIPLIER8       = "../assets/times8Multipler3.png";
+  private static final String  MULTIPLIER16      = "../assets/times16Multipler3.png";
+  private static final String  MULTIPLIER32      = "../assets/times32Multipler3.png";
+  private static final String  MULTIPLIER64      = "../assets/times64Multipler3.png";
 
   // Extensions of files to search for in the bundle
   private static final String  TXT_EXTENSION     = ".txt";
