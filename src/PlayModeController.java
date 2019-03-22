@@ -78,6 +78,8 @@ public class PlayModeController implements Runnable {
         previous2 = -1;
         previous3 = -1;
 
+        // speicla comment for retards
+
         for ( int i = 0; i < allCmps.length; i++ ) {
           float val = vals[i];
             if (i == WHITE1) {
