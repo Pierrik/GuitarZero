@@ -19,7 +19,6 @@ public class CarouselView extends JPanel {
   private ArrayList<Rectangle> bounds = new ArrayList<>();
   private JLabel currency = null;
   private int carouselLength = 0;
-  Mode mode;
 
   final static int CV_WIDTH      = 740;
   final static int CV_HEIGHT     = 150;
@@ -39,9 +38,7 @@ public class CarouselView extends JPanel {
    *
    * @param allOptions: A list of options to display graphically
    */
-  public CarouselView(ArrayList<JLabel> allOptions, Mode mode) {
-
-    this.mode = mode;
+  public CarouselView(ArrayList<JLabel> allOptions) {
 
     JLabel carousel = new JLabel(new ImageIcon("../assets/carousel.png"));
     carousel.setLayout(null);

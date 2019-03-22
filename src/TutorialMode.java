@@ -1,4 +1,3 @@
-import java.awt.Image;
 import java.io.File;
 import javax.swing.*;
 import java.lang.*;
@@ -35,11 +34,8 @@ public class TutorialMode extends JPanel {
 
       if (getExtension(pictureFile.getName()).equalsIgnoreCase("png")) {
         pictureIcons.add(new ImageIcon(pictureFile.getPath()));
-        System.out.println(pictureFile.getPath());
       }
     }
-
-    System.out.println(pictureIcons.size());
 
     // Initialise the model, controller, view GUI classes
     TutorialModeView       view       = new TutorialModeView( pictureIcons );

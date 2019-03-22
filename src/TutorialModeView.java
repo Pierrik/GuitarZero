@@ -1,9 +1,6 @@
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.JLabel;
-
-// Manages the display model
 
 /**
  * TutorialModeView.
@@ -16,7 +13,7 @@ public class TutorialModeView extends JPanel {
   private ArrayList<ImageIcon> pictureIcons;
 
   JLabel currentPicture = null;
-  ArrayList<JLabel> pictureLabels = new ArrayList<JLabel>();;
+  ArrayList<JLabel> pictureLabels = new ArrayList<JLabel>();
 
   /**
    * Alters the GUI by taking commands from a model class
@@ -27,16 +24,8 @@ public class TutorialModeView extends JPanel {
 
     this.pictureIcons = pictureIcons;
 
-    ///picture = new JLabel(pictureIcons.get(0));
-    //picture.setBounds(50, 50, 300, 300);
-
-    //add(picture);
 
     setBounds(0, 0, 1000, 500);
-
-    //picture.setVisible(true);
-    setVisible(true);
-
 
     for (ImageIcon pictureIcon : pictureIcons) {
       JLabel label = new JLabel(pictureIcon);
@@ -57,9 +46,6 @@ public class TutorialModeView extends JPanel {
    * Switches images to the left, replacing with next picture
    */
   public void leftMovement() {
-
-    System.out.println("left movement.");
-
 
     for (int i = 0; i < pictureLabels.size(); i++) {
 
@@ -86,8 +72,6 @@ public class TutorialModeView extends JPanel {
    * Switches images to the right, replacing with next picture
    */
   public void rightMovement() {
-    System.out.println("right movement.");
-
 
     for (int i = 0; i < pictureLabels.size(); i++) {
 
@@ -108,8 +92,6 @@ public class TutorialModeView extends JPanel {
       }
     }
 
-
   }
-
 
 }
