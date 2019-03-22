@@ -140,7 +140,7 @@ public class PlayModeModel implements Runnable{
 
     // If currency file cannot be read properly, do not start the game
     try {
-      Currency.loadCurrencyFile(this.currencyFile);
+      totalCurrency = Currency.loadCurrencyFile(this.currencyFile);
     } catch (Exception e) {
       e.printStackTrace();
       startGame = false;
@@ -442,7 +442,7 @@ public class PlayModeModel implements Runnable{
 
         // Update total currency and save
         try {
-          Currency.saveCurrencyFile(totalCurrency);
+          Currency.saveCurrencyFile(this.totalCurrency);
         } catch (Exception e) {
           e.printStackTrace();
         }

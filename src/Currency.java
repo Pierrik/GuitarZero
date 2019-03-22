@@ -13,7 +13,6 @@ import java.util.Scanner;
 public class Currency {
 
   private static final String  CURRENCY_PATH     = "../currency/currency.txt";
-  private static final String  TXT_EXTENSION     = ".txt";
   private static int oldCurrency;
 
   /**
@@ -29,7 +28,7 @@ public class Currency {
     File[] files = bundle.listFiles(new FilenameFilter() {
       @Override
       public boolean accept(File dir, String name) {
-        return name.endsWith(TXT_EXTENSION);
+        return name.endsWith(".txt");
       }
     });
 
@@ -39,6 +38,7 @@ public class Currency {
 
     } else {
       // If there is no currency file found, create one
+
       File currencyFile = new File(CURRENCY_PATH);
       currencyFile.createNewFile();
 
@@ -59,7 +59,7 @@ public class Currency {
    */
   public static int loadCurrencyFile(File inputFile) throws Exception {
 
-    int currency = 0;
+    int currency;
 
     Scanner input = new Scanner(inputFile);
     // Iterates through each line of the file
@@ -69,12 +69,9 @@ public class Currency {
       {
         return currency;
       }
-      else {
-        return 0;
-      }
     }
-    oldCurrency = currency;
-    return currency;
+    //System.out.println("this is currency value: " + currency);
+    return 0;
   }
 
   /**
@@ -84,7 +81,7 @@ public class Currency {
    */
   public static void saveCurrencyFile(int newCurrency) throws Exception {
     FileWriter writer = new FileWriter("../currency/currency.txt");
-    writer.write(Integer.toString(oldCurrency + newCurrency));
+    writer.write(Integer.toString(newCurrency));
     writer.close();
   }
 }
