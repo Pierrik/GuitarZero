@@ -69,6 +69,7 @@ public class Run {
     switch (option) {
       case SLASH:
         sl = new SlashMode();
+        sl.setBounds(500, 500, 150,150);
         window.setContentPane(sl);
         window.setVisible(true);
         break;
