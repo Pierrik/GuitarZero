@@ -216,7 +216,6 @@ public class PlayModeModel implements Runnable{
    */
 
   private void setMultiplier(int streak) {
-    System.out.println("Streak: "+ streak);
     if(streak == 0){
       view.changeMultiplierLabel(null);
     }
@@ -227,7 +226,6 @@ public class PlayModeModel implements Runnable{
 
       // Determine which value the multiplier should be
       this.multiplier = (int) Math.pow(2, streak/MULTIPLIER_SETTER);
-      System.out.println(this.multiplier);
       // Set the multiplier labels in the view to the correct assets
       switch(this.multiplier){
         case 2:
