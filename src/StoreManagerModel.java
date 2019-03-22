@@ -1,12 +1,13 @@
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
@@ -60,9 +61,6 @@ public class StoreManagerModel {
       int returnValue = jfc.showOpenDialog(null);
       if (returnValue == JFileChooser.APPROVE_OPTION) {
         File selectedFile = jfc.getSelectedFile();
-        if(filetype == "png"){
-          return resizeImageFile(selectedFile, 140, 140);
-        }
         return selectedFile;
       } else {
         return null;
@@ -72,33 +70,6 @@ public class StoreManagerModel {
       System.out.println("Can't return file. /STOREMANAGERMODEL");
       return null;
     }
-  }
-
-  /**
-   * Reads an image file and resizes it to desired dimensions
-   * @param file
-   * @param width
-   * @param height
-   * @return Resized Image as Image
-   */
-  public static File resizeImageFile(File file, int width, int height){
-    Image image = null;
-    try {
-      image = ImageIO.read(file);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    BufferedImage resizedImage = (BufferedImage) image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-    OutputStream out = null;
-    try {
-      out = new FileOutputStream(file);
-      ImageIO.write(resizedImage, "png", out);
-      File foo = new File(file.getPath());
-      return foo;
-    } catch (Exception e) {
-      System.out.println("Failed image resize. /STOREMANAGERMODEL");
-    }
-    return null;
   }
 
   /**
