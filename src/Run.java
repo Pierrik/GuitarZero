@@ -31,7 +31,7 @@ public class Run {
 
   private static String OS = System.getProperty("os.name").toLowerCase();
 
-  static JFrame window;
+  public static JFrame window;
   static SelectMode se = null;
   static SlashMode  sl = null;
   static StoreMode  st = null;
@@ -42,6 +42,7 @@ public class Run {
   private static final int GAME_WIDTH  = 1000;
   private static final int GAME_HEIGHT = 563;
 
+  public static JFrame getWindow(){ return window; }
 
   public static void main(String[] args){
     window = new JFrame("Guitar Zero Game");

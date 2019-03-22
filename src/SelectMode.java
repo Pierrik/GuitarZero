@@ -118,7 +118,7 @@ public class SelectMode extends JPanel {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    g.drawImage(highway, 0, 0, this);
+    g.drawImage(highway, -7, 5, this);
   }
 
 }
